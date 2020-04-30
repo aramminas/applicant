@@ -1,0 +1,90 @@
+.user-form-container {
+  background: #e2e1e0;
+  padding: 100px 0;
+
+  .card {
+    background: #fff;
+    border-radius: 10px;
+    margin: 1rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all .7s cubic-bezier(.25, .8, .25, 1);
+  }
+
+  .card:hover {
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+  }
+
+  & .date-picker-content > div {
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    padding: 7px;
+  }
+
+  & .date-picker-content > div > label {
+    margin: 5px;
+  }
+
+  & .date-picker-content > div:hover {
+    border-color: rgba(0, 0, 0, 0.87);
+  }
+
+  & .password-input {
+    position: relative;
+
+    & .helper-part {
+      color: red;
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin: 15px 5px;
+    }
+  }
+  & .log-pass-title{
+    margin-top: 5px;
+    & a {
+      margin-left: 5px;
+    }
+  }
+  & .warning-mail-info{
+    color: #757575;
+    font-size: 13px;
+  }
+}
+
+.user-logo {
+  & .box-shadow {
+    background-color: #0870B8;
+    border-radius: 50%;
+    box-shadow: 0 20px 50px rgba(8, 112, 184, 0.7);
+  }
+
+  & .alli-shadow {
+    width: 200px;
+    height: auto;
+    max-width: 50%;
+  }
+
+  & img, & svg {
+    height: auto;
+    display: inline-block;
+    max-width: 100%;
+    vertical-align: middle;
+    border: 0;
+  }
+}
+
+.user-data-loader{
+  width: 400px;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  & .unknown-user{
+    font-size: 22px;
+    & span{
+      color: #4f4f4f;
+      text-shadow: 1px 1px 2px black, 0 0 1em #08bcd7;
+    }
+  }
+}

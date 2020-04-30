@@ -1,0 +1,79 @@
+@import "../../scss/varieables";
+// Welcome
+.welcome {
+  min-height: 90vh;
+}
+
+.welcome-main {
+  min-height: 600px;
+  height: 1000px;
+  width: auto;
+  background-repeat: no-repeat;
+  background-image: url("/images/pages/welcome_bg.jpg");
+  background-size: cover;
+}
+
+.welcome-greeting-text {
+  position: relative;
+  width: 100%;
+  height: 90vh;
+}
+
+// GreetingText
+.greeting-content {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 70vw;
+  height: 50vh;
+}
+
+.greeting-text {
+  font-size: 42px;
+  color:  #1f4992;
+  font-weight: 900;
+  text-transform: uppercase !important;
+  font-family: $text-font;
+  @include text-shadow($text-shadow-val)
+}
+
+// Technology
+.technology-block {
+  height: 760px;
+  background: url(/images/pages/technologies_bg.jpg) no-repeat center center;
+  & .technology-title {
+    color: #FFFFFF;
+    font-size: 50px;
+    font-weight: 900;
+    padding: 60px 0;
+    font-family:  $text-font;
+    @include text-shadow($text-shadow-val);
+  }
+  & .large-text {
+    padding-left: 20px;
+    font-family: "Lora", serif;
+    font-size: 36px;
+    font-weight: 700;
+    line-height: 60px;
+    color: #FFFFFF;
+    margin: 10px 0 50px;
+    -webkit-animation-delay: 0.7s;
+    animation-delay: 0.7s;
+    text-transform: uppercase;
+    @include text-shadow($text-shadow-val)
+  }
+  & .technology-description{
+    color: #fff;
+    margin: 0 0 15px;
+    line-height: 27px;
+    font-size: 13px;
+  }
+  & .technology-img{
+    display: block;
+    max-width: 100%;
+    height: auto;
+  }
+}

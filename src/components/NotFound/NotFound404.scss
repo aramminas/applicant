@@ -1,0 +1,29 @@
+.not-found-content{
+  min-height: 100vh;
+  & .not-found-404{
+    margin-top: 50px;
+  }
+  & figure img{
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+  }
+}
+.not-found-title{
+  font-family: Ringside Regular A,Ringside Regular B,Rubik,Lato,Lucida Grande,Lucida Sans Unicode,Tahoma,Sans-Serif;
+  font-style: normal;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+  line-height: 1;
+  & .subhead {
+    font-size: 75%;
+    margin: 0 0 .25rem;
+    color: #939393;
+  }
+  & p{
+    color: #2e2f3e;
+    overflow-wrap: break-word;
+  }
+}

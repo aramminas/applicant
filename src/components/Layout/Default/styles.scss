@@ -1,0 +1,72 @@
+@import "../../../scss/varieables";
+.nav-link-effect {
+  display: flex;
+  list-style-type: none;
+
+  & a {
+    position: relative;
+    display: block;
+    text-decoration: none;
+    font-family: "Lato";
+    color: #ecf0f1;
+    text-transform: uppercase;
+    padding: 4px 0;
+    transition: 0.5s;
+    font-weight: 600;
+  }
+
+  & a::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 3px;
+    top: 100%;
+    left: 0;
+    background: linear-gradient(45deg, white,  #95a5a6);
+    transition: transform 0.5s;
+    transform: scaleX(0);
+    transform-origin: right;
+  }
+
+  & a:hover {
+    color: #95a5a6;
+  }
+
+  & a:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+}
+
+.user-title{
+  padding-bottom: 8px;
+  & span.user-title-icon{
+    font-size: 30px;
+  }
+  & span.user-title-name{
+    margin-right: 15px;
+    margin-left: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #cdcdcc;
+    font-family: $text-font;
+    @include text-shadow($text-shadow-val)
+  }
+}
+
+//Footer
+.footer-content{
+  clear: both;
+  bottom: 0;
+  min-height: 70px;
+}
+
+// @ Media
+
+@media only screen
+and (min-device-width: 320px)
+and (max-device-width: 860px) {
+  .main-menu{
+    display: none!important;
+  }
+}

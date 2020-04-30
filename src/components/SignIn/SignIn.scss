@@ -1,0 +1,13 @@
+.sign-in-container{
+  min-height: 80vh;
+}
+.password-input{
+  position: relative;
+  & .helper-part{
+    color: red;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin: 30px 5px;
+  }
+}

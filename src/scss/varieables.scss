@@ -1,0 +1,12 @@
+$text-font:  "Lora", serif;
+$text-shadow-val: 0 4px 14px rgba(0,0,0,.5);
+$default-header: 5vh;
+$default-content: 90vh;
+$default-footer: 5vh;
+@mixin text-shadow($shadow) {
+  text-shadow: $shadow;
+  -moz-text-shadow: $shadow;
+  -webkit-text-shadow: $shadow;
+  -ms-text-shadow: $shadow;
+  -o-text-shadow: $shadow;
+}

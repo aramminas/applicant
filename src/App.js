@@ -1,11 +1,12 @@
-import React from 'react';
+import React from 'react'
+import router from './router'
 
 function App() {
-  return (
-    <div className="App">
-      <h1>Welcome dear applicant</h1>
-    </div>
-  );
+    return (
+        <>
+            {router}
+        </>
+    )
 }
 
-export default App;
+export default App

@@ -26,3 +26,5 @@ yarn-error.log*
 .firebase/
 
 .idea
+
+src/components/Welcome/Welcome_test.js

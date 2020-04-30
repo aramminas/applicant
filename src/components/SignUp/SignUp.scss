@@ -1,0 +1,23 @@
+.sign-up-container{
+  & .date-picker-content > div{
+    border: 1px solid #c0c0c0;
+    border-radius: 5px;
+    padding: 7px;
+  }
+  & .date-picker-content > div > label {
+    margin: 5px;
+  }
+  & .date-picker-content > div:hover{
+    border-color: rgba(0, 0, 0, 0.87);
+  }
+  .password-input{
+    position: relative;
+    & .helper-part{
+      color: red;
+      position: absolute;
+      right: 0;
+      top: 0;
+      margin: 15px 5px;
+    }
+  }
+}
