@@ -1,7 +1,7 @@
 {
   "home": "Գլխավոր",
-  "about_us": "About US",
-  "contact_us": "Contact US",
+  "about_us": "Մեր մասին",
+  "contact_us": "Հետադարձ կապ",
   "create_test": "Ստեղծել թեստ",
   "tests": "Թեստեր",
   "registration": "Գրանցվել",
@@ -43,6 +43,12 @@
   "success_sign_in": "You have successfully sign in.",
   "success_update": "Data updated successfully.",
   "user_not_found": "User not found!",
+
+  "_comment_date": " *** Our personal data ***",
+  "office_phone" : "+(374) 10 123456",
+  "mobile_phone" : "+(374) 91 234567",
+  "office_address" : "Mashtots Avenu, Yerevan, Armenia",
+
   "_comment": "About Us Page",
   "about_title": [
     "About Tests",
@@ -51,5 +57,25 @@
     "Professional and logical questions",
     "As well as questions,",
     "that define your various professional skills..."
-  ]
+  ],
+  "about_advice_title": "Advice for passing",
+  "advices": [
+    "You can not even plan to write off tests for mindfulness when applying for a job. these examples are almost not repeated, because there are thousands of them in the database, and, for example, the company Talent Q has made a dynamic system that changes the level of complexity of tasks directly during testing. Anyone who has seen abstract logic problems also understands the meaninglessness of remembering something, when each new example is a series of images that are different from the previous ones, and you need to look for a relationship between them while there is time",
+    "It is important that in recent years testing has been conducted over the Internet, so you can also train remotely, and this opportunity is provided by some employers or some developers of collections for solutions. Test tests from employers are usually much simpler than the \"original\" ones, but you can understand the structure and method of presenting the material, but to solve complex problems, it is better to buy a collection where there are answers to the problems and explanations.",
+    "You should especially work on mindfulness, for example, logic tests with pictures cause difficulties at the last stage, when the human brain is tired, and is not able to distinguish sequences, although the first examples of the test were given quite simply. With verbal tasks, too, there may be similar difficulties, because you need to read an unfamiliar text, and then try to find specific information in it that confirms or refutes the opinions of the authors.",
+    "Every applicant can achieve the best results. all you need to do is train more, use all available examples of verbal and logical tests, and do not rely on friends to help you."
+  ],
+
+  "_comment_1": " *** Contact Us Page ***",
+  "full_name" : "Full Name",
+  "email" : "Email",
+  "message" : "Message",
+  "enter_name" : "Enter full name",
+  "enter_email" : "Enter email address",
+  "enter_phone" : "Enter phone number",
+  "your_message" : "Your Message...",
+  "send" : "Send",
+  "error_valid_message" : "You made a mistake\n  please enter valid data",
+  "error_message" : "There was an error sending",
+  "success_message" : "Sent successfully"
 }

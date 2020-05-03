@@ -1,0 +1,16 @@
+.nav-link-effect {
+  display: flex;
+}
+.nav-404{
+  margin: auto;
+  & a {
+    font-size: 22px;
+  }
+}
+
+//Footer
+.footer-content{
+  clear: both;
+  bottom: 0;
+  min-height: 70px;
+}

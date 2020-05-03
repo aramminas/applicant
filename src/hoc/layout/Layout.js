@@ -2,6 +2,8 @@ import React,{Component} from 'react'
 //default page
 import DfHeader from '../../components/Layout/Default/Header'
 import DfFooter from '../../components/Layout/Default/Footer'
+// not contact page
+import ContactFooter from '../../components/Layout/Contact/Footer'
 // not found page
 import NotFoundHeader from '../../components/Layout/NotFound/Header'
 import NotFoundFooter from '../../components/Layout/NotFound/Footer'
@@ -33,6 +35,17 @@ const layout = (ChildComponent, page = "default") =>
                             />
                             <h1>admin</h1>
                         </> : null
+                    }
+                    {/* for admin page*/}
+                    {
+                        (page === 'contact') ?
+                            <>
+                                <DfHeader/>
+                                <ChildComponent
+                                    {...rest}
+                                />
+                                <ContactFooter/>
+                            </> : null
                     }
                     {/* for 404 page*/}
                     {

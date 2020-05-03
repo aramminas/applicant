@@ -70,9 +70,20 @@ const Advice = () => {
                                 </Paper>
                             </Grid>
                         </Grid>
-                        <Grid container className={"h100 mt50"} justify="flex-start">
+                        <Grid container className={"h100 mt50  about-advice-content"} justify="flex-start">
                             {
-                                showAdvices ? advices_element : null
+                                showAdvices ?
+                                    <>
+                                        {advices_element}
+                                        <Grid item xs={12} className={"about-advice-image"}>
+                                            <Animated animationIn="flipInX" animationOut="flipInX" isVisible={true} className={"animated-element animated-element-4"}>
+                                                <figure>
+                                                    <img src="/images/pages/about-us-end.png" alt=""/>
+                                                </figure>
+                                            </Animated>
+                                        </Grid>
+                                    </>
+                                    : null
                             }
                         </Grid>
                     </Grid>

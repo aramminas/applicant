@@ -1,3 +1,76 @@
+@import "font";
 .contact-us{
-  color: #00d9ff;
+  min-height: 90vh;
+  & .contact-us-form-container{
+    min-height: 90vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+  }
+  & .contact-us-form-container.hover-element {
+    background-image: url("/images/pages/yerevan-map_bg.png");
+    transition: background-image 2s linear;
+  }
+  & .contact-us-form-container.leave-element {
+    background-image: url("/images/pages/armenia-map_bg.png");
+    transition: background-image 2s linear;
+  }
+  & .contact-form-body{
+    & .contact-form-container {
+      max-width: 670px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9;
+      border-radius: 10px;
+      background: white;
+
+      & .contact-form-header{
+        background-image: url("/images/pages/contact-us-form.jpg");
+        background-repeat: no-repeat;
+        background-position: 50% 90%;
+        background-size: 100% 350px;
+        position: relative;
+        height: 180px;
+        width: 670px;
+        border-radius: 10px;
+        & h2{
+          position: absolute;
+          top: 30%;
+          left: 65%;
+          font-family: 'Alex Brush';
+          font-size: 40px;
+          font-weight: lighter;
+        }
+      }
+      & .contact-field{
+        text-align: end;
+        & label{
+          margin: 10px 0;
+        }
+        & label:hover{
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  & .contact-form{
+    margin: 40px;
+  }
+  & .contact-form > div >div{
+    margin: 0;
+  }
+  a{
+    font-size: 15px;
+    color: #808080;
+    line-height: 1.2;
+    text-align: right;
+    position: absolute;
+    top: 14px;
+    left: -105px;
+    width: 80px;
+  }
 }

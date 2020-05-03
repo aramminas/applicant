@@ -2,7 +2,8 @@ const data = {
     layout: {
         admin: 'admin',
         default: 'default',
-        notFound: 'not-found'
+        notFound: 'not-found',
+        contact: 'contact'
     },
     language: [
         {
