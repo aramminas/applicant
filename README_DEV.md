@@ -38,5 +38,7 @@
 
 `npm install react-scroll-listen --save`
 
+`npm install crypto-js`
+
 ##E-mail service
 `https://formspree.io/`

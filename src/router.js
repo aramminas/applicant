@@ -13,7 +13,7 @@ const SignUp = lazy(() => import("./components/SignUp/SignUp"))
 const NotFound = lazy(() => import("./components/NotFound/NotFound404"))
 
 // admin components for router
-const Admin = lazy(() => import("./components/Admin/Admin"))
+const AdminLogin = lazy(() => import("./components/Admin/AdminLogin"))
 const CreateTest = lazy(() => import("./components/CreateTest/CreateTest"))
 
 // user components for router
@@ -31,7 +31,7 @@ const routes = (
             <Route path="/sign-in" component={SignIn}/>
             <Route path="/sign-up" component={SignUp}/>
             {/* admin routes */}
-            <Route path="/admin" component={Admin}/>
+            <Route path="/admin" component={AdminLogin}/>
             <Route path="/create-test" component={CreateTest}/>
             {/* user routes */}
             <Route path="/test/:id" exact component={Test}/>

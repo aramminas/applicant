@@ -53,7 +53,7 @@ function Header(props) {
             let currentID = user.userId ? user.userId : id
             try {
                 Firebase.database.ref(`/users/${currentID}`).once('value').then(function(snapshot) {
-                    let userData = snapshot.val() || 'Anonymous'
+                    let userData = snapshot.val() || {}
                     if(userData.firstName){
                         props.addUpdateUser(userData)
                     }

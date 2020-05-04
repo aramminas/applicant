@@ -2,13 +2,13 @@ import {applyMiddleware, combineReducers, compose, createStore} from "redux"
 
 // Reducers **
 import welcomeReducer from "./reducers/welcomeReducer"
-import adminReducer from "./reducers/adminReducer"
+import setAdminReducer from "./reducers/setAdminReducer"
 import languageReducer from "./reducers/languageReducer"
 import userReducer from "./reducers/userReducer"
 
 const AllReducers = combineReducers({
     welcome: welcomeReducer,
-    admin: adminReducer,
+    admin: setAdminReducer,
     language: languageReducer,
     user: userReducer
 })

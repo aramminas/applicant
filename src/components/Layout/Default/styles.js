@@ -5,8 +5,7 @@ const useStyles = makeStyles((theme) => ({
         "& > * + *": {
             marginLeft: theme.spacing(2),
         },
-        flexGrow: 1,
-        marginLeft: "250px",
+        margin: "auto"
     },
     root: {
         flexGrow: 1
