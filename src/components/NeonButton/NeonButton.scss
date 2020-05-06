@@ -1,0 +1,139 @@
+@mixin btn($color, $btn-color, $hover-color,$hover-shadow) {
+  & a {
+    color: $color;
+  }
+  & a:hover {
+    color: $hover-color;
+    background: $btn-color;
+    box-shadow: 0 0 10px $hover-shadow, 0 0 40px $hover-shadow, 0 0 80px $hover-shadow;
+  }
+  & span:nth-child(1) {
+    background: linear-gradient(90deg, transparent, $btn-color);
+  }
+  & span:nth-child(2) {
+    background: linear-gradient(180deg, transparent, $btn-color);
+  }
+  & span:nth-child(3) {
+    background: linear-gradient(270deg, transparent, $btn-color);
+  }
+  & span:nth-child(4) {
+    background: linear-gradient(360deg, transparent, $btn-color);
+  }
+}
+
+.b-default {
+  @include btn(#2196f3, #2196f3, #0f3657, #255784);
+}
+
+.b-primary {
+  @include btn(#0069d9, #007bff, #d5dbe2, #0069d9);
+}
+
+.b-secondary {
+  @include btn(#5a6268, #6c757d, #d5dbe2, #5a6268);
+}
+
+.b-success {
+  @include btn(#218838, #218838, #d5dbe2, #218838);
+}
+
+.b-danger {
+  @include btn(#bd2130, #dc3545, #d5dbe2, #bd2130);
+}
+
+.b-warning {
+  @include btn(#d39e00, #ffc107, #212529, #ffb300);
+}
+
+.b-info {
+  @include btn(#117a8b, #17a2b8, #d5dbe2, #117a8b);
+}
+
+.b-light {
+  @include btn(#c9c9c9, #f8f9fa, #212529, #e2e6ea);
+}
+
+.b-dark {
+  @include btn(#3b3b3b, #343a40, #fff, #707070);
+}
+
+.neon-btn {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Consolas, serif;
+
+  & a {
+    position: relative;
+    display: inline-block;
+    padding: 15px 30px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    text-decoration: none;
+    font-size: 24px;
+    overflow: hidden;
+    transition: 0.2s;
+
+    & span {
+      position: absolute;
+      display: block;
+    }
+
+    & span:nth-child(1) {
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 2px;
+    }
+
+    & span:nth-child(2) {
+      top: -100%;
+      right: 0;
+      width: 2px;
+      height: 100%;
+    }
+
+    & span:nth-child(3) {
+      bottom: 0;
+      right: -100%;
+      width: 100%;
+      height: 2px;
+    }
+
+    & span:nth-child(4) {
+      bottom: -100%;
+      left: 0;
+      width: 2px;
+      height: 100%;
+    }
+  }
+
+  & a:hover {
+    transition-delay: .8s;
+
+    & span:nth-child(1) {
+      left: 100%;
+      transition: .8s;
+    }
+
+    & span:nth-child(2) {
+      top: 100%;
+      transition: .8s;
+      transition-delay: .2s;
+    }
+
+    & span:nth-child(3) {
+      right: 100%;
+      transition: .8s;
+      transition-delay: .4s;
+    }
+
+    & span:nth-child(4) {
+      bottom: 100%;
+      transition: .8s;
+      transition-delay: .6s;
+    }
+  }
+}

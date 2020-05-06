@@ -42,3 +42,8 @@
 
 ##E-mail service
 `https://formspree.io/`
+
+## Admin dashboard
+`npm install --save core-js@^3` ---
+
+`npm i material-dashboard-react`
