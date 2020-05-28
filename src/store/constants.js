@@ -7,3 +7,4 @@ export const UPDATE_PAGE_SECTION = 'UPDATE_PAGE_SECTION'
 export const ADD_UPDATE_USER_DATA = 'ADD_UPDATE_USER_DATA'
 // Admin page
 export const SET_ADMIN_DATA = 'SET_ADMIN_DATA'
+export const SET_NAV_ID = 'SET_NAV_ID'

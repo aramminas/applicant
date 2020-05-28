@@ -14,7 +14,12 @@ const NotFound = lazy(() => import("./components/NotFound/NotFound404"))
 
 // admin components for router
 const AdminLogin = lazy(() => import("./components/Admin/AdminLogin"))
-const CreateTest = lazy(() => import("./components/CreateTest/CreateTest"))
+const CreateTest = lazy(() => import("./components/Admin/CreateTest/CreateTest"))
+const TestResults = lazy(() => import("./components/Admin/TestResults/TestResults"))
+const AdminTests = lazy(() => import("./components/Admin/AdminTests/AdminTests"))
+const Dashboard = lazy(() => import("./components/Admin/Dashboard/Dashboard"))
+const Applicants = lazy(() => import("./components/Admin/Applicants/Applicants"))
+const CssEffects = lazy(() => import("./components/CssEffects/CssEffects"))
 
 // user components for router
 const User = lazy(() => import("./components/User/User"))
@@ -33,6 +38,12 @@ const routes = (
             {/* admin routes */}
             <Route path="/admin" component={AdminLogin}/>
             <Route path="/create-test" component={CreateTest}/>
+            <Route path="/test-results" component={TestResults}/>
+            <Route path="/admin-tests" component={AdminTests}/>
+            <Route path="/dashboard" component={Dashboard}/>
+            <Route path="/applicants" component={Applicants}/>
+            {/* CSS effects examples */}
+            <Route path="/css-effects" component={CssEffects}/>
             {/* user routes */}
             <Route path="/test/:id" exact component={Test}/>
             <Route path="/tests/:id" component={Tests}/>

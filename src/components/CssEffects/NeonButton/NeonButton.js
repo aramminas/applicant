@@ -1,3 +1,8 @@
+/* ** Usage example **
+ <NeonButton  variant="default">Neon Button</NeonButton>
+ ** Available classes **
+ default, primary, secondary, success, danger, warning, info, light, dark */
+
 import React from "react"
 import './NeonButton.scss'
 

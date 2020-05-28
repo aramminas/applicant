@@ -36,6 +36,7 @@ import './SignUp.scss'
 import constants from "../../constants"
 import HelpTwoToneIcon from "@material-ui/icons/HelpTwoTone"
 import ReactTooltip from "react-tooltip"
+import formatDate from 'intl-dateformat'
 import convertData from "../../helpers/convertData"
 
 const useStyles = makeStyles((theme) => ({
@@ -222,6 +223,9 @@ function SignUp(props) {
             !noValid.phone && !noValid.birthday && !noValid.password) {
             Firebase.doCreateUserWithEmailAndPassword(email, password).then(function (data) {
                     if (data && data.user && data.user.uid) {
+                        const dateAt = new Date()
+                        const month = dateAt.getMonth()
+                        const year = dateAt.getFullYear()
                         let userData = {
                             userId: data.user.uid,
                             firstName,
@@ -230,7 +234,11 @@ function SignUp(props) {
                             email,
                             birthday,
                             password, // todo need set null
+                            month,
+                            year,
                             isLogged: true,
+                            pastTests: false,
+                            createdAt: formatDate(dateAt, 'MM/DD/YYYY'),
                             role: 2
                         }
 
@@ -241,7 +249,7 @@ function SignUp(props) {
                             }else {
                                 setTimeout(()=>{
                                     setRedirectTo(true)
-                                },3500)
+                                },2500)
                             }
                         })
                         // adding user data in the state

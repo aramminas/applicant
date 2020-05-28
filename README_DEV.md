@@ -10,11 +10,11 @@
 
 `npm install react-redux`
 
-`npm install --save firebase`
-
 `npm install @material-ui/core`
 
 `npm install @material-ui/icons`
+
+`npm i material-table`
 
 `npm install react-bootstrap bootstrap`
 
@@ -24,7 +24,7 @@
 
 `npm install react-leaf-carousel`
 
-`npm uninstall react-tooltip`
+`npm install react-tooltip`
 
 `npm install material-ui-phone-number --save`
 
@@ -40,6 +40,14 @@
 
 `npm install crypto-js`
 
+`npm install intl-dateformat`
+
+
+## Firebase
+`npm install --save firebase`
+
+`npm install http2`
+
 ##E-mail service
 `https://formspree.io/`
 
@@ -47,3 +55,8 @@
 `npm install --save core-js@^3` ---
 
 `npm i material-dashboard-react`
+
+## Chart
+`npm i --save @devexpress/dx-react-core @devexpress/dx-react-grid @devexpress/dx-react-grid-material-ui`
+
+`npm uninstall @devexpress/dx-react-chart @devexpress/dx-react-chart-material-ui`

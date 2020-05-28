@@ -1,9 +1,11 @@
-import {SET_ADMIN_DATA} from '../constants'
+import {SET_ADMIN_DATA,SET_NAV_ID} from '../constants'
 
 const initState = {
     adminId: '',
     isLogged: false,
-    role: 1
+    status: false,
+    role: 1,
+    navId: 1
 }
 
 const setAdminReducer = (state= initState,{type,payload}) => {
@@ -11,6 +13,11 @@ const setAdminReducer = (state= initState,{type,payload}) => {
         case SET_ADMIN_DATA:
             return {
                 ...state,...payload
+            }
+        case SET_NAV_ID:
+            return {
+                ...state,
+                navId: payload
             }
         default:
             return state

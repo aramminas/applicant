@@ -38,3 +38,7 @@ code {
 .mb5rem {
     margin-bottom: 0.5rem;
 }
+
+body .react-toast-notifications__container{
+    z-index: 1350;
+}

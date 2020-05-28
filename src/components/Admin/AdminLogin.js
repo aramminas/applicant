@@ -92,10 +92,11 @@ function AdminLogin(props) {
                     try {
                         let adminData = {
                             adminId: data.user.uid,
-                            isLogged: true
+                            isLogged: true,
+                            status: true
                         }
-
-                        Firebase.database.ref(`/admin/${adminData.adminId}`).once('value').then(function(snapshot) {
+                        const FbDbAd = Firebase.database.ref(`/admin/${adminData.adminId}`)
+                        FbDbAd.once('value').then(function(snapshot) {
                             let dataAdmin = snapshot.val() || {}
                             // for verify the encrypted password
                             const hashDigest = sha256(password)
@@ -104,6 +105,10 @@ function AdminLogin(props) {
                             if(dataAdmin && dataAdmin.name && dataAdmin.key === hmacDigest){
                                 // adding admin data in the store
                                 props.adminData(adminData)
+                                // updating admin status
+                                FbDbAd.update({status: true})
+                                localStorage.setItem('admin-id', adminData.adminId)
+                                localStorage.setItem('admin-status', 1)
                                 setTimeout(()=>{
                                     setRedirectTo(true)
                                 },500)
@@ -202,6 +207,7 @@ function AdminLogin(props) {
                         autoFocus
                         onChange={(e) => checkVal(e, "email")}
                         helperText={noValid.email ? `incorrect email` : null}
+                        defaultValue={"admin@gmail.com"}
                     />
                     <div className={"password-input"}>
                         <TextField
@@ -217,6 +223,7 @@ function AdminLogin(props) {
                             autoComplete="current-password"
                             onChange={(e) => checkVal(e, "password")}
                             helperText={noValid.password ? `incorrect password` : null}
+                            defaultValue={"Admin1"}
                         />
                     </div>
 

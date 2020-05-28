@@ -1,9 +1,13 @@
-import {UPDATE_PAGE_SECTION} from '../constants'
+import {UPDATE_PAGE_SECTION,SET_NAV_ID} from '../constants'
 
-const update_page_section = (data) => {
+export const update_page_section = (data) => {
     return {
         type: UPDATE_PAGE_SECTION, payload : data
     }
 }
 
-export default update_page_section
+export const set_nav_id = (data) => {
+    return {
+        type: SET_NAV_ID, payload : data
+    }
+}

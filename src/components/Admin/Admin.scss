@@ -1,13 +1,247 @@
-.log-in-container{
+.log-in-container {
   min-height: 80vh;
 }
-.password-input{
+
+.password-input {
   position: relative;
-  & .helper-part{
+
+  & .helper-part {
     color: red;
     position: absolute;
     right: 0;
     top: 0;
     margin: 30px 5px;
   }
+}
+
+.admin-main-link {
+  color: white;
+  font-size: 15px;
+
+  &:hover {
+    text-decoration: none;
+    color: white;
+  }
+}
+
+.admin-nav-link {
+  color: inherit;
+
+  &:hover {
+    text-decoration: none;
+    color: inherit;
+  }
+}
+
+.admin-logo {
+  width: 55px;
+  margin: 0 8px 8px 0;
+}
+
+.admin-new-ap {
+  margin-right: 12px;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  & svg {
+    font-size: 2rem;
+  }
+}
+
+// Admin Dashboard
+.admin-element {
+  & > div:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    transition: box-shadow .3s ease-in-out;
+  }
+}
+
+.dashboard-all-data, .test-type {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  border: 1px solid #e7e7e7;
+
+  & > div:nth-child(1) {
+    position: relative;
+    width: auto;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    background-color: #009be5;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    text-align: left;
+    padding-left: 15px;
+
+    & > svg {
+      margin-bottom: 4px;
+    }
+
+    & span.admin-main-link-item {
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      display: inline-block;
+      position: relative;
+
+      &:after {
+        bottom: 10px;
+        content: "";
+        display: block;
+        height: 2px;
+        left: 50%;
+        position: absolute;
+        background: #fff;
+        transition: width 0.4s ease 0s, left 0.4s ease 0s;
+        width: 0;
+      }
+
+      &:hover:after {
+        width: 100%;
+        left: 0;
+        cursor: pointer;
+      }
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+
+  & > div:nth-child(2) {
+    padding: 10px;
+    font-size: 16px;
+  }
+}
+
+// Admin Applicants
+
+.admin-applicants-title {
+  & span {
+    color: #232f3e;
+    font-size: 21px;
+    font-weight: 600;
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
+.applicant-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-align: center;
+
+  & > span {
+    font-size: 20px;
+    margin-top: 15px;
+    display: inline-block;
+
+    & span {
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+.select-all {
+  font-size: 12px;
+
+  & svg {
+    font-size: 16px;
+  }
+}
+
+// Admin Create Test
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}
+
+.createTest {
+  position: relative;
+  height: 100%;
+
+  & > div {
+  }
+}
+
+.programing-lang-image,
+.programing-level-image,
+.programing-level-duration {
+  position: relative;
+  height: 100%;
+
+  & img {
+    height: 50px;
+    @extend .vertical-center
+  }
+}
+
+.programing-level-image {
+  & img {
+    height: 65px;
+  }
+}
+
+.selected-file {
+  display: inline;
+  & img {
+    width: 50px;
+  }
+}
+
+.add-new-item {
+  display: inline;
+  float: right;
+  margin-right: 10px;
+
+  &:hover {
+    cursor: pointer;
+
+    & > svg {
+      color: #c4c4c4;
+    }
+  }
+
+  & div {
+    line-height: initial;
+  }
+}
+
+.technology-selected-image, .quiz-selected-image {
+  display: inline;
+
+  & div {
+    display: inline-block;
+  }
+}
+
+.admin-loader {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 1303;
+  transform: translate(-50%, -50%);
+}
+
+.del-tech {
+  position: absolute;
+  right: 15px;
+}
+
+.del-tech-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.no-found-data-text {
+  font-size: 17px;
+  color: #5e5e5e
 }

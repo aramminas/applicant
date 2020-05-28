@@ -56,6 +56,12 @@ function Header(props) {
                     let userData = snapshot.val() || {}
                     if(userData.firstName){
                         props.addUpdateUser(userData)
+                    }else{
+                        ErrorMessage({code:404,message:lang.error_user_deleted},addToast)
+                        setTimeout(function () {
+                            props.addUpdateUser(resetUser)
+                            setRedirectTo(true)
+                        },500)
                     }
                 })
             }catch (error) {

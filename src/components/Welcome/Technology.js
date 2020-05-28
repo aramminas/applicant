@@ -19,7 +19,7 @@ const Technology = () => {
                 <Row className="technology-content">
                     <Col lg={4}  xs={12} className="technology-text">
                         <h1 className="large-text text-left">
-                            {lang.test_desc_title_1} &amp; {lang.test_desc_title_2}
+                            {lang.test_desc_title_1} &nbsp; {lang.test_desc_title_2}
                             <br/>
                         </h1>
                         <p className="technology-description">{lang.test_desc_1}</p>

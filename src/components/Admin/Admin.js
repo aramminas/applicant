@@ -1,6 +1,6 @@
 import React from 'react'
 import {connect,useSelector} from 'react-redux'
-import update_page_section from  '../../store/actions/adminAction'
+import {update_page_section} from  '../../store/actions/adminAction'
 import Firebase from '../../Firebase'
 
 import './Admin.scss'
