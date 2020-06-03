@@ -180,6 +180,7 @@
 
   & img {
     height: 50px;
+    max-width: 100%;
     @extend .vertical-center
   }
 }
@@ -225,10 +226,16 @@
 
 .admin-loader {
   position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   left: 50%;
   top: 50%;
   z-index: 1303;
   transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,.1);
 }
 
 .del-tech {

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import {makeStyles, withStyles} from '@material-ui/core/styles'
 import {useToasts} from 'react-toast-notifications'
 import Grid from '@material-ui/core/Grid'
@@ -78,6 +78,7 @@ const GreenCheckbox = withStyles({
 })((props) => <Checkbox color="default" {...props} />)
 
 const initQuiz = {
+    id: null,
     question: "",
     codeData: "",
     imageUrl: "",
@@ -112,11 +113,15 @@ export default function Quiz(props) {
     const classes = useStyles()
     const { addToast } = useToasts()
     const [quiz, setQuiz] = useState({...initQuiz})
-    const [validation, setValidation] = useState(initValidation) // TODO: need validate all inputs
+    const [validation, setValidation] = useState(initValidation)
     const [optionsCount, setOptionsCount] = useState([...initOption])
     const [addReduce, setAddReduce] = useState('')
 
-    const {lang, quizzesCount, addQuizData} = props
+    useEffect(function () {
+        setQuiz({ ...quiz, options: []})
+    },[])
+
+    const {lang, quizzesCount, addQuizData, complete} = props
 
     const handleChangeAnswer = (event) => {
         if(quiz.multiAnswer === true){
@@ -144,7 +149,7 @@ export default function Quiz(props) {
         }
     }
 
-    const handleChangeMultiAnswer = (event) => {
+    const handleChangeQuizSettings = (event) => {
         let check = event.target.checked
         switch (event.target.name) {
             case "multi-answer" :
@@ -185,7 +190,7 @@ export default function Quiz(props) {
         setAddReduce('admin-quiz-options-add')
         setOptionsCount(optionsCount => {
             optionsCount.push(optionsCount.length)
-            return optionsCount
+            return [...optionsCount]
         })
         setValidation({...validation,length: optionsCount.length})
     }
@@ -199,7 +204,7 @@ export default function Quiz(props) {
             setAddReduce('')
             setOptionsCount(optionsCount => {
                 optionsCount.pop()
-                return optionsCount
+                return [...optionsCount]
             })
             setValidation({...validation,length: optionsCount.length})
         },1000)
@@ -250,14 +255,14 @@ export default function Quiz(props) {
         if(!quiz.question.trim()){
             emptyQuestion = true
         }
-        // Checking for a options & right answers
+        // Checking for an options & right answers
         errorOptions = optionsCount.map(val => {
             // Checking for right answers
             checkAnswer = quiz.rightAnswers[val]
             if(!rightAnswer && checkAnswer !== undefined){
                 rightAnswer = true
             }
-            // Checking for a options
+            // Checking for an options
             currentOption = quiz.options[val]?.trim() === undefined || quiz.options[val]?.trim() === ""
             if(!checkOption && currentOption === true){
                 checkOption = true
@@ -277,6 +282,7 @@ export default function Quiz(props) {
         }
         if(!ready){
             let createNewQuiz = {
+                id: Date.now(),
                 question: quiz.question,
                 options:  quiz.options,
                 codeData: quiz.codeData,
@@ -397,7 +403,7 @@ export default function Quiz(props) {
                             <div className={"quiz-selected-image"}>
                                 <Animated animationIn="zoomInLeft" animationOut="fadeOutDown" animationInDuration={1500} animationOutDuration={1500} isVisible={true}>
                                     <figure className={"selected-file"}>
-                                        <img src={quiz.imageData.selectedFile} alt="tech"/>
+                                        <img src={quiz.imageData.selectedFile} alt="quiz"/>
                                     </figure>
                                 </Animated>
                             </div>
@@ -436,7 +442,7 @@ export default function Quiz(props) {
                                     aria-describedby={`quiz-question-helper-text`}
                                 />
                                 {validation.question &&
-                                <FormHelperText id={`quiz-question-helper-text`}>{lang.required_field}</FormHelperText>
+                                    <FormHelperText id={`quiz-question-helper-text`}>{lang.required_field}</FormHelperText>
                                 }
                             </div>
                             {/* Quiz Code Part */}
@@ -455,12 +461,13 @@ export default function Quiz(props) {
                                     { QuizImage() }
                                 </Animated>
                                 : null }
-                            <div className={"text-left admin-multi-answer"}>
+                            {/* Quiz Switch Settings Part */}
+                            <div className={"text-left admin-quiz-settings"}>
                                 <FormControlLabel
                                     control={
                                         <Switch
                                             checked={quiz.multiAnswer}
-                                            onChange={handleChangeMultiAnswer}
+                                            onChange={handleChangeQuizSettings}
                                             name="multi-answer"
                                             color="primary"
                                         />
@@ -471,7 +478,7 @@ export default function Quiz(props) {
                                     control={
                                         <Switch
                                             checked={quiz.code.tag}
-                                            onChange={handleChangeMultiAnswer}
+                                            onChange={handleChangeQuizSettings}
                                             name="question-code"
                                             color="primary"
                                         />
@@ -482,7 +489,7 @@ export default function Quiz(props) {
                                     control={
                                         <Switch
                                             checked={quiz.image.tag}
-                                            onChange={handleChangeMultiAnswer}
+                                            onChange={handleChangeQuizSettings}
                                             name="question-image"
                                             color="primary"
                                         />
@@ -490,6 +497,7 @@ export default function Quiz(props) {
                                     label={lang.add_image}
                                 />
                                 <br/>
+                                {/* Quiz Add Reduce Options Part */}
                                 { optionsCount.length < 10 &&
                                     <span className={`add-remove-options`} onClick={addOption}>
                                         <AddCircleOutline/>&nbsp;{lang.add_more_options}
@@ -505,9 +513,12 @@ export default function Quiz(props) {
                             {options}
                             <hr className={classes.hr}/>
                             <div className={"admin-quiz-buttons"}>
-                                <Button variant="contained" onClick={resetQuizData}><RotateLeft fontSize={"small"}/>&nbsp;{lang.reset}</Button>
-                                <Button variant="contained" color="primary" onClick={checkQuiz}><Add fontSize={"small"}/>&nbsp;{lang.add}</Button>
+                                <Button variant="contained" onClick={resetQuizData} disabled={complete}>
+                                    <RotateLeft fontSize={"small"}/>&nbsp;{lang.reset}</Button>
+                                <Button variant="contained" color="primary" onClick={checkQuiz} disabled={complete}>
+                                    <Add fontSize={"small"}/>&nbsp;{lang.add}</Button>
                             </div>
+                            {complete ? <span className={"complete-wrapper"}>{lang.complete_wrapper}</span> : null}
                         </form>
                     </Grid>
                 </Grid>

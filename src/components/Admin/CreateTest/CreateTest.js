@@ -17,6 +17,7 @@ import TestCreator from "./TestCreator"
 import Modal from './Modal'
 import DeleteModal from './DeleteModal'
 import Loader from 'react-loader-spinner'
+import {useToasts} from "react-toast-notifications"
 
 import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
@@ -51,19 +52,29 @@ const initTestData = {
         testDuration: '',
     },
     quizzes: [],
-    logicalTests: {},
+    logicalTests: [],
     test: {}
+}
+
+const initValidation = {
+    name: false,
+    level: false,
+    duration: false,
+    ready: false
 }
 
 const CreateTest = () => {
     const classes = useStyles()
+    const { addToast } = useToasts()
     const {language} = useSelector(state => state.language)
-    const [testData, setTestData] = useState(initTestData)
+    const [testData, setTestData] = useState({...initTestData})
     const [open, setOpen] = useState(false)
     const [openDel, setOpenDel] = useState(false)
     const [addLoader,setAddLoader] = useState(false)
+    const [added, setAdded] = useState(false)
     const [techData, setTecData] = useState({})
     const [anchorEl, setAnchorEl] = useState(null)
+    const [validation, setValidation] = useState(initValidation)
 
     useEffect(function () {
         getTechData()
@@ -71,12 +82,22 @@ const CreateTest = () => {
 
     let lang = language === 'EN' ? lang_en : lang_am
 
-    const getTechData = () => {
+    const getTechData = (id) => {
         const db = Firebase.database
         db.ref(`/technology`).once('value').then(function(snapshot) {
             let technologyData = snapshot.val() || {}
             if(Object.keys(technologyData).length !== 0 && technologyData.constructor === Object){
                 setTecData(technologyData)
+                if(id === testData.parameters.technologyName){
+                    setValidation({...validation, name: false})
+                    setTestData({
+                        ...testData,
+                        parameters: {
+                            ...testData.parameters,
+                            technologyName: ''
+                        }
+                    })
+                }
             }
         })
     }
@@ -89,34 +110,49 @@ const CreateTest = () => {
         setAnchorEl(null)
     }
 
-    const handleChange = (event) => {
+    const handleChangeProgram = (event) => {
+        let value = event.target.value
         setTestData({
             ...testData,
             parameters: {
                 ...testData.parameters,
-                technologyName: event.target.value
+                technologyName: value
             }
         })
+
+        if(value !== ""){
+            setValidation({...validation, name: false})
+        }
     }
 
     const handleChangeLevel = (event) => {
+        let value = event.target.value
         setTestData({
             ...testData,
             parameters: {
                 ...testData.parameters,
-                testForLevel: event.target.value
+                testForLevel: value
             }
         })
+
+        if(value !== ""){
+            setValidation({...validation, level: false})
+        }
     }
 
     const handleChangeTime = (event) => {
+        let value = event.target.value
         setTestData({
             ...testData,
             parameters: {
                 ...testData.parameters,
-                testDuration: event.target.value
+                testDuration: value
             }
         })
+
+        if(value !== ""){
+            setValidation({...validation, duration: false})
+        }
     }
 
     const handleClickOpen = () => {
@@ -143,6 +179,56 @@ const CreateTest = () => {
             testData.quizzes.push(quiz)
             return {...testData, quizzes: testData.quizzes}
         })
+    }
+
+    const addLogicalData = (logical) => {
+        setTestData((testData) => {
+            testData.logicalTests.push(logical)
+            return {...testData, logicalTests: testData.logicalTests}
+        })
+    }
+
+    const deleteTest = (type, id) => {
+        let quizzes = testData.quizzes
+        let logicalTests = testData.logicalTests
+        if(type === 'quiz'){
+            quizzes = testData.quizzes.filter(test => test.id !== id)
+        }else if(type === 'logical'){
+            logicalTests = testData.logicalTests.filter(test => test.id !== id)
+        }
+
+        setTestData((testData) => {
+            return {...testData, quizzes, logicalTests}
+        })
+    }
+
+    const resetDefaultData = () => {
+        setTestData({...initTestData,quizzes: [],logicalTests: []})
+    }
+
+    const createNewTest = () => {
+        let name = testData.parameters.testForLevel === ""
+        let level = testData.parameters.technologyName === ""
+        let duration = testData.parameters.testDuration === ""
+
+        if(name || level || duration){
+            setValidation({name, level, duration})
+            addToast(lang.error_empty_fields, {
+                appearance: 'error',
+                autoDismiss: true
+            })
+            return false
+        }else{
+            setValidation({...validation, ready: true})
+        }
+        // TODO: need to add functionality for  add text in firebase
+        changeLoader(true)
+        setAdded(true)
+        setTimeout(function () {
+            setAdded(false)
+            changeLoader(false)
+            return true
+        },10000)
     }
 
     return (
@@ -178,8 +264,9 @@ const CreateTest = () => {
                                         <Grid item xs={4}>
                                             <div className={"programing-lang-image"}>
                                                 <img
-                                                    src={testData.parameters.technologyName ?
-                                                        techData[testData.parameters.technologyName].icon :
+                                                    src={testData.parameters.technologyName &&
+                                                            techData[testData.parameters.technologyName]?
+                                                                techData[testData.parameters.technologyName].icon :
                                                         "/images/pages/technology_default.png"}
                                                     alt="programing lang"/>
                                             </div>
@@ -191,8 +278,9 @@ const CreateTest = () => {
                                                     labelId="labelId"
                                                     id="select-id-program-lang"
                                                     value={testData.parameters.technologyName}
-                                                    onChange={handleChange}
+                                                    onChange={handleChangeProgram}
                                                     label={lang.select_language}
+                                                    error={validation.name}
                                                 >
                                                     <MenuItem value="">
                                                         <em>-- --</em>
@@ -233,6 +321,7 @@ const CreateTest = () => {
                                                     value={testData.parameters.testForLevel}
                                                     onChange={handleChangeLevel}
                                                     label={lang.select_level}
+                                                    error={validation.level}
                                                 >
                                                     <MenuItem value="">
                                                         <em>-- --</em>
@@ -273,6 +362,7 @@ const CreateTest = () => {
                                                     value={testData.parameters.testDuration}
                                                     onChange={handleChangeTime}
                                                     label={lang.select_duration}
+                                                    error={validation.duration}
                                                 >
                                                     <MenuItem value="">
                                                         <em>-- --</em>
@@ -292,7 +382,19 @@ const CreateTest = () => {
                     </Grid>
                     <Grid item xs={12} sm={11} className={"admin-element"}>
                         <Paper className={classes.paper}>
-                            <TestCreator lang={lang} quizzesCount={testData.quizzes.length} addQuizData={addQuizData}/>
+                            <TestCreator
+                                lang={lang}
+                                added={added}
+                                quizzesCount={testData.quizzes.length}
+                                logicalTestsCount={testData.logicalTests.length}
+                                addQuizData={addQuizData}
+                                addLogicalData={addLogicalData}
+                                testData={testData}
+                                deleteTest={deleteTest}
+                                validation={validation}
+                                resetDefaultData={resetDefaultData}
+                                createNewTest={createNewTest}
+                            />
                         </Paper>
                     </Grid>
                 </Grid>

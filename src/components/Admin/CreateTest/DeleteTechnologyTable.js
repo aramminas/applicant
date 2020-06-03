@@ -60,7 +60,7 @@ export default function DeleteTechnologyTable(props) {
             // delete data from the technology table (database)
             const db = Firebase.database
             db.ref(`technology/${id}`).remove().then(()=>{
-                getTechData()
+                getTechData(id)
             }).catch(error=>console.log(error))
         }
     }

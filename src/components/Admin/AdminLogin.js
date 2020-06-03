@@ -207,7 +207,6 @@ function AdminLogin(props) {
                         autoFocus
                         onChange={(e) => checkVal(e, "email")}
                         helperText={noValid.email ? `incorrect email` : null}
-                        defaultValue={"admin@gmail.com"}
                     />
                     <div className={"password-input"}>
                         <TextField
@@ -223,7 +222,6 @@ function AdminLogin(props) {
                             autoComplete="current-password"
                             onChange={(e) => checkVal(e, "password")}
                             helperText={noValid.password ? `incorrect password` : null}
-                            defaultValue={"Admin1"}
                         />
                     </div>
 
