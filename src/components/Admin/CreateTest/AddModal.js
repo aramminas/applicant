@@ -111,7 +111,7 @@ const initFile = {
     emptyName: false
 }
 
-export default function Modal(props) {
+export default function AddModal(props) {
     const { addToast } = useToasts()
     const classes = useStyles()
     const [fileData,setFileData] = useState(initFile)

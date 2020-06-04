@@ -14,10 +14,11 @@ import {History,SupervisedUserCircleOutlined,LaptopMac,
     AddCircleOutlineRounded,RemoveCircleOutline} from '@material-ui/icons'
 import Main from "../Main"
 import TestCreator from "./TestCreator"
-import Modal from './Modal'
+import AddModal from './AddModal'
 import DeleteModal from './DeleteModal'
 import Loader from 'react-loader-spinner'
 import {useToasts} from "react-toast-notifications"
+import makeId from '../../../helpers/makeId'
 
 import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
@@ -45,6 +46,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+function ErrorMessage(error,addToast) {
+    let errorCode = error.code
+    let errorMessage = error.message
+    if (errorCode && errorMessage) {
+        addToast(errorMessage, {
+            appearance: 'error',
+            autoDismiss: true,
+        })
+    }
+}
+
 const initTestData = {
     parameters: {
         technologyName: '',
@@ -53,7 +65,6 @@ const initTestData = {
     },
     quizzes: [],
     logicalTests: [],
-    test: {}
 }
 
 const initValidation = {
@@ -207,8 +218,8 @@ const CreateTest = () => {
     }
 
     const createNewTest = () => {
-        let name = testData.parameters.testForLevel === ""
-        let level = testData.parameters.technologyName === ""
+        let name = testData.parameters.technologyName === ""
+        let level = testData.parameters.testForLevel === ""
         let duration = testData.parameters.testDuration === ""
 
         if(name || level || duration){
@@ -221,14 +232,158 @@ const CreateTest = () => {
         }else{
             setValidation({...validation, ready: true})
         }
-        // TODO: need to add functionality for  add text in firebase
+
         changeLoader(true)
         setAdded(true)
-        setTimeout(function () {
+        startProcessAddingTest()
+    }
+
+    const startProcessAddingTest = () => {
+        const finalData = {
+            parameters: {},
+            tests: [],
+        }
+        const quizCount = testData.quizzes.length
+        const LogicalCount = testData.logicalTests.length
+        const numberOfTests = quizCount + LogicalCount
+        // step 1 - add parameters
+        finalData.parameters = {...testData.parameters}
+        // step 2 - add quiz type test
+        if(quizCount > 0){
+            testData.quizzes.map( value => {
+                let imageUrl = "";
+                let finalQuizData = {
+                    id: value.id,
+                    question: value.question,
+                    codeData: value.codeData,
+                    imageUrl,
+                    options: value.options,
+                    rightAnswers: value.rightAnswers,
+                    multiAnswer: value.multiAnswer,
+                    type: "quiz",
+                }
+                // add the image in the storage firebase and get url
+                if(value.imageData.file){
+                    value.imageData.name = `${Date.now()}_${value.imageData.name}`
+                    finalQuizData.imageName = value.imageData.name
+                    loadImage(value.imageData)
+                        .then(url => {
+                            if(url !== ""){
+                                finalQuizData.imageUrl = url
+                                finalData.tests.push(finalQuizData)
+                            }
+                        })
+                        .catch(error => {
+                            if(error !== "" && typeof error === "string"){
+                                addToast(error, {
+                                    appearance: 'error',
+                                    autoDismiss: true,
+                                })
+                            }
+                            console.error(error)
+                        })
+                }else{
+                    finalData.tests.push(finalQuizData)
+                }
+            })
+        }
+        // step 3 - add logical type test
+        if(LogicalCount > 0){
+            testData.logicalTests.map( value => {
+                let imageUrl = ""
+                let finalLogicalData = {
+                    id: value.id,
+                    question: value.question,
+                    imageUrl,
+                    imageName: "",
+                    options: value.options,
+                    rightAnswers: value.rightAnswers,
+                    optionsOrText: value.optionsOrText,
+                    type: "logical",
+                }
+                // add the image in the storage firebase and get url
+                if(value.imageData.file){
+                    value.imageData.name = `${Date.now()}_${value.imageData.name}`
+                    finalLogicalData.imageName = value.imageData.name
+                    loadImage(value.imageData)
+                        .then(url => {
+                            if(url !== ""){
+                                finalLogicalData.imageUrl = url
+                                finalData.tests.push(finalLogicalData)
+                            }
+                        })
+                        .catch(error => {
+                            if(error !== "" && typeof error === "string"){
+                                addToast(error, {
+                                    appearance: 'error',
+                                    autoDismiss: true,
+                                })
+                            }else{
+                                console.error(error)
+                            }
+                        })
+                }else{
+                    finalData.tests.push(finalLogicalData)
+                }
+            })
+        }
+
+        // checking how many tests were added to the final array
+        let checkingTestsCount = () => {
+            let finalArray = finalData.tests.length
+            if(finalArray === numberOfTests){
+                clearInterval(interval)
+                addTest(finalData)
+            }
+        }
+
+        let interval = setInterval(checkingTestsCount, 1000)
+    }
+
+    const loadImage = fileData => {
+        return new Promise((resolve, reject) => {
+            let url = ""
+
+            if(fileData.file){
+                fileData.name = `${Date.now()}_${fileData.name}`
+                let storageRef = Firebase.storage.ref(`storage/images/tests`)
+                let uploadTask = storageRef.child(`/${fileData.name}`).put(fileData.file)
+                uploadTask.on('state_changed', function(snapshot){
+                    // 😷 handling promise Id | let id = snapshot?.metadata?.generation || null
+                }, function(error) {
+                    ErrorMessage(error,addToast)
+                }, function() {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        if(downloadURL){
+                            resolve(downloadURL)
+                        }else{
+                            reject(`Failed to load image's URL: ${url}`)
+                        }
+                    })
+                })
+            }
+        })
+    }
+
+
+    const addTest = (data) => {
+        if(!data.id){
+            data.id = makeId(28) // generating a random ID with a length of 28
+        }
+        // Add a new test in collection "tests" with ID
+        Firebase.database.ref(`tests/${data.id}`).set(data, function (error) {
+            if(error){
+                ErrorMessage(error,addToast)
+            }else {
+                resetDefaultData()
+                addToast(lang.success_added, {
+                    appearance: 'success',
+                    autoDismiss: true,
+                })
+            }
             setAdded(false)
             changeLoader(false)
-            return true
-        },10000)
+        })
     }
 
     return (
@@ -400,7 +555,7 @@ const CreateTest = () => {
                 </Grid>
             </div>
             {/* Modal window for adding technology */}
-            <Modal handleClose={handleClose} open={open} lang={lang} changeLoader={changeLoader}
+            <AddModal handleClose={handleClose} open={open} lang={lang} changeLoader={changeLoader}
                    techData={techData} getTechData={getTechData}
             />
             {/* Modal window for deleting technology */}

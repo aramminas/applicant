@@ -1,4 +1,5 @@
 const data = {
+    // Common
     layout: {
         admin: 'admin',
         default: 'default',
@@ -42,8 +43,9 @@ const data = {
     email_reg: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
     pass_reg: /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,32}$/,
     name_reg: /^[a-zA-Z ]+$/,
-    phone_reg:/^.{12,30}$/, // need change this reg exp
-    birthday_reg:/^(19[5-9]\d|200[0-9])$/, // todo need change every year (/^(19[5-9]\d|20[0-4]\d|2050)$/),
+    phone_reg: /^.{12,30}$/, // need change this reg exp
+    birthday_reg: /^(19[5-9]\d|200[0-9])$/, // todo need change every year (/^(19[5-9]\d|20[0-4]\d|2050)$/),
+    characters: 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',
     //  Admin
     admin: {
         applicantLevels: [
