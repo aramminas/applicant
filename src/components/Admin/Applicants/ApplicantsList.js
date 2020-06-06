@@ -5,6 +5,7 @@ import { lighten, makeStyles } from '@material-ui/core/styles'
 import Loader from 'react-loader-spinner'
 import ReactTooltip from "react-tooltip"
 import Firebase from "../../../Firebase"
+import getUpdateChartData from '../../../helpers/getUpdateChartData'
 import {
     Table,
     TableBody,
@@ -270,13 +271,15 @@ export default function ApplicantList(props) {
     }
 
     const deleteApplicants = () =>{
-        const commentsRef = Firebase.database.ref(`/users`)
+        const connectsRef = Firebase.database.ref(`/users`)
         if(selected.length > 0){
             selected.map(del => (
-                commentsRef.child(del).remove()
+                connectsRef.child(del).remove()
                     .then(function() {
-                            setSelected([])
-                            getUserData()
+                        // update chart data
+                        getUpdateChartData("applicant","remove")
+                        setSelected([])
+                        getUserData()
                     })
                     .catch(function(error) {
                         console.log("Remove failed: " + error.message)

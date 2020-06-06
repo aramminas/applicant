@@ -25,6 +25,7 @@ import {NavLink} from "react-router-dom"
 import Layout from "../../hoc/layout/Layout"
 import Firebase from '../../Firebase'
 import { useToasts } from 'react-toast-notifications'
+import getUpdateChartData from '../../helpers/getUpdateChartData'
 
 //languages
 import lang_en from '../../lang/en/en.json'
@@ -258,6 +259,8 @@ function SignUp(props) {
                         })
                         // adding user data in the store
                         props.addUpdateUser(userData)
+                        // update chart data
+                        getUpdateChartData("applicant", "add")
 
                         addToast(lang_m.success_sign_up, {
                             appearance: 'success',

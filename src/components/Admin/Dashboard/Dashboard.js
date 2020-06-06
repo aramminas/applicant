@@ -1,12 +1,14 @@
-import React from "react"
+import React,{useState, useEffect} from "react"
 import Main from "../Main"
 import { makeStyles } from '@material-ui/core/styles'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
-import {PeopleAltOutlined, DoneAllSharp,AssignmentOutlined,ChromeReaderModeOutlined} from '@material-ui/icons'
+import {PeopleAltOutlined, DoneAllSharp, AssignmentOutlined, ChromeReaderModeOutlined, SyncProblem} from '@material-ui/icons'
 import Chart from './Chart'
 import {useSelector} from "react-redux"
 import {NavLink} from 'react-router-dom'
+import {useToasts} from 'react-toast-notifications'
+import getUpdateChartData from '../../../helpers/getUpdateChartData'
 import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
 import '../Admin.scss'
@@ -21,12 +23,64 @@ const useStyles = makeStyles((theme) => ({
         textAlign: 'center',
         color: theme.palette.text.secondary,
     },
-}));
+}))
 
+function ErrorMessage(error,addToast) {
+    let errorCode = error.code
+    let errorMessage = error.message
+    if (errorCode && errorMessage) {
+        addToast(errorMessage, {
+            appearance: 'error',
+            autoDismiss: true,
+        })
+    }
+}
+
+const initActivity = {
+    applicants: 0,
+    tests: 0,
+    passedTests: 0,
+}
 
 const Dashboard = () => {
     const classes = useStyles()
+    const {addToast} = useToasts()
     const {language} = useSelector(state => state.language)
+    const [siteActivity, setSiteActivity] = useState(initActivity)
+    const [chart, setChart] = useState([])
+
+    useEffect(function () {
+        getUpdateChartData().then(data => {
+            let activity = data || {}
+            if(Object.keys(activity).length !== 0){
+                setSiteActivity({
+                    applicants: activity.applicants,
+                    tests: activity.tests,
+                    passedTests: activity.passedTests,
+                })
+                const applicantsTemp = activity.applicantData.map(temp => {
+                    return {...temp, x: new Date(temp.x)}
+                })
+                const testsTemp = activity.testData.map(temp => {
+                    return {...temp, x: new Date(temp.x)}
+                })
+                const passedTestsTemp = activity.passedTestsData.map(temp => {
+                    return {...temp, x: new Date(temp.x)}
+                })
+
+                setChart([applicantsTemp, testsTemp, passedTestsTemp])
+            }
+        }).catch(error => {
+            setSiteActivity({
+                applicants: NaN,
+                tests: NaN,
+                passedTests: NaN,
+            })
+            setChart([false, false])
+            ErrorMessage(error,addToast)
+        })
+    },[])
+
     let lang = language === 'EN' ? lang_en : lang_am
 
     const main_links_data = [
@@ -34,7 +88,7 @@ const Dashboard = () => {
             title: 'all_applicants',
             secondary_title: 'applicants_lc',
             url: 'applicants',
-            count: 1,
+            count: siteActivity.applicants,
             icon: <PeopleAltOutlined htmlColor={"#fff"}/>,
             secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
         },
@@ -42,7 +96,7 @@ const Dashboard = () => {
             title: 'all_tests',
             secondary_title: 'tests_lc',
             url: 'tests',
-            count: 2,
+            count: siteActivity.tests,
             icon: <AssignmentOutlined htmlColor={"#fff"}/>,
             secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
         },
@@ -50,13 +104,21 @@ const Dashboard = () => {
             title: 'all_passed_tests',
             secondary_title: 'passed_tests_lc',
             url: 'test-result',
-            count: 3,
+            count: siteActivity.passedTests,
             icon: <ChromeReaderModeOutlined htmlColor={"#fff"}/>,
             secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
         }
     ]
 
     const main_links = main_links_data.map((data,index)=>{
+        let count = data.count !== 0 ?
+                        isNaN(data.count) ?
+                            <SyncProblem htmlColor={"yellow"}/> :
+                            data.count :
+                    <figure className={"admin-activity-loader"}>
+                        <img src="/images/gifs/load.gif" alt="loader"/>
+                    </figure>
+
         return (
                 <Grid item xs={12} sm={4} key={index} className={"admin-element"}>
                     <Paper className={classes.paper}>
@@ -68,11 +130,10 @@ const Dashboard = () => {
                                 </NavLink>
                             </div>
                             <div>
-                                {data.secondary_icon}&ensp; {`${data.count} ${lang[data.secondary_title]}`}
+                                {data.secondary_icon}&ensp;{count} {` ${lang[data.secondary_title]}`}
                             </div>
                         </div>
                     </Paper>
-
                 </Grid>
             )
     })
@@ -83,8 +144,18 @@ const Dashboard = () => {
                 <Grid container spacing={3}>
                     {main_links}
                     <Grid item xs={12} className={"admin-element"}>
-                        <Paper className={classes.paper}>
-                            <Chart lang={lang}/>
+                        <Paper className={`${classes.paper} admin-chart-loader`}>
+                            { chart.length === 0 ?
+                                <figure className={"admin-activity-loader"}>
+                                    <img src="/images/gifs/load.gif" alt="loader"/>
+                                    <span>{lang.data_loading}. . .</span>
+                                </figure> :
+                                !chart[0] && !chart[1] ?
+                                    <div className={"admin-activity-loader"}>
+                                        <span className={"admin-empty-database-data"}>{lang.empty_database_data}</span>
+                                    </div> :
+                                <Chart lang={lang} chart={chart}/>
+                            }
                         </Paper>
                     </Grid>
                 </Grid>

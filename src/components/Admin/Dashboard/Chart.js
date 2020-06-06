@@ -1,8 +1,6 @@
 import React, {Component} from 'react'
 import CanvasJSReact from '../../../assets/canvasjs.react'
-import constants from '../../../constants'
 const CanvasJSChart = CanvasJSReact.CanvasJSChart
-const admin = constants.admin
 
 class Chart extends Component {
     constructor(props) {
@@ -16,25 +14,35 @@ class Chart extends Component {
     }
 
     render() {
-        const {lang} = this.props
-        const {chart} = admin // test data
+        const {lang, chart} = this.props
+
         const chartData = [
+            {
+                type: "spline",
+                name: lang.applicants,
+                // axisYType: "secondary",
+                showInLegend: true,
+                xValueFormatString: "MMM YYYY",
+                yValueFormatString: `# ${lang.applicants_month}`,
+                dataPoints: chart[0]
+            },
             {
                 type: "spline",
                 name: lang.tests_,
                 showInLegend: true,
                 xValueFormatString: "MMM YYYY",
-                yValueFormatString: `# ${lang.passed_tests}`,
-                dataPoints: chart[0]
-            },{
+                yValueFormatString: `# ${lang.tests_month}`,
+                dataPoints: chart[1]
+            },
+            {
                 type: "spline",
-                name: lang.applicants,
-                axisYType: "secondary",
+                name: lang.passed_tests,
                 showInLegend: true,
                 xValueFormatString: "MMM YYYY",
-                yValueFormatString: `# ${lang.applicants_month}`,
-                dataPoints: chart[1]
-            }]
+                yValueFormatString: `# ${lang.passed_tests_month}`,
+                dataPoints: chart[2]
+            },
+        ]
 
         const options = {
             theme: "light2",

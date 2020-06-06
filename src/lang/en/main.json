@@ -110,6 +110,8 @@
   "loading": "Loading, please wait..",
   "error_empty_fields": "Please fill in all the empty fields!",
   "empty_fields_desc": "Fill in all the empty fields then click the Finish button.",
+  "empty_database_data": "Failed to get data from database date!",
+  "database_failed": "Database failed!",
 
   "_comment_admin_chart": " *** Admin Chart ***",
   "test_name": "Test",
@@ -120,6 +122,8 @@
   "tests_passed": "Tests passed",
   "passed_tests": "Passed Tests",
   "applicants_month": "Applicants for the month",
+  "tests_month": "Tests for the month",
+  "passed_tests_month": "Passed tests for the month",
   "data_loading": "Data loading",
   "dense_padding": "Dense padding",
   "selected": "selected",

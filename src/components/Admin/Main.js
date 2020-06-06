@@ -44,7 +44,11 @@ theme = {
     overrides: {
         MuiDrawer: {
             paper: {
-                backgroundColor: 'rgba(0, 0, 51, 1)'
+                backgroundColor: 'rgba(0, 0, 51, 1)',
+                backgroundImage: 'url(/images/pages/united-bali.png)',
+                backgroundSize: '200px 200px',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: '100% 100%',
             },
         },
         MuiButton: {
@@ -183,7 +187,7 @@ function Main(props) {
         <ThemeProvider theme={theme}>
             <div className={classes.root}>
                 <CssBaseline/>
-                <nav className={classes.drawer}>
+                <nav className={`admin-navigator-content ${classes.drawer}`}>
                     <Hidden smUp implementation="js">
                         <Navigator
                             PaperProps={{style: {width: drawerWidth}}}

@@ -19,6 +19,7 @@ import DeleteModal from './DeleteModal'
 import Loader from 'react-loader-spinner'
 import {useToasts} from "react-toast-notifications"
 import makeId from '../../../helpers/makeId'
+import getUpdateChartData from '../../../helpers/getUpdateChartData'
 
 import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
@@ -376,6 +377,8 @@ const CreateTest = () => {
                 ErrorMessage(error,addToast)
             }else {
                 resetDefaultData()
+                // update chart data
+                getUpdateChartData('test','add')
                 addToast(lang.success_added, {
                     appearance: 'success',
                     autoDismiss: true,

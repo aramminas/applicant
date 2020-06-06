@@ -56,6 +56,33 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     transition: box-shadow .3s ease-in-out;
   }
+  & .admin-activity-loader{
+    display: inline-block;
+    margin: 0;
+    & img {
+      width: 25px;
+      height: 24px;
+    }
+  }
+  & .admin-chart-loader{
+    & .admin-activity-loader{
+      min-height: 350px;
+      & img {
+        width: 200px;
+        height: 200px;
+        margin: 45% 0;
+      }
+      & span{
+        display: block;
+        color: #797575;
+        font-size: 18px;
+        font-family: cursive ,"Roboto", "Helvetica", "Arial", sans-serif;
+      }
+      & .admin-empty-database-data{
+        margin: 45% 0;
+      }
+    }
+  }
 }
 
 .dashboard-all-data, .test-type {
