@@ -27,6 +27,8 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import StorageIcon from '@material-ui/icons/Storage'
 import {ReportProblemOutlined,CheckCircleOutlineOutlined,RadioButtonUncheckedOutlined} from '@material-ui/icons'
+import AdminTestsList from "../AdminTests/AdminTestsList";
+import {Animated} from "react-animated-css";
 
 
 function descendingComparator(a, b, orderBy) {
@@ -61,7 +63,7 @@ const headCells = [
     { id: 'phone', numeric: true, disablePadding: false, label: 'Phone' },
     { id: 'birthday', numeric: true, disablePadding: false, label: 'Birthday' },
     { id: 'past-tests', numeric: true, disablePadding: false, label: 'Past tests' },
-    { id: 'created_at', numeric: true, disablePadding: false, label: 'created At' }
+    { id: 'created_at', numeric: true, disablePadding: false, label: 'Creation Date' }
 ]
 
 function ApplicantListHead(props) {
@@ -296,89 +298,92 @@ export default function ApplicantList(props) {
         <>
             {
                 Object.keys(rows).length > 0 ?
-                <div className={classes.root}>
-                    <Paper className={classes.paper}>
-                        <ApplicantListToolbar lang={lang} numSelected={selected.length} deleteApplicants={deleteApplicants}/>
-                        <TableContainer>
-                            <Table
-                                className={classes.table}
-                                aria-labelledby="tableTitle"
-                                size={dense ? 'small' : 'medium'}
-                                aria-label="enhanced table"
-                            >
-                                <ApplicantListHead
-                                    classes={classes}
-                                    numSelected={selected.length}
-                                    order={order}
-                                    orderBy={orderBy}
-                                    onSelectAllClick={handleSelectAllClick}
-                                    onRequestSort={handleRequestSort}
-                                    rowCount={rows.length}
-                                />
-                                <TableBody>
-                                    {stableSort(rows, getComparator(order, orderBy))
-                                        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        .map((row, index) => {
-                                            const isItemSelected = isSelected(row.userId);
-                                            const labelId = `enhanced-table-checkbox-${index}`;
-                                            return (
-                                                <TableRow
-                                                    hover
-                                                    role="checkbox"
-                                                    aria-checked={isItemSelected}
-                                                    tabIndex={-1}
-                                                    key={row.userId}
-                                                    selected={isItemSelected}
-                                                >
-                                                    <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.userId)}>
-                                                        <Checkbox
-                                                            checked={isItemSelected}
-                                                            inputProps={{'aria-labelledby': labelId}}
-                                                        />
-                                                    </TableCell>
-                                                    <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                        {`${row.firstName} , ${row.lastName}`}
-                                                    </TableCell>
-                                                    <TableCell align="right">{row.email}</TableCell>
-                                                    <TableCell align="right">{row.phone}</TableCell>
-                                                    <TableCell align="right">{row.birthday}</TableCell>
-                                                    <TableCell align="right">{row.pastTests ?
-                                                        <><CheckCircleOutlineOutlined htmlColor={"green"}/> {lang.yes}</> :
-                                                        <><RadioButtonUncheckedOutlined htmlColor={"gold"}/> {lang.no}</>
-                                                    }</TableCell>
-                                                    <TableCell align="right">{row.createdAt}</TableCell>
+                    <Animated animationIn="zoomIn" animationOut="fadeOut" isVisible={true}>
+                        <div className={classes.root}>
+                            <Paper className={classes.paper}>
+                                <ApplicantListToolbar lang={lang} numSelected={selected.length} deleteApplicants={deleteApplicants}/>
+                                <TableContainer>
+                                    <Table
+                                        className={classes.table}
+                                        aria-labelledby="tableTitle"
+                                        size={dense ? 'small' : 'medium'}
+                                        aria-label="enhanced table"
+                                    >
+                                        <ApplicantListHead
+                                            classes={classes}
+                                            numSelected={selected.length}
+                                            order={order}
+                                            orderBy={orderBy}
+                                            onSelectAllClick={handleSelectAllClick}
+                                            onRequestSort={handleRequestSort}
+                                            rowCount={rows.length}
+                                        />
+                                        <TableBody>
+                                            {stableSort(rows, getComparator(order, orderBy))
+                                                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                                .map((row, index) => {
+                                                    const isItemSelected = isSelected(row.userId);
+                                                    const labelId = `enhanced-table-checkbox-${index}`;
+                                                    return (
+                                                        <TableRow
+                                                            hover
+                                                            role="checkbox"
+                                                            aria-checked={isItemSelected}
+                                                            tabIndex={-1}
+                                                            key={row.userId}
+                                                            selected={isItemSelected}
+                                                        >
+                                                            <TableCell padding="checkbox" onClick={(event) => handleClick(event, row.userId)}>
+                                                                <Checkbox
+                                                                    checked={isItemSelected}
+                                                                    inputProps={{'aria-labelledby': labelId}}
+                                                                />
+                                                            </TableCell>
+                                                            <TableCell component="th" id={labelId} scope="row" padding="none">
+                                                                {`${row.firstName} , ${row.lastName}`}
+                                                            </TableCell>
+                                                            <TableCell align="right">{row.email}</TableCell>
+                                                            <TableCell align="right">{row.phone}</TableCell>
+                                                            <TableCell align="right">{row.birthday}</TableCell>
+                                                            <TableCell align="right">{row.pastTests ?
+                                                                <><CheckCircleOutlineOutlined htmlColor={"green"}/> {lang.yes}</> :
+                                                                <><RadioButtonUncheckedOutlined htmlColor={"gold"}/> {lang.no}</>
+                                                            }</TableCell>
+                                                            <TableCell align="right">{row.createdAt}</TableCell>
+                                                        </TableRow>
+                                                    )
+                                                })}
+                                            {emptyRows > 0 && (
+                                                <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
+                                                    <TableCell colSpan={6}/>
                                                 </TableRow>
-                                            )
-                                        })}
-                                    {emptyRows > 0 && (
-                                        <TableRow style={{height: (dense ? 33 : 53) * emptyRows}}>
-                                            <TableCell colSpan={6}/>
-                                        </TableRow>
-                                    )}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
-                        <TablePagination
-                            rowsPerPageOptions={[5, 10, 25]}
-                            component="div"
-                            count={rows.length}
-                            rowsPerPage={rowsPerPage}
-                            page={page}
-                            onChangePage={handleChangePage}
-                            onChangeRowsPerPage={handleChangeRowsPerPage}
-                        />
-                    </Paper>
-                    <FormControlLabel
-                        control={<Switch checked={dense} onChange={handleChangeDense}/>}
-                        label={lang.dense_padding}
-                    />
-                </div> :
-                <div className={"applicant-loader"}>
-                    <Loader type="TailSpin" color="#18202c" height={100} width={100} timeout={10000} />
-                    <span>
-                        <StorageIcon /> <span>{lang.data_loading}</span>
-                    </span>
-                </div>
+                                            )}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                                <TablePagination
+                                    rowsPerPageOptions={[5, 10, 25]}
+                                    component="div"
+                                    count={rows.length}
+                                    rowsPerPage={rowsPerPage}
+                                    page={page}
+                                    onChangePage={handleChangePage}
+                                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                                />
+                            </Paper>
+                            <FormControlLabel
+                                control={<Switch checked={dense} onChange={handleChangeDense}/>}
+                                label={lang.dense_padding}
+                            />
+                        </div>
+                    </Animated>
+                :
+                    <div className={"applicant-loader"}>
+                        <Loader type="TailSpin" color="#18202c" height={100} width={100} timeout={10000} />
+                        <span>
+                            <StorageIcon /> <span>{lang.data_loading}</span>
+                        </span>
+                    </div>
             }
         </>
     )

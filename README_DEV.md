@@ -42,6 +42,7 @@
 
 `npm install intl-dateformat`
 
+`npm install --save material-ui-popup-state`
 
 ## Firebase
 `npm install --save firebase`

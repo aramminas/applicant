@@ -18,6 +18,7 @@
   "back": "Back",
   "next": "Next",
   "reset": "Reset",
+  "view": "View",
   "web_company": "Web Company",
   "copyright": "Copyright",
   "yerevan_armenia": "Yerevan Armenia",
@@ -112,6 +113,12 @@
   "empty_fields_desc": "Fill in all the empty fields then click the Finish button.",
   "empty_database_data": "Failed to get data from database date!",
   "database_failed": "Database failed!",
+  "minute": "minute",
+  "beginner": "Beginner",
+  "junior": "Junior",
+  "middle": "Middle",
+  "senior": "Senior",
+  "master": "Master",
 
   "_comment_admin_chart": " *** Admin Chart ***",
   "test_name": "Test",
@@ -207,5 +214,15 @@
   "remove": "Remove",
   "no_code": "No code",
   "no_image": "No image",
-  "no_added_tests": "No added tests"
+  "no_added_tests": "No added tests",
+
+  "_comment_admin_tests": " *** Admin Tests Page / All ***",
+  "all": "All",
+  "level": "Level",
+  "number_of_tests": "Number Of Tests",
+  "creation_date": "Creation Date",
+  "settings": "Settings",
+  "delete_test": "Delete test",
+  "delete_test_answer": "Do you really want to delete this test?",
+  "test_deleted": "Test successfully deleted!"
 }

@@ -49,11 +49,11 @@ const data = {
     //  Admin
     admin: {
         applicantLevels: [
-            {id: 1, name: 'Beginner'},
-            {id: 2, name: 'Junior'},
-            {id: 3, name: 'Middle'},
-            {id: 4, name: 'Senior'},
-            {id: 5, name: 'Exalted'},
+            {id: 1, name: 'beginner'},
+            {id: 2, name: 'junior'},
+            {id: 3, name: 'middle'},
+            {id: 4, name: 'senior'},
+            {id: 5, name: 'master'},
         ],
         times: [
             {id: 1, value: 30, name: "30 minutes"},

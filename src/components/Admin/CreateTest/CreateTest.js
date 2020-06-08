@@ -2,6 +2,7 @@ import React, {useState,useEffect} from 'react'
 import {useSelector} from "react-redux"
 import { makeStyles } from '@material-ui/core/styles'
 import Firebase from '../../../Firebase'
+import FirebaseFunctions from '../../../helpers/FirebaseFunctions'
 import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import InputLabel from '@material-ui/core/InputLabel'
@@ -10,6 +11,7 @@ import Menu from '@material-ui/core/Menu'
 import FormControl from '@material-ui/core/FormControl'
 import {Settings} from '@material-ui/icons'
 import Select from '@material-ui/core/Select'
+import formatDate from 'intl-dateformat'
 import {History,SupervisedUserCircleOutlined,LaptopMac,
     AddCircleOutlineRounded,RemoveCircleOutline} from '@material-ui/icons'
 import Main from "../Main"
@@ -60,7 +62,7 @@ function ErrorMessage(error,addToast) {
 
 const initTestData = {
     parameters: {
-        technologyName: '',
+        technologyId: '',
         testForLevel: '',
         testDuration: '',
     },
@@ -95,22 +97,23 @@ const CreateTest = () => {
     let lang = language === 'EN' ? lang_en : lang_am
 
     const getTechData = (id) => {
-        const db = Firebase.database
-        db.ref(`/technology`).once('value').then(function(snapshot) {
-            let technologyData = snapshot.val() || {}
-            if(Object.keys(technologyData).length !== 0 && technologyData.constructor === Object){
-                setTecData(technologyData)
-                if(id === testData.parameters.technologyName){
-                    setValidation({...validation, name: false})
-                    setTestData({
-                        ...testData,
-                        parameters: {
-                            ...testData.parameters,
-                            technologyName: ''
-                        }
-                    })
-                }
+        FirebaseFunctions.getTechData().then(data => {
+            setTecData(data)
+            if(id === testData.parameters.technologyId){
+                setValidation({...validation, name: false})
+                setTestData({
+                    ...testData,
+                    parameters: {
+                        ...testData.parameters,
+                        technologyId: ''
+                    }
+                })
             }
+        }).catch(error => {
+            addToast(error.message, {
+                appearance: 'error',
+                autoDismiss: true
+            })
         })
     }
 
@@ -128,7 +131,7 @@ const CreateTest = () => {
             ...testData,
             parameters: {
                 ...testData.parameters,
-                technologyName: value
+                technologyId: value
             }
         })
 
@@ -219,7 +222,7 @@ const CreateTest = () => {
     }
 
     const createNewTest = () => {
-        let name = testData.parameters.technologyName === ""
+        let name = testData.parameters.technologyId === ""
         let level = testData.parameters.testForLevel === ""
         let duration = testData.parameters.testDuration === ""
 
@@ -346,7 +349,6 @@ const CreateTest = () => {
             let url = ""
 
             if(fileData.file){
-                fileData.name = `${Date.now()}_${fileData.name}`
                 let storageRef = Firebase.storage.ref(`storage/images/tests`)
                 let uploadTask = storageRef.child(`/${fileData.name}`).put(fileData.file)
                 uploadTask.on('state_changed', function(snapshot){
@@ -371,6 +373,10 @@ const CreateTest = () => {
         if(!data.id){
             data.id = makeId(28) // generating a random ID with a length of 28
         }
+        // add the date of creation of test
+        const dateAt = new Date()
+        data.createdAt = formatDate(dateAt, 'MM/DD/YYYY')
+
         // Add a new test in collection "tests" with ID
         Firebase.database.ref(`tests/${data.id}`).set(data, function (error) {
             if(error){
@@ -422,9 +428,9 @@ const CreateTest = () => {
                                         <Grid item xs={4}>
                                             <div className={"programing-lang-image"}>
                                                 <img
-                                                    src={testData.parameters.technologyName &&
-                                                            techData[testData.parameters.technologyName]?
-                                                                techData[testData.parameters.technologyName].icon :
+                                                    src={testData.parameters.technologyId &&
+                                                            techData[testData.parameters.technologyId] ?
+                                                                techData[testData.parameters.technologyId].icon :
                                                         "/images/pages/technology_default.png"}
                                                     alt="programing lang"/>
                                             </div>
@@ -435,7 +441,7 @@ const CreateTest = () => {
                                                 <Select
                                                     labelId="labelId"
                                                     id="select-id-program-lang"
-                                                    value={testData.parameters.technologyName}
+                                                    value={testData.parameters.technologyId}
                                                     onChange={handleChangeProgram}
                                                     label={lang.select_language}
                                                     error={validation.name}
@@ -486,7 +492,7 @@ const CreateTest = () => {
                                                     </MenuItem>
                                                     {levels.map(level =>
                                                         <MenuItem key={level.id} value={level.id}>
-                                                            {level.name}
+                                                            {lang[level.name]}
                                                         </MenuItem>
                                                     )}
                                                 </Select>

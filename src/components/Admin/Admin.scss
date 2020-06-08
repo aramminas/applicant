@@ -145,7 +145,8 @@
 
 // Admin Applicants
 
-.admin-applicants-title {
+.admin-applicants-title,
+.admin-tests-title {
   & span {
     color: #232f3e;
     font-size: 21px;
@@ -278,4 +279,26 @@
 .no-found-data-text {
   font-size: 17px;
   color: #5e5e5e
+}
+
+// Admin Tests
+.admin-tests-empty-data {
+  width: 100%;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #8080805e;
+  min-height: 450px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  & span{
+    display: block;
+    text-align: center;
+    color: #797575;
+    font-size: 18px;
+    font-family: cursive ,"Roboto", "Helvetica", "Arial", sans-serif;
+  }
+  & .admin-empty-database-data{
+    margin: 45% 0;
+  }
 }
