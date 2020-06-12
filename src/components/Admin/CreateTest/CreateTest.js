@@ -261,6 +261,7 @@ const CreateTest = () => {
                     question: value.question,
                     codeData: value.codeData,
                     imageUrl,
+                    imageName: "",
                     options: value.options,
                     rightAnswers: value.rightAnswers,
                     multiAnswer: value.multiAnswer,

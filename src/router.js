@@ -19,6 +19,7 @@ const TestResults = lazy(() => import("./components/Admin/TestResults/TestResult
 const AdminTests = lazy(() => import("./components/Admin/AdminTests/AdminTests"))
 const Dashboard = lazy(() => import("./components/Admin/Dashboard/Dashboard"))
 const Applicants = lazy(() => import("./components/Admin/Applicants/Applicants"))
+const EditView = lazy(() => import("./components/Admin/EditView/EditView"))
 const CssEffects = lazy(() => import("./components/CssEffects/CssEffects"))
 
 // user components for router
@@ -42,10 +43,11 @@ const routes = (
             <Route path="/admin-tests" component={AdminTests}/>
             <Route path="/dashboard" component={Dashboard}/>
             <Route path="/applicants" component={Applicants}/>
+            <Route path="/edit-view/:id" component={EditView}/>
             {/* CSS effects examples */}
             <Route path="/css-effects" component={CssEffects}/>
             {/* user routes */}
-            <Route path="/test/:id" exact component={Test}/>
+            <Route path="/test/:id" exact={true} component={Test}/>
             <Route path="/tests/:id" component={Tests}/>
             <Route path="/user/:id" component={User}/>
 

@@ -27,8 +27,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import StorageIcon from '@material-ui/icons/Storage'
 import {ReportProblemOutlined,CheckCircleOutlineOutlined,RadioButtonUncheckedOutlined} from '@material-ui/icons'
-import AdminTestsList from "../AdminTests/AdminTestsList";
-import {Animated} from "react-animated-css";
+import {Animated} from "react-animated-css"
 
 
 function descendingComparator(a, b, orderBy) {

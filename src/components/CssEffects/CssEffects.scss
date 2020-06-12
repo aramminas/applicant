@@ -1,0 +1,27 @@
+.admin-effects-section{
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border: 1px solid #b6b6b6;
+  border-radius: 8px;
+  background: white;
+  padding: 20px;
+}
+
+.admin-effects-content {
+  width: 48%;
+  margin: 0 1%;
+  & h5 {
+    color: #232f3e;
+    font-weight: 600;
+    text-shadow: 4px 3px 0 #fff, 9px 8px 0 rgba(0,0,0,0.15);
+  }
+}
+
+.admin-effects-black-bg{
+  background-color:  black;
+  padding: 20px;
+  border-bottom-left-radius: 50px;
+  border-top-right-radius: 50px;
+  box-shadow: -4px -4px 10px 4px #0d0d0d1c, 4px 4px 10px 4px #0000ff99;
+}

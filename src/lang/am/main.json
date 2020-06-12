@@ -19,6 +19,7 @@
   "next": "Next",
   "reset": "Reset",
   "view": "View",
+  "cancel": "Cancel",
   "web_company": "Վեբ ընկերություն",
   "copyright": "Հեղինակային իրավունք",
   "yerevan_armenia": "Երևան Հ. Հ.",
@@ -224,5 +225,22 @@
   "settings": "Settings",
   "delete_test": "Delete test",
   "delete_test_answer": "Do you really want to delete this test?",
-  "test_deleted": "Test successfully deleted!"
+  "test_deleted": "Test successfully deleted!",
+
+  "_comment_admin_edit_view": " *** Admin Edit / View Page  ***",
+  "edit_view": "Edit / View - Test",
+  "edit_view_warning_desc": "Attention! If the test data is changed, the previous test results will be invalid.",
+  "test_parameters": "Test parameters",
+  "test_questions_list": "Test questions list",
+  "test_quiz_questions": "Test quiz questions",
+  "test_logical_questions": "Test logical questions",
+  "test_name_": "Test name",
+  "test_level": "Test level",
+  "test_duration": "Test duration",
+  "edit_success_message" : "Your changes were saved successfully.",
+  "all_questions" : "All questions",
+  "total_number_tests" : "Total number of tests",
+  "add_new" : "Add new",
+  "delete_title" : "Delete question",
+  "delete_question_desc" : "Do you really want to delete this question?"
 }

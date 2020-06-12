@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
+import {NavLink} from 'react-router-dom'
 import {makeStyles, useTheme, withStyles} from '@material-ui/core/styles'
 import {
     Table,
@@ -164,6 +165,12 @@ const useStyles2 = makeStyles({
                 color: '#009be5',
             },
         },
+    },
+    link: {
+        all: 'unset',
+        '&:hover': {
+            all: 'unset',
+        }
     }
 })
 
@@ -182,10 +189,6 @@ export default function AdminTestsList(props) {
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10))
         setPage(0)
-    }
-
-    const editTest = (id) => {
-        console.log('editTest id', id)
     }
 
     const deleteTest = (id) => {
@@ -244,10 +247,12 @@ export default function AdminTestsList(props) {
                                                 <Settings htmlColor={"#073589"}/>
                                             </IconButton>
                                             <Menu {...bindMenu(popupState)}>
-                                                <MenuItem className={classes.edit} onClick={() => {editTest(row.id); popupState.close()}}>
-                                                    <EditOutlined htmlColor={"#073589"}/>&nbsp;{lang.edit} /&nbsp;
-                                                    {lang.view}&nbsp;<VisibilityOutlined htmlColor={"#073589"}/>
-                                                </MenuItem>
+                                                <NavLink to={`/edit-view/${row.id}`} variant="body2" className={classes.link}>
+                                                    <MenuItem className={classes.edit} onClick={popupState.close}>
+                                                        <EditOutlined htmlColor={"#073589"}/>&nbsp;{lang.edit} /&nbsp;
+                                                        {lang.view}&nbsp;<VisibilityOutlined htmlColor={"#073589"}/>
+                                                    </MenuItem>
+                                                </NavLink>
                                                 <MenuItem className={classes.delete} onClick={() => {deleteTest(row.id); popupState.close()}}>
                                                     <DeleteForeverOutlined htmlColor={"#073589"}/>{lang.delete}
                                                 </MenuItem>

@@ -146,7 +146,9 @@
 // Admin Applicants
 
 .admin-applicants-title,
-.admin-tests-title {
+.admin-tests-title,
+.admin-effects-title,
+.admin-edit-view-title{
   & span {
     color: #232f3e;
     font-size: 21px;
@@ -300,5 +302,19 @@
   }
   & .admin-empty-database-data{
     margin: 45% 0;
+  }
+}
+
+// Admin Edit View
+.edit-view {
+  & .admin-edit-view-title {
+    & .admin-edit-view-warning{
+      font-size: 12px;
+      color: #f19404;
+      & svg {
+        font-size: 14px;
+        margin-bottom: 3px;
+      }
+    }
   }
 }

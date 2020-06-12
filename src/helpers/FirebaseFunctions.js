@@ -43,7 +43,7 @@ const getTestDataById = (id) => {
             if(Object.keys(testsData).length !== 0 && testsData.constructor === Object){
                 resolve(testsData)
             }else if(Object.keys(testsData).length === 0){
-                reject({message: 'Database error. Objects `Test` not deleted!'})
+                reject({message: 'Database error. Objects `Test` not found!'})
             }
         }).catch(error => {
             reject({message: `Database error. 'Tests' data! ${error.message}`})
@@ -54,7 +54,7 @@ const getTestDataById = (id) => {
 /* Remove Test By Id */ /* (public) */
 const removeTest = (id) => {
     return new Promise(function(resolve, reject) {
-        deleteTestImages(id).then(function(data) {
+        deleteTestImages(id).then(function() {
             resolve({result: true})
         }).catch(error => {
             reject({message: `Database error. 'Tests' data! ${error.message}`})
@@ -153,11 +153,72 @@ const getTechData = () => {
     })
 }
 
+/* Update data */ /* (public) */
+const updateData = (table, id, data) => {
+    return new Promise(function(resolve, reject) {
+        Firebase.database.ref(table).child(id).update(data,function (error) {
+            if(error){
+                reject({message: `Database error. 'Technology' data! ${error.message}`})
+            }else {
+                resolve({message: true})
+            }
+        }).catch(error => {
+            reject({message: `Database error. 'Technology' data! ${error.message}`})
+        })
+    })
+}
+
+/* Remove Test Question  */ /* (public) */
+const removeTestQuestion = (id, data) => {
+    const besidesThisElement = data.tests.filter(el => el.id !== id)
+    const delData = data.tests.filter(el => el.id === id)[0]
+
+    const updateTestData = {
+        tests: besidesThisElement
+    }
+
+    return new Promise(function(resolve, reject) {
+        if(delData.imageName !== ""){
+            deleteImage(delData.imageName).then((response) => {
+                if(response === true){
+                    updateData("tests/",data.id, updateTestData)
+                        .then(responseQuestion => {
+                            if(responseQuestion.message === true){
+                                resolve({message: true})
+                            }else {
+                                reject({message: `Database error. 'Test question' data! ${responseQuestion.message}`})
+                            }
+                        })
+                        .catch(error => {
+                            reject({message: `Database error. 'Test question' data! ${error.message}`})
+                    })
+                }
+            }).catch(error => {
+                reject(error)
+            })
+        }else{
+            updateData("tests/",data.id, updateTestData)
+                .then(response => {
+                    if(response.message === true){
+                        resolve({message: true})
+                    }else {
+                        reject({message: `Database error. 'Test question' data! ${response.message}`})
+                    }
+                })
+                .catch(error => {
+                    reject({message: `Database error. 'Test question' data! ${error.message}`})
+                })
+        }
+    })
+}
+
 const FirebaseFunctions = {
     getTestData, // get test data from firebase db
     getTestDataById, // get test data by id from firebase db
     removeTest, // remove test by id from firebase db
     getTechData, // get technology data from firebase db
+    updateData, // update data from firebase db
+    removeTestQuestion, // remove test question from firebase db
 }
 
 export default FirebaseFunctions

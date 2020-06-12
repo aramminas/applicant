@@ -13,6 +13,11 @@ export const getPathId = (path) => {
         case "css-effects":
             return 6
         default:
-            return 1
+            switch(true) {
+                case /^edit-view*/.test(path):
+                    return 4
+                default:
+                    return 0
+            }
     }
 }
