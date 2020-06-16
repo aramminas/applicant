@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import {Grid, Paper ,Button}from '@material-ui/core'
-import {EditLocationOutlined} from "@material-ui/icons"
+import {AddLocationOutlined, EditLocationOutlined} from "@material-ui/icons"
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditViewAddLogical(props) {
     const classes = useStyles()
-    const {lang, handleEditQuestion, cancelEditQuestion} = props
+    const {lang, changingQuestion, handleAddEditQuestion, cancelEditQuestion} = props
 
     return (
         <div className={classes.root}>
@@ -54,9 +54,14 @@ export default function EditViewAddLogical(props) {
                     <Grid item xs={4}>
                         <div className={"admin-edit-view-add-btn"}>
                             <Button variant="outlined" onClick={()=>cancelEditQuestion("logical")} >{lang.cancel}</Button>
-                            <Button variant="outlined" color="primary" onClick={()=>handleEditQuestion("logical")}>
-                                {lang.edit} <EditLocationOutlined />
-                            </Button>
+                            {Object.keys(changingQuestion).length > 0 ?
+                                <Button variant="outlined" color="primary" onClick={()=>handleAddEditQuestion("logical", "edit")}>
+                                    {lang.edit} <EditLocationOutlined />
+                                </Button>:
+                                <Button variant="outlined" color="primary" onClick={()=>handleAddEditQuestion("logical", "add")}>
+                                    {lang.add} <AddLocationOutlined/>
+                                </Button>
+                            }
                         </div>
                     </Grid>
                 </Grid>

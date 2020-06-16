@@ -12,7 +12,7 @@ import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
 import '../Admin.scss'
 import './EditView.scss'
-import './Animated.scss'
+import Loader from "react-loader-spinner";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -39,12 +39,17 @@ const EditView = () => {
     const classes = useStyles()
     const [test, setTest] = useState({})
     const [tech, setTech] = useState({})
+    const [addLoader,setAddLoader] = useState(false)
     const [currentTech, setCurrentTech] = useState({})
     let {id} = useParams()
     let lang = language === 'EN' ? lang_en : lang_am
     useEffect(function () {
         getTestData()
     },[])
+
+    const changeLoader = (data) => {
+        setAddLoader(data)
+    }
 
     const getTestData = () => {
         FirebaseFunctions.getTestDataById(id).then(data => {
@@ -97,6 +102,30 @@ const EditView = () => {
         })
     }
 
+    const handleAddEditQuestion = (type, editQuestion = []) => {
+        changeLoader(true)
+        FirebaseFunctions.addEditQuestion(type, id, editQuestion, test).then(data => {
+            changeLoader(false)
+            if(data.message === true){
+                addToast(lang.edit_success_message, {
+                    appearance: 'success',
+                    autoDismiss: true,
+                })
+                getTestData()
+            }else {
+                addToast(data.message, {
+                    appearance: 'error',
+                    autoDismiss: true,
+                })
+            }
+        }).catch(error => {
+            changeLoader(false)
+            addToast(error.message, {
+                appearance: 'error',
+                autoDismiss: true,
+            })
+        })
+    }
 
     return (
         <Main lang={lang}>
@@ -122,7 +151,8 @@ const EditView = () => {
                             <>
                                 <EditViewParameters lang={lang} id={id} parameters={test.parameters} tech={tech}
                                     currentTech={currentTech} getTestData={getTestData}/>
-                                <EditViewTests lang={lang} questions={test.tests} deleteQuestion={deleteQuestion}/>
+                                <EditViewTests lang={lang} questions={test.tests} deleteQuestion={deleteQuestion}
+                                    handleAddEditQuestion={handleAddEditQuestion}/>
                             </>
                         :
                         <div className={"admin-tests-empty-data"}>
@@ -133,6 +163,11 @@ const EditView = () => {
                         </div>
                     }
                 </div>
+                { addLoader ?
+                        <div className={"admin-loader"}>
+                            <Loader type="RevolvingDot" color="#031433" height={100} width={100}/>
+                        </div> : null
+                }
             </div>
         </Main>
     )

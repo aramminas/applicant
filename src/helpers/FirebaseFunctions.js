@@ -212,13 +212,196 @@ const removeTestQuestion = (id, data) => {
     })
 }
 
+/* Upload Image  */ /* (static) */
+const uploadImage = (data) => {
+    return new Promise((resolve, reject) => {
+        let url = ""
+        if(data.file){
+            let storageRef = Firebase.storage.ref(`storage/images/tests`)
+            let uploadTask = storageRef.child(`/${data.name}`).put(data.file)
+            uploadTask.on('state_changed', function(snapshot){
+                // 😷 handling promise Id | let id = snapshot?.metadata?.generation || null
+            }, function(error) {
+                reject({message:`Failed to upload image: ${error.message}`})
+            }, function() {
+                uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                    if(downloadURL){
+                        resolve({downloadURL})
+                    }else{
+                        reject({message:`Failed to load image's URL: ${url}`})
+                    }
+                })
+            })
+        }
+    })
+}
+
+/* Add / Edit Question  */ /* (public) */
+const addEditQuestion = (action, id, data, test) => {
+    return new Promise(function(resolve, reject) {
+        if(action === "edit"){
+            const editData = {
+                id: data.id,
+                question: data.question,
+                codeData: data.codeData,
+                imageUrl: "",
+                imageName: "",
+                options: data.options,
+                rightAnswers: data.rightAnswers,
+                multiAnswer: data.multiAnswer,
+                type: data.type,
+            }
+            // if there is an old image and a new one is added
+            if(data.currentImageName !== "" && data.imageData.file){
+                deleteImage(data.currentImageName).then(removeImage => {
+                    if(removeImage === true){
+                        data.imageData.name = editData.imageName = `${Date.now()}_${data.imageData.name}`
+                        uploadImage(data.imageData).then(newImage => {
+                            if(newImage.downloadURL !== ""){
+                                editData.imageUrl = newImage.downloadURL
+                                updateQuestion(test, id, editData, data).then(response => {
+                                    if(response.message === true){
+                                        resolve({message: true})
+                                    }else{
+                                        reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                                    }
+                                }).catch(error => {
+                                    reject({message: `Database error! ${error.message}`})
+                                })
+                            }
+                        }).catch(error=>{
+                            reject({message: `Storage error! ${error.message}`})
+                        })
+                    }else{
+                        reject({message: `Storage error. 'question old image not removed' ! ${removeImage.message}`})
+                    }
+                }).catch(function(error) {
+                    reject({message: `Storage error. question  image ! ${error.message}`})
+                })
+            }
+            // if the image does not change
+            else if(data.currentImageName !== "" && !data.imageData.file){
+                editData.imageUrl = data.imageUrl
+                editData.imageName = data.currentImageName
+                updateQuestion(test, id, editData, data).then(response => {
+                    if(response.message === true){
+                        resolve({message: true})
+                    }else{
+                        reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                    }
+                }).catch(error => {
+                    reject({message: `Database error! ${error.message}`})
+                })
+            }
+            // if not the old image, but a new one was added
+            else if(data.currentImageName === "" && data.imageData.file){
+                data.imageData.name = editData.imageName = `${Date.now()}_${data.imageData.name}`
+                uploadImage(data.imageData).then(newImage => {
+                    if(newImage.downloadURL !== ""){
+                        editData.imageUrl = newImage.downloadURL
+                        updateQuestion(test, id, editData, data).then(response => {
+                            if(response.message === true){
+                                resolve({message: true})
+                            }else{
+                                reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                            }
+                        }).catch(error => {
+                            reject({message: `Database error! ${error.message}`})
+                        })
+                    }
+                }).catch(error=>{
+                    reject({message: `Storage error! ${error.message}`})
+                })
+            }
+            // if there is no old image and no new one is added
+            else if(data.currentImageName === "" && !data.imageData.file){
+                updateQuestion(test, id, editData, data).then(response => {
+                    if(response.message === true){
+                        resolve({message: true})
+                    }else{
+                        reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                    }
+                }).catch(error => {
+                    reject({message: `Database error! ${error.message}`})
+                })
+            }
+        }else if(action === "add"){
+            const addData = {
+                id: data.id,
+                question: data.question,
+                codeData: data.codeData,
+                imageUrl: "",
+                imageName: "",
+                options: data.options,
+                rightAnswers: data.rightAnswers,
+                multiAnswer: data.multiAnswer,
+                type: data.type,
+            }
+
+            if(data.imageData.file){
+                data.imageData.name = addData.imageName = `${Date.now()}_${data.imageData.name}`
+                uploadImage(data.imageData).then(newImage => {
+                    if(newImage.downloadURL !== ""){
+                        addData.imageUrl = newImage.downloadURL
+                        test.tests.push(addData)
+                        updateData("tests/", id, test).then(response => {
+                            if(response.message === true){
+                                resolve({message: true})
+                            }else{
+                                reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                            }
+                        }).catch(error => {
+                            reject({message: `Database error! ${error.message}`})
+                        })
+                    }
+                }).catch(error=>{
+                    reject({message: `Storage error! ${error.message}`})
+                })
+            }else if(!data.imageData.file){
+                test.tests.push(addData)
+                updateData("tests/", id, test).then(response => {
+                    if(response.message === true){
+                        resolve({message: true})
+                    }else{
+                        reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                    }
+                }).catch(error=>{
+                    reject({message: `Database error. 'Test question edit' data! ${error.message}`})
+                })
+            }
+        }
+    })
+}
+
+/* Upload Question  */ /* (static) */
+const updateQuestion = (test, id, editData, data) => {
+    return new Promise(function(resolve, reject) {
+        let index = test.tests.map(val => val.id).indexOf(data.id)
+        if(index !== -1){
+            test.tests.splice(index, 1, editData)
+            updateData("tests/", id, test).then(response => {
+                if(response.message === true){
+                    resolve({message: true})
+                }else{
+                    reject({message: `Database error. 'Test question edit' data! ${response.message}`})
+                }
+            }).catch(error=>{
+                reject({message: `Database error. 'Test question edit' data! ${error.message}`})
+            })
+        }else {
+            reject({message: `Database error. 'Test question not found!' `})
+        }
+    })
+}
+
 const FirebaseFunctions = {
     getTestData, // get test data from firebase db
     getTestDataById, // get test data by id from firebase db
     removeTest, // remove test by id from firebase db
     getTechData, // get technology data from firebase db
     updateData, // update data from firebase db
-    removeTestQuestion, // remove test question from firebase db
+    removeTestQuestion, // remove test question from firebase db,
+    addEditQuestion, // add/edit question by id in  firebase db
 }
 
 export default FirebaseFunctions

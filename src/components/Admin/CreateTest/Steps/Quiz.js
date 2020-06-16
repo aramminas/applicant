@@ -126,9 +126,14 @@ export default function Quiz(props) {
     const handleChangeAnswer = (event) => {
         if(quiz.multiAnswer === true){
             // added value for multi answers (Checkbox)
-            quiz.rightAnswers[+event.target.name] =
-            event.target.checked ? +event.target.name : undefined
-            setQuiz({ ...quiz, rightAnswers: quiz.rightAnswers })
+            if(event.target.checked){
+                quiz.rightAnswers.push(+event.target.name)
+            }else{
+                const index = quiz.rightAnswers.indexOf(+event.target.name)
+                if (index > -1) {
+                    quiz.rightAnswers.splice(index, 1)
+                }
+            }
             setValidation({...validation,rightAnswer: true})
         }else if(quiz.multiAnswer === false){
             // added value for a single answer (Radio)
@@ -198,8 +203,10 @@ export default function Quiz(props) {
     const reduceOptions = () => {
         setAddReduce('admin-quiz-options-reduce')
         setTimeout(function () {
-            if(quiz.options.length === optionsCount.length){
-                setQuiz({...quiz,options: quiz.options.slice(0, -1)})
+            if(quiz.multiAnswer && quiz.options.length === optionsCount.length){
+                setQuiz({...quiz, options: [...quiz.options.slice(0, -1)], rightAnswers: []})
+            }else if(quiz.options.length === optionsCount.length){
+                setQuiz({...quiz, options: [...quiz.options.slice(0, -1)]})
             }
             setAddReduce('')
             setOptionsCount(optionsCount => {

@@ -14,6 +14,12 @@
   color: #007fba;
 }
 
+.edit-view{
+  & div.admin-loader{
+    width: 100%;
+  }
+}
+
 .edit-view-btn {
   text-align: center;
 

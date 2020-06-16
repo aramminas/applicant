@@ -10,6 +10,7 @@ import * as serviceWorker from './serviceWorker'
 
 import './index.css'
 import './scss/main.scss'
+import './scss/Animated.scss'
 import 'bootstrap/dist/css/bootstrap.min.css'
 
 const rootElement = document.getElementById('root')

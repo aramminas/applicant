@@ -128,7 +128,8 @@ export default function EditViewTests(props) {
     const [delId, setDelId] = useState(0)
     const [openQuiz, setOpenQuiz] = useState(false)
     const [openLogical, setOpenLogical] = useState(false)
-    const {lang, questions, deleteQuestion} = props
+    const [changingQuestion, setChangingQuestion] = useState({})
+    const {lang, questions, deleteQuestion, handleAddEditQuestion} = props
     const quizType = 'quiz', logicalType = 'logical'
     let num = questions.length
 
@@ -152,6 +153,10 @@ export default function EditViewTests(props) {
     }
 
     const showTestById = (type, id) => {
+        const getQuestion = questions.filter(el => el.id === id)[0]
+        if(getQuestion){
+            setChangingQuestion({...getQuestion})
+        }
         if(type === quizType){
             setOpenQuiz(true)
         }else if(type === logicalType){
@@ -160,6 +165,7 @@ export default function EditViewTests(props) {
     }
 
     const cancelEditQuestion = (type) => {
+        setChangingQuestion({})
         if(type === quizType){
             setOpenQuiz(false)
         }else if(type === logicalType){
@@ -167,12 +173,12 @@ export default function EditViewTests(props) {
         }
     }
 
-    const handleEditQuestion = (type) => {
-        console.log('type',type)
-    }
-
     const addNewQuestion = (type) => {
-        console.log('type',type)
+        if(type === quizType){
+            setOpenQuiz(true)
+        }else if(type === logicalType){
+            setOpenLogical(true)
+        }
     }
 
     /* Questions list part */
@@ -196,58 +202,68 @@ export default function EditViewTests(props) {
                 </div>
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
-                        <Paper className={classes.paper}>
-                            {
-                               !openQuiz && !openLogical ?
-                                   <div className="edit-view-question-table">
-                                       <h2>{lang.all_questions} {num !== 0 && <small>{lang.total_number_tests} {`{${num}}`}</small>}</h2>
-                                       <ul className="ul-table">
-                                           <li className="table-header text-center">
-                                               <div className="col col-1-t text-left">&#8470;</div>
-                                               <div className="col col-2-t ">{lang.question}</div>
-                                               <div className="col col-3-t ">{lang.code}</div>
-                                               <div className="col col-4-t ">{lang.image}</div>
-                                               <div className="col col-5-t ">{lang.edit}</div>
-                                               <div className="col col-6-t ">{lang.remove}</div>
-                                           </li>
-                                           <h5>
-                                               {lang.quizzes}
-                                               <span onClick={()=>addNewQuestion(quizType)}>{lang.add_new} <AddLocationOutlined/></span>
-                                           </h5>
-                                           {/* all quizzes list */}
-                                           {quizTestsList.length > 0 ?
-                                               quizTestsList :
-                                               <><DeleteOutline />{lang.no_added_tests}<br/></>
-                                           }
-                                           <h5>
-                                               {lang.logical_tests}
-                                               <span onClick={()=>addNewQuestion(logicalType)}>{lang.add_new} <AddLocationOutlined/></span>
-                                           </h5>
-                                           {/* all logical tests list*/}
-                                           {logicalTestList.length > 0 ?
-                                               logicalTestList :
-                                               <><DeleteOutline />{lang.no_added_tests}</>
-                                           }
-                                       </ul>
-                                   </div>
-                               :
-                                   openQuiz ?
-                                       <Animated animationIn="bounceInLeft" animationOut="bounceOutLeft" isVisible={openQuiz}>
-                                           <EditViewAddQuiz lang={lang} handleEditQuestion={handleEditQuestion} cancelEditQuestion={cancelEditQuestion}/>
-                                       </Animated>
-                                   :
-                                       openLogical &&
-                                       <Animated animationIn="bounceInLeft" animationOut="bounceOutLeft" isVisible={openLogical}>
-                                           <EditViewAddLogical lang={lang} handleEditQuestion={handleEditQuestion} cancelEditQuestion={cancelEditQuestion}/>
-                                       </Animated>
-                            }
-                        </Paper>
+                        {!openQuiz && !openLogical ?
+                            <Paper className={classes.paper}>
+                                <div className="edit-view-question-table">
+                                    <h2>{lang.all_questions} {num !== 0 &&
+                                    <small>{lang.total_number_tests} {`{${num}}`}</small>}</h2>
+                                    <ul className="ul-table">
+                                        <li className="table-header text-center">
+                                            <div className="col col-1-t text-left">&#8470;</div>
+                                            <div className="col col-2-t ">{lang.question}</div>
+                                            <div className="col col-3-t ">{lang.code}</div>
+                                            <div className="col col-4-t ">{lang.image}</div>
+                                            <div className="col col-5-t ">{lang.edit}</div>
+                                            <div className="col col-6-t ">{lang.remove}</div>
+                                        </li>
+                                        <h5>
+                                            {lang.quizzes}
+                                            <span onClick={() => addNewQuestion(quizType)}>
+                                                {lang.add_new} <AddLocationOutlined/>
+                                            </span>
+                                        </h5>
+                                        {/* all quizzes list */}
+                                        {quizTestsList.length > 0 ?
+                                            quizTestsList :
+                                            <><DeleteOutline/>{lang.no_added_tests}<br/></>
+                                        }
+                                        <h5>
+                                            {lang.logical_tests}
+                                            <span onClick={() => addNewQuestion(logicalType)}>
+                                                {lang.add_new} <AddLocationOutlined/>
+                                            </span>
+                                        </h5>
+                                        {/* all logical tests list*/}
+                                        {logicalTestList.length > 0 ?
+                                            logicalTestList :
+                                            <><DeleteOutline/>{lang.no_added_tests}</>
+                                        }
+                                    </ul>
+                                </div>
+                            </Paper>
+                            :
+                            openQuiz ?
+                                <Animated animationIn="bounceInLeft" animationOut="bounceOutLeft" isVisible={openQuiz}>
+                                    <EditViewAddQuiz lang={lang} changingQuestion={changingQuestion}
+                                        handleAddEditQuestion={handleAddEditQuestion}
+                                        cancelEditQuestion={cancelEditQuestion}
+                                    />
+                                </Animated>
+                                :
+                                openLogical &&
+                                    <Animated animationIn="bounceInLeft" animationOut="bounceOutLeft" isVisible={openLogical}>
+                                        <EditViewAddLogical lang={lang} changingQuestion={changingQuestion}
+                                            handleAddEditQuestion={handleAddEditQuestion}
+                                            cancelEditQuestion={cancelEditQuestion}
+                                        />
+                                    </Animated>
+                        }
                     </Grid>
                 </Grid>
             </Paper>
             {/* Modal window for deleting question */}
-            <DeleteModal open={openDel} id={delId} lang={lang}
-                         handleDeleteQuestion={handleDeleteQuestion} handleClose={handleCloseDeleteModal}/>
+            <DeleteModal open={openDel} id={delId} lang={lang} handleDeleteQuestion={handleDeleteQuestion}
+                handleClose={handleCloseDeleteModal}/>
         </div>
     )
 }

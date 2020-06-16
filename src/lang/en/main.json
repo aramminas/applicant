@@ -242,5 +242,7 @@
   "total_number_tests" : "Total number of tests",
   "add_new" : "Add new",
   "delete_title" : "Delete question",
-  "delete_question_desc" : "Do you really want to delete this question?"
+  "delete_question_desc" : "Do you really want to delete this question?",
+  "edit_quiz_question" : "Edit quiz question",
+  "edit_logical_question" : "Edit logical question"
 }
