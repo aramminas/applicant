@@ -243,6 +243,8 @@
   "add_new" : "Add new",
   "delete_title" : "Delete question",
   "delete_question_desc" : "Do you really want to delete this question?",
-  "edit_quiz_question" : "Edit quiz question",
-  "edit_logical_question" : "Edit logical question"
+  "add_edit_quiz_question" : "Add / Edit quiz question",
+  "add_edit_logical_question" : "Add / Edit logical question",
+  "add_edit_image": "Add / Edit image",
+  "add_edit_code": "Add / Edit code"
 }

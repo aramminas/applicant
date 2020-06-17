@@ -339,7 +339,7 @@ export default function ApplicantList(props) {
                                                                 />
                                                             </TableCell>
                                                             <TableCell component="th" id={labelId} scope="row" padding="none">
-                                                                {`${row.firstName} , ${row.lastName}`}
+                                                                {`${row.firstName}, ${row.lastName}`}
                                                             </TableCell>
                                                             <TableCell align="right">{row.email}</TableCell>
                                                             <TableCell align="right">{row.phone}</TableCell>

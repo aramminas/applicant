@@ -14,7 +14,9 @@ import {
 import {
     AddCircleOutline,
     AddLocationOutlined,
-    EditLocationOutlined, NewReleasesOutlined, PanoramaOutlined,
+    EditLocationOutlined,
+    NewReleasesOutlined,
+    PanoramaOutlined,
     RemoveCircleOutline,
 } from "@material-ui/icons"
 import TextField from "@material-ui/core/TextField"
@@ -119,10 +121,11 @@ const initOption = [0, 1, 2, 3]
 export default function EditViewAddQuiz(props) {
     const classes = useStyles()
     const { addToast } = useToasts()
-    const [quiz, setQuiz] = useState({...initQuiz})
+    const [quiz, setQuiz] = useState({...initQuiz, options: []})
     const [validation, setValidation] = useState(initValidation)
     const [optionsCount, setOptionsCount] = useState([...initOption])
     const [addReduce, setAddReduce] = useState('')
+    const [refuse, setRefuse] = useState(false)
     const {lang, changingQuestion, handleAddEditQuestion, cancelEditQuestion} = props
 
     useEffect(function () {
@@ -239,19 +242,23 @@ export default function EditViewAddQuiz(props) {
 
     const reduceOptions = () => {
         setAddReduce('admin-quiz-options-reduce')
-        setTimeout(function () {
-            if(quiz.multiAnswer && quiz.options.length === optionsCount.length){
-                setQuiz({...quiz, options: [...quiz.options.slice(0, -1)], rightAnswers: []})
-            }else if(quiz.options.length === optionsCount.length){
-                setQuiz({...quiz, options: [...quiz.options.slice(0, -1)]})
-            }
-            setAddReduce('')
-            setOptionsCount(optionsCount => {
-                optionsCount.pop()
-                return [...optionsCount]
-            })
-            setValidation({...validation,length: optionsCount.length})
-        },1000)
+        if(!refuse){
+            setRefuse(true)
+            setTimeout(function () {
+                if(quiz.multiAnswer && quiz.options.length === optionsCount.length){
+                    setQuiz({...quiz, options: [...quiz.options.slice(0, -1)], rightAnswers: []})
+                }else if(quiz.options.length === optionsCount.length){
+                    setQuiz({...quiz, options: [...quiz.options.slice(0, -1)]})
+                }
+                setAddReduce('')
+                setOptionsCount(optionsCount => {
+                    optionsCount.pop()
+                    return [...optionsCount]
+                })
+                setValidation({...validation,length: optionsCount.length})
+                setRefuse(false)
+            },1000)
+        }
     }
 
     const setImage = e => {
@@ -320,6 +327,7 @@ export default function EditViewAddQuiz(props) {
                 options:  quiz.options,
                 codeData: quiz.codeData,
                 imageUrl: quiz.imageUrl,
+                image: quiz.image.tag,
                 currentImageName: quiz.currentImageName,
                 multiAnswer: quiz.multiAnswer,
                 rightAnswers: [...quiz.rightAnswers],
@@ -388,7 +396,7 @@ export default function EditViewAddQuiz(props) {
         return (
             <div className={"admin-quiz-code-part"}>
                 <Typography variant="h6" gutterBottom className={"text-left"}>
-                    {lang.add_some_code}
+                    {lang.add_edit_code}
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item sm={12} md={6}>
@@ -419,7 +427,7 @@ export default function EditViewAddQuiz(props) {
         return (
             <div className={"admin-quiz-image-part"}>
                 <Typography variant="h6" gutterBottom className={"text-left"}>
-                    {lang.add_some_image}
+                    {lang.add_edit_image}
                 </Typography>
                 <Grid container spacing={3}>
                     <Grid item sm={12} md={6} className={"admin-quiz-image-input-part"}>
@@ -458,7 +466,7 @@ export default function EditViewAddQuiz(props) {
                 </div>
                 <Grid item xs={12}>
                     <Typography variant="h6" gutterBottom className={"text-left"}>
-                        {lang.edit_quiz_question}
+                        {lang.add_edit_quiz_question}
                     </Typography>
                     <form className={classes.root} noValidate autoComplete="off">
                         <div>
@@ -518,7 +526,7 @@ export default function EditViewAddQuiz(props) {
                                         color="primary"
                                     />
                                 }
-                                label={lang.add_code}
+                                label={lang.add_edit_code}
                             />
                             <FormControlLabel
                                 control={
@@ -529,7 +537,7 @@ export default function EditViewAddQuiz(props) {
                                         color="primary"
                                     />
                                 }
-                                label={lang.add_image}
+                                label={lang.add_edit_image}
                             />
                             <br/>
                             {/* Quiz Add Reduce Options Part */}

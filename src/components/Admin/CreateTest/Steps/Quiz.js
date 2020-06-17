@@ -116,6 +116,7 @@ export default function Quiz(props) {
     const [validation, setValidation] = useState(initValidation)
     const [optionsCount, setOptionsCount] = useState([...initOption])
     const [addReduce, setAddReduce] = useState('')
+    const [refuse, setRefuse] = useState(false)
 
     useEffect(function () {
         setQuiz({ ...quiz, options: []})
@@ -202,19 +203,23 @@ export default function Quiz(props) {
 
     const reduceOptions = () => {
         setAddReduce('admin-quiz-options-reduce')
-        setTimeout(function () {
-            if(quiz.multiAnswer && quiz.options.length === optionsCount.length){
-                setQuiz({...quiz, options: [...quiz.options.slice(0, -1)], rightAnswers: []})
-            }else if(quiz.options.length === optionsCount.length){
-                setQuiz({...quiz, options: [...quiz.options.slice(0, -1)]})
-            }
-            setAddReduce('')
-            setOptionsCount(optionsCount => {
-                optionsCount.pop()
-                return [...optionsCount]
-            })
-            setValidation({...validation,length: optionsCount.length})
-        },1000)
+        if(!refuse){
+            setRefuse(true)
+            setTimeout(function () {
+                if(quiz.multiAnswer && quiz.options.length === optionsCount.length){
+                    setQuiz({...quiz, options: [...quiz.options.slice(0, -1)], rightAnswers: []})
+                }else if(quiz.options.length === optionsCount.length){
+                    setQuiz({...quiz, options: [...quiz.options.slice(0, -1)]})
+                }
+                setAddReduce('')
+                setOptionsCount(optionsCount => {
+                    optionsCount.pop()
+                    return [...optionsCount]
+                })
+                setValidation({...validation,length: optionsCount.length})
+                setRefuse(false)
+            },1000)
+        }
     }
 
     const setImage = e => {

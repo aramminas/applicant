@@ -290,6 +290,7 @@ const CreateTest = () => {
                 }else{
                     finalData.tests.push(finalQuizData)
                 }
+                return true
             })
         }
         // step 3 - add logical type test
@@ -330,6 +331,7 @@ const CreateTest = () => {
                 }else{
                     finalData.tests.push(finalLogicalData)
                 }
+                return true
             })
         }
 
