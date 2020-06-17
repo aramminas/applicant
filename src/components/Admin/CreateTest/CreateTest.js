@@ -22,6 +22,7 @@ import Loader from 'react-loader-spinner'
 import {useToasts} from "react-toast-notifications"
 import makeId from '../../../helpers/makeId'
 import getUpdateChartData from '../../../helpers/getUpdateChartData'
+import {Animated} from "react-animated-css"
 
 import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
@@ -404,165 +405,173 @@ const CreateTest = () => {
                 <Grid container spacing={3} justify="center">
                     {/* Programming language part*/}
                     <Grid item xs={12} sm={4} className={"admin-element"}>
-                        <Paper className={classes.paper}>
-                            <div className={"test-type"}>
-                                <div>
-                                    <LaptopMac/>&nbsp;{lang.programming_language}
-                                    <div className={"add-new-item"} onClick={handleClick}>
-                                        <Settings/>
+                        <Animated animationIn="zoomIn"  animationInDuration={400} isVisible={true}>
+                            <Paper className={classes.paper}>
+                                <div className={"test-type"}>
+                                    <div>
+                                        <LaptopMac/>&nbsp;{lang.programming_language}
+                                        <div className={"add-new-item"} onClick={handleClick}>
+                                            <Settings/>
+                                        </div>
+                                        <Menu
+                                            id="simple-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleCloseAddDel}
+                                        >
+                                            <MenuItem onClick={() => handleClickOpen()}>
+                                                <AddCircleOutlineRounded htmlColor={"#009be5"}/>&nbsp;{lang.add_technology}
+                                            </MenuItem>
+                                            <MenuItem onClick={delTech}>
+                                                <RemoveCircleOutline htmlColor={"red"}/>&nbsp;{lang.delete_technology}
+                                            </MenuItem>
+                                        </Menu>
                                     </div>
-                                    <Menu
-                                        id="simple-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleCloseAddDel}
-                                    >
-                                        <MenuItem onClick={() => handleClickOpen()}>
-                                            <AddCircleOutlineRounded htmlColor={"#009be5"}/>&nbsp;{lang.add_technology}
-                                        </MenuItem>
-                                        <MenuItem onClick={delTech}>
-                                            <RemoveCircleOutline htmlColor={"red"}/>&nbsp;{lang.delete_technology}
-                                        </MenuItem>
-                                    </Menu>
-                                </div>
-                                <div>
-                                    <Grid container>
-                                        <Grid item xs={4}>
-                                            <div className={"programing-lang-image"}>
-                                                <img
-                                                    src={testData.parameters.technologyId &&
-                                                            techData[testData.parameters.technologyId] ?
-                                                                techData[testData.parameters.technologyId].icon :
-                                                        "/images/pages/technology_default.png"}
-                                                    alt="programing lang"/>
-                                            </div>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <FormControl variant="outlined" className={`select-app-lang ${classes.formControl}`}>
-                                                <InputLabel id="select-lang">{lang.select_language}</InputLabel>
-                                                <Select
-                                                    labelId="labelId"
-                                                    id="select-id-program-lang"
-                                                    value={testData.parameters.technologyId}
-                                                    onChange={handleChangeProgram}
-                                                    label={lang.select_language}
-                                                    error={validation.name}
-                                                >
-                                                    <MenuItem value="">
-                                                        <em>-- --</em>
-                                                    </MenuItem>
-                                                    {Object.keys(techData).map(key =>
-                                                        <MenuItem key={techData[key].id} value={techData[key].id}>
-                                                            {techData[key].name}
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={4}>
+                                                <div className={"programing-lang-image"}>
+                                                    <img
+                                                        src={testData.parameters.technologyId &&
+                                                        techData[testData.parameters.technologyId] ?
+                                                            techData[testData.parameters.technologyId].icon :
+                                                            "/images/pages/technology_default.png"}
+                                                        alt="programing lang"/>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={8}>
+                                                <FormControl variant="outlined" className={`select-app-lang ${classes.formControl}`}>
+                                                    <InputLabel id="select-lang">{lang.select_language}</InputLabel>
+                                                    <Select
+                                                        labelId="labelId"
+                                                        id="select-id-program-lang"
+                                                        value={testData.parameters.technologyId}
+                                                        onChange={handleChangeProgram}
+                                                        label={lang.select_language}
+                                                        error={validation.name}
+                                                    >
+                                                        <MenuItem value="">
+                                                            <em>-- --</em>
                                                         </MenuItem>
-                                                    )}
-                                                </Select>
-                                            </FormControl>
+                                                        {Object.keys(techData).map(key =>
+                                                            <MenuItem key={techData[key].id} value={techData[key].id}>
+                                                                {techData[key].name}
+                                                            </MenuItem>
+                                                        )}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </div>
                                 </div>
-                            </div>
-                        </Paper>
+                            </Paper>
+                        </Animated>
                     </Grid>
                     {/*  Level of professionalism part*/}
                     <Grid item xs={12} sm={4} className={"admin-element"}>
-                        <Paper className={classes.paper}>
-                            <div className={"test-type"}>
-                                <div>
-                                    <SupervisedUserCircleOutlined />&nbsp;{lang.level_of_professionalism}
-                                </div>
-                                <div>
-                                    <Grid container>
-                                        <Grid item xs={4}>
-                                            <div className={"programing-level-image"}>
-                                                <img src={"/images/pages/level1.png"} alt="programing level"/>
-                                            </div>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <FormControl variant="outlined" className={`select-app-level ${classes.formControl}`}>
-                                                <InputLabel id="select-level">{lang.select_level}</InputLabel>
-                                                <Select
-                                                    labelId="labelIdLevel"
-                                                    id="select-id-program-level"
-                                                    value={testData.parameters.testForLevel}
-                                                    onChange={handleChangeLevel}
-                                                    label={lang.select_level}
-                                                    error={validation.level}
-                                                >
-                                                    <MenuItem value="">
-                                                        <em>-- --</em>
-                                                    </MenuItem>
-                                                    {levels.map(level =>
-                                                        <MenuItem key={level.id} value={level.id}>
-                                                            {lang[level.name]}
+                        <Animated animationIn="zoomIn"  animationInDuration={600} isVisible={true}>
+                            <Paper className={classes.paper}>
+                                <div className={"test-type"}>
+                                    <div>
+                                        <SupervisedUserCircleOutlined />&nbsp;{lang.level_of_professionalism}
+                                    </div>
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={4}>
+                                                <div className={"programing-level-image"}>
+                                                    <img src={"/images/pages/level1.png"} alt="programing level"/>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={8}>
+                                                <FormControl variant="outlined" className={`select-app-level ${classes.formControl}`}>
+                                                    <InputLabel id="select-level">{lang.select_level}</InputLabel>
+                                                    <Select
+                                                        labelId="labelIdLevel"
+                                                        id="select-id-program-level"
+                                                        value={testData.parameters.testForLevel}
+                                                        onChange={handleChangeLevel}
+                                                        label={lang.select_level}
+                                                        error={validation.level}
+                                                    >
+                                                        <MenuItem value="">
+                                                            <em>-- --</em>
                                                         </MenuItem>
-                                                    )}
-                                                </Select>
-                                            </FormControl>
+                                                        {levels.map(level =>
+                                                            <MenuItem key={level.id} value={level.id}>
+                                                                {lang[level.name]}
+                                                            </MenuItem>
+                                                        )}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </div>
                                 </div>
-                            </div>
-                        </Paper>
+                            </Paper>
+                        </Animated>
                     </Grid>
                     {/* Duration part*/}
                     <Grid item xs={12} sm={3} className={"admin-element"}>
-                        <Paper className={classes.paper}>
-                            <div className={"test-type"}>
-                                <div>
-                                    <History/>&nbsp;{lang.duration}
-                                </div>
-                                <div>
-                                    <Grid container>
-                                        <Grid item xs={4}>
-                                            <div className={"programing-level-duration"}>
-                                                <img src={"/images/pages/time.png"} alt="programing duration"/>
-                                            </div>
-                                        </Grid>
-                                        <Grid item xs={8}>
-                                            <FormControl variant="outlined" className={`select-app-duration ${classes.formControl}`}>
-                                                <InputLabel id="select-duration">{lang.select_duration}</InputLabel>
-                                                <Select
-                                                    labelId="labelIdDuration"
-                                                    id="select-id-program-duration"
-                                                    value={testData.parameters.testDuration}
-                                                    onChange={handleChangeTime}
-                                                    label={lang.select_duration}
-                                                    error={validation.duration}
-                                                >
-                                                    <MenuItem value="">
-                                                        <em>-- --</em>
-                                                    </MenuItem>
-                                                    {times.map(time =>
-                                                        <MenuItem key={time.id} value={time.value}>
-                                                            {time.name}
+                        <Animated animationIn="zoomIn"  animationInDuration={800} isVisible={true}>
+                            <Paper className={classes.paper}>
+                                <div className={"test-type"}>
+                                    <div>
+                                        <History/>&nbsp;{lang.duration}
+                                    </div>
+                                    <div>
+                                        <Grid container>
+                                            <Grid item xs={4}>
+                                                <div className={"programing-level-duration"}>
+                                                    <img src={"/images/pages/time.png"} alt="programing duration"/>
+                                                </div>
+                                            </Grid>
+                                            <Grid item xs={8}>
+                                                <FormControl variant="outlined" className={`select-app-duration ${classes.formControl}`}>
+                                                    <InputLabel id="select-duration">{lang.select_duration}</InputLabel>
+                                                    <Select
+                                                        labelId="labelIdDuration"
+                                                        id="select-id-program-duration"
+                                                        value={testData.parameters.testDuration}
+                                                        onChange={handleChangeTime}
+                                                        label={lang.select_duration}
+                                                        error={validation.duration}
+                                                    >
+                                                        <MenuItem value="">
+                                                            <em>-- --</em>
                                                         </MenuItem>
-                                                    )}
-                                                </Select>
-                                            </FormControl>
+                                                        {times.map(time =>
+                                                            <MenuItem key={time.id} value={time.value}>
+                                                                {time.name}
+                                                            </MenuItem>
+                                                        )}
+                                                    </Select>
+                                                </FormControl>
+                                            </Grid>
                                         </Grid>
-                                    </Grid>
+                                    </div>
                                 </div>
-                            </div>
-                        </Paper>
+                            </Paper>
+                        </Animated>
                     </Grid>
                     <Grid item xs={12} sm={11} className={"admin-element"}>
-                        <Paper className={classes.paper}>
-                            <TestCreator
-                                lang={lang}
-                                added={added}
-                                quizzesCount={testData.quizzes.length}
-                                logicalTestsCount={testData.logicalTests.length}
-                                addQuizData={addQuizData}
-                                addLogicalData={addLogicalData}
-                                testData={testData}
-                                deleteTest={deleteTest}
-                                validation={validation}
-                                resetDefaultData={resetDefaultData}
-                                createNewTest={createNewTest}
-                            />
-                        </Paper>
+                        <Animated animationIn="zoomIn"  animationInDuration={1000} isVisible={true}>
+                            <Paper className={classes.paper}>
+                                <TestCreator
+                                    lang={lang}
+                                    added={added}
+                                    quizzesCount={testData.quizzes.length}
+                                    logicalTestsCount={testData.logicalTests.length}
+                                    addQuizData={addQuizData}
+                                    addLogicalData={addLogicalData}
+                                    testData={testData}
+                                    deleteTest={deleteTest}
+                                    validation={validation}
+                                    resetDefaultData={resetDefaultData}
+                                    createNewTest={createNewTest}
+                                />
+                            </Paper>
+                        </Animated>
                     </Grid>
                 </Grid>
             </div>
