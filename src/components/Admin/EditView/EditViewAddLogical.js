@@ -67,6 +67,8 @@ const initLogical = {
         tag: false,
         animate: false
     },
+    score: "",
+    currentScore: "",
     options: [],
     rightAnswers: [],
     optionsOrText: false,
@@ -76,6 +78,7 @@ const initValidation = {
     question: false,
     options: [],
     rightAnswer: true,
+    score: false,
     length: 4
 }
 
@@ -100,6 +103,8 @@ export default function EditViewAddLogical(props) {
                 rightAnswers: changingQuestion.rightAnswers && changingQuestion.rightAnswers.length ?
                                 [...changingQuestion.rightAnswers] : [],
                 optionsOrText: changingQuestion.optionsOrText,
+                score: changingQuestion.score,
+                currentScore: changingQuestion.score,
                 image: {
                     tag: !!changingQuestion.imageUrl,
                     animate: !!changingQuestion.imageUrl,
@@ -123,6 +128,16 @@ export default function EditViewAddLogical(props) {
         if(event.target.name === 'logical'){
             setLogical({...logical,question:event.target.value})
             setValidation({...validation,question: !!!event.target.value?.trim()})
+        }else if(event.target.name === 'score'){
+            if(event.target.value >= 0 && event.target.value < 1001){
+                setValidation({...validation, score: !!!event.target.value?.trim()})
+                setLogical({...logical, score: event.target.value})
+            }else {
+                addToast(lang.score_warning, {
+                    appearance: 'warning',
+                    autoDismiss: true
+                })
+            }
         }else {
             logical.options[+event.target.name] = event.target.value
             setLogical({...logical,options:logical.options})
@@ -183,11 +198,17 @@ export default function EditViewAddLogical(props) {
 
     const checkLogicalTest = (action) => {
         // Checking for a question
-        let emptyQuestion = false, rightAnswer = false, ready = false,
+        let emptyQuestion = false, rightAnswer = false, ready = false, score = false,
             currentOption = false, errorOptions, checkAnswer, checkOption
+
+        let scoreValue = Number(logical.score)
 
         if(!logical.question.trim()){
             emptyQuestion = true
+        }
+
+        if(scoreValue > 0 && scoreValue < 1001){
+            score = true
         }
 
         // Checking for an options & right answers
@@ -219,10 +240,10 @@ export default function EditViewAddLogical(props) {
             })
         }
 
-        setValidation({...validation, question: emptyQuestion, options:errorOptions, rightAnswer})
+        setValidation({...validation, question: emptyQuestion, options:errorOptions, rightAnswer, score: !score})
 
         // after checking the data, the function for adding a logical test is called
-        if(emptyQuestion || (!logical.optionsOrText && (!rightAnswer || checkOption))){
+        if(emptyQuestion || !score || (!logical.optionsOrText && (!rightAnswer || checkOption))){
             ready = true
         }
 
@@ -237,6 +258,8 @@ export default function EditViewAddLogical(props) {
                 optionsOrText: logical.optionsOrText,
                 rightAnswers: logical.rightAnswers,
                 imageData: logical.imageData,
+                score: Number(logical.score),
+                currentScore: Number(logical.currentScore),
                 type: "logical",
             }
             handleAddEditQuestion(action, addUpdateLogical)
@@ -352,28 +375,53 @@ export default function EditViewAddLogical(props) {
                     <h2>{lang.logical_question}</h2>
                 </div>
                 <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom className={"text-left"}>
-                        {lang.add_edit_logical_question}
-                    </Typography>
                     <form className={classes.root} noValidate autoComplete="off">
                         <div>
-                            <TextField
-                                id="logical-question"
-                                label={lang.logical_question}
-                                multiline
-                                variant="outlined"
-                                name={`logical`}
-                                onChange={handleChange}
-                                fullWidth
-                                autoFocus
-                                required
-                                error={validation.question && true}
-                                value={logical.question !== "" ? logical.question : ""}
-                                aria-describedby={`logical-question-helper-text`}
-                            />
-                            {validation.question &&
-                                <FormHelperText id={`logical-question-helper-text`}>{lang.required_field}</FormHelperText>
-                            }
+                            <Grid container spacing={3}>
+                                <Grid item sm={11}>
+                                    <Typography variant="h6" gutterBottom className={"text-left"}>
+                                        {lang.add_edit_logical_question}
+                                    </Typography>
+                                    <TextField
+                                        id="logical-question"
+                                        label={lang.logical_question}
+                                        multiline
+                                        variant="outlined"
+                                        name={`logical`}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        autoFocus
+                                        required
+                                        error={validation.question && true}
+                                        value={logical.question !== "" ? logical.question : ""}
+                                        aria-describedby={`logical-question-helper-text`}
+                                    />
+                                    {validation.question &&
+                                        <FormHelperText id={`logical-question-helper-text`}>{lang.required_field}</FormHelperText>
+                                    }
+                                </Grid>
+                                <Grid item sm={1}>
+                                    <Typography variant="h6" gutterBottom className={"text-right"}>
+                                        {lang.score}
+                                    </Typography>
+                                    <TextField
+                                        id="logical-score"
+                                        label={lang.score}
+                                        multiline
+                                        variant="outlined"
+                                        name={`score`}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        required
+                                        error={validation.score && true}
+                                        value={logical.score !== "" ? logical.score : ""}
+                                        aria-describedby={`logical-score-helper-text`}
+                                    />
+                                    {validation.score &&
+                                        <FormHelperText id={`score-helper-text`}>{lang.required}</FormHelperText>
+                                    }
+                                </Grid>
+                            </Grid>
                         </div>
                         {/* Logical Image Part */}
                         { logical.image.tag ?

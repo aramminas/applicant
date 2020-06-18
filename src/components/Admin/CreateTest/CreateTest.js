@@ -67,6 +67,7 @@ const initTestData = {
         testForLevel: '',
         testDuration: '',
     },
+    totalScore: 0,
     quizzes: [],
     logicalTests: [],
 }
@@ -192,15 +193,17 @@ const CreateTest = () => {
 
     const addQuizData = (quiz) => {
         setTestData((testData) => {
+            testData.totalScore += Number(quiz.score)
             testData.quizzes.push(quiz)
-            return {...testData, quizzes: testData.quizzes}
+            return {...testData, quizzes: testData.quizzes, totalScore: testData.totalScore}
         })
     }
 
     const addLogicalData = (logical) => {
         setTestData((testData) => {
+            testData.totalScore += Number(logical.score)
             testData.logicalTests.push(logical)
-            return {...testData, logicalTests: testData.logicalTests}
+            return {...testData, logicalTests: testData.logicalTests, totalScore: testData.totalScore}
         })
     }
 
@@ -247,6 +250,7 @@ const CreateTest = () => {
         const finalData = {
             parameters: {},
             tests: [],
+            totalScore: testData.totalScore,
         }
         const quizCount = testData.quizzes.length
         const LogicalCount = testData.logicalTests.length
@@ -266,6 +270,7 @@ const CreateTest = () => {
                     options: value.options,
                     rightAnswers: value.rightAnswers,
                     multiAnswer: value.multiAnswer,
+                    score: value.score,
                     type: "quiz",
                 }
                 // add the image in the storage firebase and get url
@@ -306,6 +311,7 @@ const CreateTest = () => {
                     options: value.options,
                     rightAnswers: value.rightAnswers,
                     optionsOrText: value.optionsOrText,
+                    score: value.score,
                     type: "logical",
                 }
                 // add the image in the storage firebase and get url
@@ -562,6 +568,7 @@ const CreateTest = () => {
                                     added={added}
                                     quizzesCount={testData.quizzes.length}
                                     logicalTestsCount={testData.logicalTests.length}
+                                    totalScore={testData.totalScore}
                                     addQuizData={addQuizData}
                                     addLogicalData={addLogicalData}
                                     testData={testData}

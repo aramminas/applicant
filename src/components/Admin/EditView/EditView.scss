@@ -241,7 +241,7 @@
       }
 
       .col-2-t {
-        flex-basis: 35%;
+        flex-basis: 30%;
         display: block;
         width: 100px;
         overflow: hidden;
@@ -258,6 +258,10 @@
       }
 
       .col-5-t {
+        flex-basis: 5%;
+      }
+
+      .col-6-t {
         flex-basis: 10%;
 
         & .edit-icon:hover {
@@ -266,13 +270,23 @@
         }
       }
 
-      .col-6-t {
+      .col-7-t {
         flex-basis: 10%;
         text-align: center;
 
         & .delete-icon:hover {
           cursor: pointer;
           color: #f64557;
+        }
+      }
+
+      & .table-row {
+        .col-4-t {
+          text-align: left;
+        }
+        & .col-5-t {
+          color: #007fba;
+          font-weight: 600;
         }
       }
 

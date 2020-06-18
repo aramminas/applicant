@@ -80,6 +80,7 @@ const initLogical = {
         tag: false,
         animate: false
     },
+    score: "",
     options: [],
     rightAnswers: [],
     optionsOrText: false,
@@ -89,6 +90,7 @@ const initValidation = {
     question: false,
     options: [],
     rightAnswer: true,
+    score: false,
     length: 4
 }
 
@@ -99,7 +101,7 @@ export default function Logical(props) {
     const { addToast } = useToasts()
     const [logical, setLogical] = useState({...initLogical})
     const [validation, setValidation] = useState(initValidation)
-    const {lang, logicalTestsCount, addLogicalData, complete} = props
+    const {lang, totalScore, logicalTestsCount, addLogicalData, complete} = props
 
     useEffect(function () {
         setLogical({ ...logical, options: []})
@@ -115,6 +117,16 @@ export default function Logical(props) {
         if(event.target.name === 'logical'){
             setLogical({...logical,question:event.target.value})
             setValidation({...validation,question: !!!event.target.value?.trim()})
+        }else if(event.target.name === 'score'){
+            if(event.target.value >= 0 && event.target.value < 1001){
+                setValidation({...validation, score: !!!event.target.value?.trim()})
+                setLogical({...logical, score: event.target.value})
+            }else {
+                addToast(lang.score_warning, {
+                    appearance: 'warning',
+                    autoDismiss: true
+                })
+            }
         }else {
             logical.options[+event.target.name] = event.target.value
             setLogical({...logical,options:logical.options})
@@ -185,11 +197,17 @@ export default function Logical(props) {
 
     const checkLogicalTest = () => {
         // Checking for a question
-        let emptyQuestion = false, rightAnswer = false, ready = false,
+        let emptyQuestion = false, rightAnswer = false, ready = false, score = false,
             currentOption = false, errorOptions, checkAnswer, checkOption
+
+        let scoreValue = Number(logical.score)
 
         if(!logical.question.trim()){
             emptyQuestion = true
+        }
+
+        if(scoreValue > 0 && scoreValue < 1001){
+            score = true
         }
 
         // Checking for an options & right answers
@@ -220,9 +238,9 @@ export default function Logical(props) {
                 autoDismiss: true
             })
         }
-        setValidation({...validation, question: emptyQuestion, options:errorOptions, rightAnswer})
+        setValidation({...validation, question: emptyQuestion, options:errorOptions, rightAnswer, score: !score})
         // after checking the data, the function for adding a logical test is called
-        if(emptyQuestion || (!logical.optionsOrText && (!rightAnswer || checkOption))){
+        if(emptyQuestion || !score || (!logical.optionsOrText && (!rightAnswer || checkOption))){
             ready = true
         }
 
@@ -235,6 +253,7 @@ export default function Logical(props) {
                 optionsOrText: logical.optionsOrText,
                 rightAnswers: logical.rightAnswers,
                 imageData: logical.imageData,
+                score: logical.score,
             }
             addLogicalData(createNewLogical)
             resetLogicalData("added")
@@ -350,28 +369,54 @@ export default function Logical(props) {
                 <Grid container spacing={3}>
                     <Grid item xs={12}>
                         {logicalTestsCount > 0 && <sub className={"admin-logical-count"}>{lang.number_logical} - <span>{logicalTestsCount}</span></sub>}
-                        <Typography variant="h6" gutterBottom className={"text-left"}>
-                            {lang.enter_logical_question}
-                        </Typography>
                         <form className={classes.root} noValidate autoComplete="off">
                             <div>
-                                <TextField
-                                    id="logical-question"
-                                    label={lang.logical_question}
-                                    multiline
-                                    variant="outlined"
-                                    name={`logical`}
-                                    onChange={handleChange}
-                                    fullWidth
-                                    autoFocus
-                                    required
-                                    error={validation.question && true}
-                                    value={logical.question !== "" ? logical.question : ""}
-                                    aria-describedby={`logical-question-helper-text`}
-                                />
-                                {validation.question &&
-                                    <FormHelperText id={`logical-question-helper-text`}>{lang.required_field}</FormHelperText>
-                                }
+                                <Grid container spacing={3}>
+                                    <Grid item sm={11}>
+                                        <Typography variant="h6" gutterBottom className={"text-left"}>
+                                            {lang.enter_logical_question}
+                                        </Typography>
+                                        <TextField
+                                            id="logical-question"
+                                            label={lang.logical_question}
+                                            multiline
+                                            variant="outlined"
+                                            name={`logical`}
+                                            onChange={handleChange}
+                                            fullWidth
+                                            autoFocus
+                                            required
+                                            error={validation.question && true}
+                                            value={logical.question !== "" ? logical.question : ""}
+                                            aria-describedby={`logical-question-helper-text`}
+                                        />
+                                        {validation.question &&
+                                            <FormHelperText id={`logical-question-helper-text`}>{lang.required_field}</FormHelperText>
+                                        }
+                                    </Grid>
+                                    <Grid item sm={1}>
+                                        <Typography variant="h6" gutterBottom className={"text-right"}>
+                                            {lang.score}
+                                        </Typography>
+                                        <TextField
+                                            id="logical-score"
+                                            label={lang.score}
+                                            multiline
+                                            variant="outlined"
+                                            name={`score`}
+                                            onChange={handleChange}
+                                            fullWidth
+                                            required
+                                            error={validation.score && true}
+                                            value={logical.score !== "" ? logical.score : ""}
+                                            aria-describedby={`logical-score-helper-text`}
+                                        />
+                                        {validation.score &&
+                                            <FormHelperText id={`score-helper-text`}>{lang.required}</FormHelperText>
+                                        }
+                                        {totalScore > 0 && <sub className={"admin-test-total-score"}>{lang.total_score} - <span>{totalScore}</span></sub>}
+                                    </Grid>
+                                </Grid>
                             </div>
                             {/* Logical Image Part */}
                             { logical.image.tag ?

@@ -33,14 +33,25 @@
     }
   }
 
+  & .admin-test-total-score,
   & .admin-quiz-count,
   & .admin-logical-count {
     text-align: right;
     display: inherit;
+    margin-bottom: 3px;
 
     & span {
       color: #007fba;
       font-weight: 600;
+    }
+  }
+
+  & .admin-test-total-score {
+    margin-top: 5px;
+    display: inline-flex;
+    width: max-content;
+    & span {
+      margin-left: 3px;
     }
   }
 }
@@ -154,6 +165,7 @@
 }
 
 p[id^='option-helper-text-'],
+p#score-helper-text,
 p#quiz-question-helper-text,
 p#logical-question-helper-text {
   color: #c90000;
@@ -257,7 +269,7 @@ p#logical-question-helper-text {
     }
 
     .col-2-t {
-      flex-basis: 40%;
+      flex-basis: 35%;
       display: block;
       width: 100px;
       overflow: hidden;
@@ -274,12 +286,24 @@ p#logical-question-helper-text {
     }
 
     .col-5-t {
+      flex-basis: 5%;
+    }
+
+    .col-6-t {
       flex-basis: 15%;
       text-align: center;
 
       & .delete-icon:hover {
         cursor: pointer;
         color: #f64557;
+      }
+    }
+
+    & .table-row {
+      & .col-5-t {
+        flex-basis: 5%;
+        color: #007fba;
+        font-weight: 600;
       }
     }
 

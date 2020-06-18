@@ -248,6 +248,7 @@ const addEditQuestion = (action, id, data, test) => {
                 image: data.image,
                 options: data.options,
                 rightAnswers: data.rightAnswers,
+                score: data.score,
                 type: data.type,
             }
 
@@ -256,6 +257,10 @@ const addEditQuestion = (action, id, data, test) => {
                 editData.multiAnswer = data.multiAnswer
             }else if(data.type === "logical"){
                 editData.optionsOrText = data.optionsOrText
+            }
+
+            if(data.score !== data.currentScore){
+                test.totalScore = test.totalScore - data.currentScore + data.score
             }
 
             // if there is an old image and a new one is added
@@ -363,8 +368,11 @@ const addEditQuestion = (action, id, data, test) => {
                 imageName: "",
                 options: data.options,
                 rightAnswers: data.rightAnswers,
+                score: data.score,
                 type: data.type,
             }
+
+            test.totalScore += data.score
 
             if(data.type === "quiz"){
                 addData.codeData = data.codeData

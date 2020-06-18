@@ -7,6 +7,7 @@ import {AssignmentOutlined} from '@material-ui/icons'
 import {Animated} from 'react-animated-css'
 import AdminTestsList from './AdminTestsList'
 import DeleteTestModal from './DeleteTestModal'
+import GetLinkModal from './GetLinkModal'
 import lang_en from '../../../lang/en/main.json'
 import lang_am from '../../../lang/am/main.json'
 import '../Admin.scss'
@@ -17,6 +18,8 @@ const AdminTests = () => {
     const {language} = useSelector(state => state.language)
     const [tests, setTests] = useState([])
     const [open, setOpen] = useState(false)
+    const [openLink, setOpenLink] = useState(false)
+    const [linkId, setLinkId] = useState('')
     const [deleteId, setDeleteId] = useState('')
     const [technology, setTechnology] = useState([])
     const [addLoader,setAddLoader] = useState(false)
@@ -55,9 +58,19 @@ const AdminTests = () => {
         setOpen(true)
     }
 
+    const handleClickOpenLink = (id) => {
+        setLinkId(id)
+        setOpenLink(true)
+    }
+
     const handleClose = () => {
         setDeleteId('')
         setOpen(false)
+    }
+
+    const handleCloseLink = () => {
+        setLinkId('')
+        setOpenLink(false)
     }
 
     const changeLoader = (data) => {
@@ -105,7 +118,8 @@ const AdminTests = () => {
                         :
                         /* Tests data table */
                         <Animated animationIn="zoomIn" animationOut="fadeOut" isVisible={true}>
-                            <AdminTestsList tests={tests} technology={technology} lang={lang} handleClickOpen={handleClickOpen}/>
+                            <AdminTestsList tests={tests} technology={technology} lang={lang} handleClickOpen={handleClickOpen}
+                                handleClickOpenLink={handleClickOpenLink}/>
                         </Animated>
                     :
                     <div className={"admin-tests-empty-data"}>
@@ -116,7 +130,10 @@ const AdminTests = () => {
                     </div>
                 }
             </div>
+            {/* Delete test modal */}
             <DeleteTestModal lang={lang} open={open} handleClose={handleClose} deleteTest={deleteTest}/>
+            {/* Link modal */}
+            <GetLinkModal lang={lang} id={linkId} open={openLink} handleClose={handleCloseLink}/>
             {
                 addLoader ?
                     <div className={"admin-loader"}>

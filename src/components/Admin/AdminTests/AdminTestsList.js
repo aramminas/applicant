@@ -27,6 +27,7 @@ import {
     Settings,
     EditOutlined,
     VisibilityOutlined,
+    InsertLink,
 } from '@material-ui/icons'
 import data from '../../../constants'
 const levels = data.admin.applicantLevels
@@ -178,7 +179,7 @@ export default function AdminTestsList(props) {
     const classes = useStyles2()
     const [page, setPage] = useState(0)
     const [rowsPerPage, setRowsPerPage] = useState(5)
-    const {tests: rows, technology, lang, handleClickOpen} = props
+    const {tests: rows, technology, lang, handleClickOpen, handleClickOpenLink} = props
 
     const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage)
 
@@ -193,6 +194,10 @@ export default function AdminTestsList(props) {
 
     const deleteTest = (id) => {
         handleClickOpen(id)
+    }
+
+    const getLink = (id) => {
+        handleClickOpenLink(id)
     }
 
     return (
@@ -253,6 +258,9 @@ export default function AdminTestsList(props) {
                                                         {lang.view}&nbsp;<VisibilityOutlined htmlColor={"#073589"}/>
                                                     </MenuItem>
                                                 </NavLink>
+                                                <MenuItem className={classes.edit} onClick={() => {getLink(row.id); popupState.close()}}>
+                                                    <InsertLink htmlColor={"#073589"}/>&nbsp;{lang.get_link}
+                                                </MenuItem>
                                                 <MenuItem className={classes.delete} onClick={() => {deleteTest(row.id); popupState.close()}}>
                                                     <DeleteForeverOutlined htmlColor={"#073589"}/>{lang.delete}
                                                 </MenuItem>

@@ -64,7 +64,7 @@ export default function TestCreator(props) {
     const [openEmptyModal, setEmptyModal] = useState(false)
     const [complete, setComplete] = useState(initComplete)
     const [resetSettings, setResetSettings] = useState(false)
-    const {lang, quizzesCount, logicalTestsCount, addQuizData, added,
+    const {lang, quizzesCount, logicalTestsCount, totalScore, addQuizData, added,
            addLogicalData, testData, deleteTest, createNewTest, validation, resetDefaultData} = props
     const steps = getSteps(lang)
 
@@ -199,18 +199,21 @@ export default function TestCreator(props) {
                                 case 0:
                                     return <Quiz
                                         lang={lang}
+                                        totalScore={totalScore}
                                         quizzesCount={quizzesCount}
                                         addQuizData={addQuizData}
                                         complete={complete.quiz}/>
                                 case 1:
                                     return <Logical
                                         lang={lang}
+                                        totalScore={totalScore}
                                         logicalTestsCount={logicalTestsCount}
                                         addLogicalData={addLogicalData}
                                         complete={complete.logical}/>
                                 case 2:
                                     return <FinishTest
                                         lang={lang}
+                                        totalScore={totalScore}
                                         testData={testData}
                                         deleteTest={deleteTest}/>
                                 default: return <UnknownStep/>

@@ -84,7 +84,8 @@ const createTestList = (data, deleteTestById, deleteClass, classes, lang, type) 
                             <Button className={classes.button}><RadioButtonUncheckedOutlined htmlColor={"gold"}/>{lang.no}</Button>
                         }
                     </div>
-                    <div className="col col-5-t" data-label={lang.remove}>
+                    <div className="col col-5-t" data-label={lang.score}>{value.score}</div>
+                    <div className="col col-6-t" data-label={lang.remove}>
                         <IconButton onClick={()=>deleteTestById(type, value.id)}>
                             <DeleteForeverOutlined className={"delete-icon"} htmlColor={"#343a40"}/>
                         </IconButton>
@@ -98,7 +99,7 @@ const createTestList = (data, deleteTestById, deleteClass, classes, lang, type) 
 export default function FinishTest(props) {
     const classes = useStyles()
     const [deleteClass,setDeleteClass] = useState(0)
-    const {lang, testData, deleteTest} = props
+    const {lang, totalScore, testData, deleteTest} = props
     const quizType = 'quiz', logicalType = 'logical'
 
     const deleteTestById = (type, id) =>{
@@ -128,9 +129,10 @@ export default function FinishTest(props) {
                             <li className="table-header">
                                 <div className="col col-1-t">&#8470;</div>
                                 <div className="col col-2-t text-center">{lang.question}</div>
-                                <div className="col col-3-t">{lang.code}</div>
-                                <div className="col col-4-t">{lang.image}</div>
-                                <div className="col col-5-t">{lang.remove}</div>
+                                <div className="col col-3-t text-center">{lang.code}</div>
+                                <div className="col col-4-t text-center">{lang.image}</div>
+                                <div className="col col-5-t">{lang.score}</div>
+                                <div className="col col-6-t">{lang.remove}</div>
                             </li>
                             <h5>
                                 {lang.quizzes}
@@ -148,6 +150,9 @@ export default function FinishTest(props) {
                                 logicalTestList :
                                 <><DeleteOutline />{lang.no_added_tests}</>
                             }
+                            <h5>
+                                {lang.total_score} - {totalScore}
+                            </h5>
                         </ul>
                     </div>
             }

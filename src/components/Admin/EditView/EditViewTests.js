@@ -105,12 +105,13 @@ const createTestList = (data, deleteTestById, showTestById, deleteClass, classes
                             <Button className={classes.button}><RadioButtonUncheckedOutlined htmlColor={"gold"}/>{lang.no}</Button>
                         }
                     </div>
-                    <div className="col col-5-t" data-label={lang.edit}>
+                    <div className="col col-5-t" data-label={lang.score}>{value.score}</div>
+                    <div className="col col-6-t" data-label={lang.edit}>
                         <IconButton onClick={()=>showTestById(type, value.id)}>
                             <EditLocationOutlined className={"edit-icon"} htmlColor={"#343a40"}/>
                         </IconButton>
                     </div>
-                    <div className="col col-6-t" data-label={lang.remove}>
+                    <div className="col col-7-t" data-label={lang.remove}>
                         <IconButton onClick={()=>deleteTestById(type, value.id)}>
                             <DeleteForeverOutlined className={"delete-icon"} htmlColor={"#343a40"}/>
                         </IconButton>
@@ -129,7 +130,7 @@ export default function EditViewTests(props) {
     const [openQuiz, setOpenQuiz] = useState(false)
     const [openLogical, setOpenLogical] = useState(false)
     const [changingQuestion, setChangingQuestion] = useState({})
-    const {lang, questions, deleteQuestion, handleAddEditQuestion} = props
+    const {lang, questions, totalScore, deleteQuestion, handleAddEditQuestion} = props
     const quizType = 'quiz', logicalType = 'logical'
     let num = questions.length
 
@@ -213,8 +214,9 @@ export default function EditViewTests(props) {
                                             <div className="col col-2-t ">{lang.question}</div>
                                             <div className="col col-3-t ">{lang.code}</div>
                                             <div className="col col-4-t ">{lang.image}</div>
-                                            <div className="col col-5-t ">{lang.edit}</div>
-                                            <div className="col col-6-t ">{lang.remove}</div>
+                                            <div className="col col-5-t ">{lang.score}</div>
+                                            <div className="col col-6-t ">{lang.edit}</div>
+                                            <div className="col col-7-t ">{lang.remove}</div>
                                         </li>
                                         <h5>
                                             {lang.quizzes}
@@ -238,6 +240,9 @@ export default function EditViewTests(props) {
                                             logicalTestList :
                                             <><DeleteOutline/>{lang.no_added_tests}</>
                                         }
+                                        <h5>
+                                            {lang.total_score} - {totalScore}
+                                        </h5>
                                     </ul>
                                 </div>
                             </Paper>

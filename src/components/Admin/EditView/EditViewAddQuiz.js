@@ -99,6 +99,8 @@ const initQuiz = {
     options: [],
     rightAnswers: [],
     multiAnswer: false,
+    score: "",
+    currentScore: "",
     code: {
         tag: false,
         animate: false
@@ -113,6 +115,7 @@ const initValidation = {
     question: false,
     options: [],
     rightAnswer: true,
+    score: false,
     length: 4
 }
 
@@ -145,6 +148,8 @@ export default function EditViewAddQuiz(props) {
                 options: optionsNum > 0 ? [...changingQuestion.options] : [],
                 rightAnswers: changingQuestion.rightAnswers.length ? [...changingQuestion.rightAnswers] : [],
                 multiAnswer: changingQuestion.multiAnswer,
+                score: changingQuestion.score,
+                currentScore: changingQuestion.score,
                 code: {
                     tag: !!changingQuestion.codeData,
                     animate: !!changingQuestion.codeData,
@@ -186,6 +191,16 @@ export default function EditViewAddQuiz(props) {
         if(event.target.name === 'question'){
             setQuiz({...quiz,question:event.target.value})
             setValidation({...validation,question: !!!event.target.value?.trim()})
+        }else if(event.target.name === 'score'){
+            if(event.target.value >= 0 && event.target.value < 1001){
+                setValidation({...validation, score: !!!event.target.value?.trim()})
+                setQuiz({...quiz, score: event.target.value})
+            }else {
+                addToast(lang.score_warning, {
+                    appearance: 'warning',
+                    autoDismiss: true
+                })
+            }
         }else{
             quiz.options[+event.target.name] = event.target.value
             setQuiz({...quiz,options:quiz.options})
@@ -289,12 +304,19 @@ export default function EditViewAddQuiz(props) {
 
     const checkQuiz = (action) => {
         // Checking for a question
-        let emptyQuestion = false, rightAnswer = false, ready = false,
+        let emptyQuestion = false, rightAnswer = false, ready = false, score = false,
             currentOption = false, errorOptions, checkAnswer, checkOption
+
+        let scoreValue = Number(quiz.score)
 
         if(!quiz.question.trim()){
             emptyQuestion = true
         }
+
+        if(scoreValue > 0 && scoreValue < 1001){
+            score = true
+        }
+
         // Checking for an options & right answers
         errorOptions = optionsCount.map(val => {
             // Checking for right answers
@@ -315,9 +337,9 @@ export default function EditViewAddQuiz(props) {
                 autoDismiss: true
             })
         }
-        setValidation({...validation, question: emptyQuestion, options:errorOptions, rightAnswer})
+        setValidation({...validation, question: emptyQuestion, options:errorOptions, rightAnswer, score: !score})
         // after checking the data, the function for adding a quiz is called
-        if(emptyQuestion || !rightAnswer || checkOption){
+        if(emptyQuestion || !rightAnswer || checkOption || !score){
             ready = true
         }
         if(!ready){
@@ -332,6 +354,8 @@ export default function EditViewAddQuiz(props) {
                 multiAnswer: quiz.multiAnswer,
                 rightAnswers: [...quiz.rightAnswers],
                 imageData: quiz.imageData,
+                score: Number(quiz.score),
+                currentScore: Number(quiz.currentScore),
                 type: "quiz",
             }
             handleAddEditQuestion(action, addUpdateQuiz)
@@ -465,28 +489,53 @@ export default function EditViewAddQuiz(props) {
                     <h2>{lang.quiz_question}</h2>
                 </div>
                 <Grid item xs={12}>
-                    <Typography variant="h6" gutterBottom className={"text-left"}>
-                        {lang.add_edit_quiz_question}
-                    </Typography>
                     <form className={classes.root} noValidate autoComplete="off">
                         <div>
-                            <TextField
-                                id="quiz-question"
-                                label={lang.quiz_question}
-                                multiline
-                                variant="outlined"
-                                name={`question`}
-                                onChange={handleChange}
-                                fullWidth
-                                autoFocus
-                                required
-                                error={validation.question && true}
-                                value={quiz.question !== "" ? quiz.question : ""}
-                                aria-describedby={`quiz-question-helper-text`}
-                            />
-                            {validation.question &&
-                                <FormHelperText id={`quiz-question-helper-text`}>{lang.required_field}</FormHelperText>
-                            }
+                            <Grid container spacing={3}>
+                                <Grid item sm={11}>
+                                    <Typography variant="h6" gutterBottom className={"text-left"}>
+                                        {lang.add_edit_quiz_question}
+                                    </Typography>
+                                    <TextField
+                                        id="quiz-question"
+                                        label={lang.quiz_question}
+                                        multiline
+                                        variant="outlined"
+                                        name={`question`}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        autoFocus
+                                        required
+                                        error={validation.question && true}
+                                        value={quiz.question !== "" ? quiz.question : ""}
+                                        aria-describedby={`quiz-question-helper-text`}
+                                    />
+                                    {validation.question &&
+                                        <FormHelperText id={`quiz-question-helper-text`}>{lang.required_field}</FormHelperText>
+                                    }
+                                </Grid>
+                                <Grid item sm={1}>
+                                    <Typography variant="h6" gutterBottom className={"text-right"}>
+                                        {lang.score}
+                                    </Typography>
+                                    <TextField
+                                        id="quiz-score"
+                                        label={lang.score}
+                                        multiline
+                                        variant="outlined"
+                                        name={`score`}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        required
+                                        error={validation.score && true}
+                                        value={quiz.score !== "" ? quiz.score : ""}
+                                        aria-describedby={`quiz-score-helper-text`}
+                                    />
+                                    {validation.score &&
+                                        <FormHelperText id={`score-helper-text`}>{lang.required}</FormHelperText>
+                                    }
+                                </Grid>
+                            </Grid>
                         </div>
                         {/* Quiz Code Part */}
                         { quiz.code.tag ?

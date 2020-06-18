@@ -151,8 +151,8 @@ const EditView = () => {
                             <>
                                 <EditViewParameters lang={lang} id={id} parameters={test.parameters} tech={tech}
                                     currentTech={currentTech} getTestData={getTestData}/>
-                                <EditViewTests lang={lang} questions={test.tests} deleteQuestion={deleteQuestion}
-                                    handleAddEditQuestion={handleAddEditQuestion}/>
+                                <EditViewTests lang={lang} questions={test.tests} totalScore={test.totalScore}
+                                    deleteQuestion={deleteQuestion} handleAddEditQuestion={handleAddEditQuestion}/>
                             </>
                         :
                         <div className={"admin-tests-empty-data"}>
