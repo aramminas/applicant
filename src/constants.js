@@ -95,7 +95,33 @@ const data = {
                 {x: new Date(2020, 4, 1), y: 1}
             ]
         ],
-    }
+    },
+    // Test
+    testParams: {
+        levels :{
+            level_1 : 'beginner',
+            level_2 : 'junior',
+            level_3 : 'middle',
+            level_4 : 'senior',
+            level_5 : 'master',
+        },
+        times: {
+            time_30: '30 minutes',
+            time_60: '1 hour',
+            time_75: '1 hour 15 minutes',
+            time_90: '1 hour 30 minutes',
+            time_105: '1 hour 45 minutes',
+            time_120: '2 hour',
+            time_135: '2 hour 15 minutes',
+            time_150: '2 hour 30 minutes',
+        },
+    },
+    notFoundCases: [
+        {id: 0, desc: "test_not_found_case_1", duration: 1400},
+        {id: 1, desc: "test_not_found_case_2", duration: 1100},
+        {id: 2, desc: "test_not_found_case_3", duration: 1200},
+        {id: 3, desc: "test_not_found_case_4", duration: 1400},
+    ],
 }
 
 export default data

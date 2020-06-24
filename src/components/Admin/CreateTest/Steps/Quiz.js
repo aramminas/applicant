@@ -137,6 +137,7 @@ export default function Quiz(props) {
                     quiz.rightAnswers.splice(index, 1)
                 }
             }
+            setQuiz({ ...quiz, rightAnswers: [...quiz.rightAnswers] })
             setValidation({...validation,rightAnswer: true})
         }else if(quiz.multiAnswer === false){
             // added value for a single answer (Radio)
@@ -356,7 +357,7 @@ export default function Quiz(props) {
                     <Grid item xs={1} className={classes.contentRadioCheckbox}>
                         <FormControlLabel
                             className={classes.radioCheckbox}
-                            control={<GreenCheckbox checked={quiz.rightAnswers[value] !== 0 ? !!quiz.rightAnswers[value] : true}
+                            control={<GreenCheckbox checked={quiz.rightAnswers.indexOf(value) !== -1}
                             onChange={handleChangeAnswer} name={`${value}`}/>}
                             label={null}/>
                     </Grid> :

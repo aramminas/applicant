@@ -437,6 +437,39 @@ const updateQuestion = (test, id, editData, data) => {
     })
 }
 
+/* Add New Data  */ /* (public) */
+const addNewData = (table, id, data) => {
+    return new Promise(function(resolve, reject) {
+        Firebase.database.ref(`${table}/${id}`).set({
+            ...data
+        },function(error) {
+            if (error) {
+                reject({message: `Database error. 'Test question Add' data! ${error.message}`})
+            } else {
+                resolve({message: true})
+            }
+        }).catch(error=>{
+            reject({message: `Database error. 'Test question Add' data! ${error.message}`})
+        })
+    })
+}
+
+/* Get All Tests Results  */ /* (public) */
+const getAllTestsResults = () => {
+    return new Promise(function(resolve, reject) {
+        Firebase.database.ref(`tests-results`).once('value').then(function(snapshot) {
+            const results = snapshot.val() || {}
+            if(Object.keys(results).length !== 0 && results.constructor === Object){
+                resolve(results)
+            }else if(Object.keys(results).length === 0){
+                reject({message: 'Database error. Objects `Test results` not found!'})
+            }
+        }).catch(error=>{
+            reject({message: `Database error. 'Test test results data! ${error.message}`})
+        })
+    })
+}
+
 const FirebaseFunctions = {
     getTestData, // get test data from firebase db
     getTestDataById, // get test data by id from firebase db
@@ -444,7 +477,9 @@ const FirebaseFunctions = {
     getTechData, // get technology data from firebase db
     updateData, // update data from firebase db
     removeTestQuestion, // remove test question from firebase db,
-    addEditQuestion, // add/edit question by id in  firebase db
+    addEditQuestion, // add/edit question by id in  firebase db,
+    addNewData, // add new data in firebase db
+    getAllTestsResults, // get all tests results from firebase db
 }
 
 export default FirebaseFunctions

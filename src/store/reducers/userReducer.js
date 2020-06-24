@@ -9,6 +9,7 @@ const initState = {
     birthday: '',
     password: null,
     isLogged: false,
+    testId: '',
     role: 2
 }
 

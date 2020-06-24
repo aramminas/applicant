@@ -44,7 +44,8 @@ function updateData(type, data, action){
             }
         }
     }else if(type === "passed-test"){
-        data.pasedTests += 1
+        data.passedTests += 1
+        data.badge += 1
         data.pasedTestData = incrementData(data.testData)
     }
 

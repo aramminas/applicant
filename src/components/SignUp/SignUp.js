@@ -281,7 +281,7 @@ function SignUp(props) {
     }
     // after registration, redirecting the user to the Test page
     if (redirectTo === true) {
-        return <Redirect to={`/tests/${user.userId}`}/>
+        return <Redirect to={`/test/${user.userId}`}/>
     }
 
     return (

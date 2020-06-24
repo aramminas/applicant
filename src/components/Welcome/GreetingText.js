@@ -25,7 +25,7 @@ const GreetingText = () => {
     }
     // After checking registrations, redirecting the user to the registration page or tests page
     if (toTests === true) {
-        return <Redirect to={`/tests/${user.userId}`}/>
+        return <Redirect to={`/test/${user.userId}`}/>
     }
     if (toSignIn === true) {
         return <Redirect to="/sign-in"/>

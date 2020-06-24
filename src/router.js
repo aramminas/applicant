@@ -34,7 +34,8 @@ const routes = (
             <Route path="/" exact={true} component={Welcome}/>
             <Route path="/about-us" component={AboutUs}/>
             <Route path="/contact-us" component={ContactUs}/>
-            <Route path="/sign-in" component={SignIn}/>
+            <Route path="/sign-in" exact={true} component={SignIn}/>
+            <Route path="/sign-in/:testId" component={SignIn}/>
             <Route path="/sign-up" component={SignUp}/>
             {/* admin routes */}
             <Route path="/admin" component={AdminLogin}/>
@@ -47,6 +48,7 @@ const routes = (
             {/* CSS effects examples */}
             <Route path="/css-effects" component={CssEffects}/>
             {/* user routes */}
+            <Route path="/test" exact={true} component={Test}/>
             <Route path="/test/:id" exact={true} component={Test}/>
             <Route path="/tests/:id" component={Tests}/>
             <Route path="/user/:id" component={User}/>

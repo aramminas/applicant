@@ -13,7 +13,7 @@ import {
 } from '@material-ui/core/'
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import HelpTwoToneIcon from '@material-ui/icons/HelpTwoTone'
-import {NavLink, Redirect} from 'react-router-dom'
+import {NavLink, Redirect, useParams} from 'react-router-dom'
 import {makeStyles} from '@material-ui/core/styles'
 import Layout from '../../hoc/layout/Layout'
 import Copyright from "../Others/Copyright"
@@ -69,6 +69,7 @@ function SignIn(props) {
     const [typing, setTyping] = useState(initTyping)
     const [user, setUser] = useState(initUser)
     const [redirectTo, setRedirectTo] = useState(false)
+    let { testId } = useParams()
 
     //clear memory after un mounting a component
     useEffect((typing) => {
@@ -94,6 +95,7 @@ function SignIn(props) {
                 if (data && data.user && data.user.uid) {
                     let userData = {
                         userId: data.user.uid,
+                        testId: testId ? testId : '',
                         isLogged: true
                     }
                     // adding user data in the state
@@ -102,6 +104,11 @@ function SignIn(props) {
                     })
                     // adding user data in the store
                     props.addUpdateUser(userData)
+                    // adding test id and user id in the local storage
+                    if(testId && testId !== ""){
+                        localStorage.setItem('testId', testId)
+                        localStorage.setItem('userId', userData.userId)
+                    }
                     setTimeout(()=>{
                         setRedirectTo(true)
                     },500)
@@ -165,7 +172,7 @@ function SignIn(props) {
 
     // after sign in, redirecting the user to the Test page
     if (redirectTo === true) {
-        return <Redirect to={`/tests/${user.userId}`}/>
+        return <Redirect to={`/test/${user.userId}`}/>
     }
 
     return (

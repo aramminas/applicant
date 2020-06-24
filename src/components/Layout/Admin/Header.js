@@ -44,6 +44,14 @@ const styles = (theme) => ({
     button: {
         borderColor: lightColor,
     },
+    navLinkStyle: {
+        color: 'inherit',
+        textDecoration: 'inherit',
+        '&:hover': {
+            color: 'inherit',
+            textDecoration: 'inherit',
+        }
+    },
 })
 
 
@@ -103,7 +111,9 @@ function Header(props) {
                         <Grid item xs/>
                         <Grid item>
                             <Badge badgeContent={count} className={"admin-new-ap"} color="secondary">
-                                <NotificationsIcon color={'inherit'} />
+                                <NavLink to="/test-results" className={classes.navLinkStyle}>
+                                    <NotificationsIcon color={'inherit'} />
+                                </NavLink>
                             </Badge>
                         </Grid>
                         <Grid item>

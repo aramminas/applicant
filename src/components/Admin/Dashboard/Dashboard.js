@@ -25,6 +25,35 @@ const useStyles = makeStyles((theme) => ({
     },
 }))
 
+const mainLinks = (data) => {
+    return [
+        {
+            title: 'all_applicants',
+            secondary_title: 'applicants_lc',
+            url: 'applicants',
+            count: data.applicants,
+            icon: <PeopleAltOutlined htmlColor={"#fff"}/>,
+            secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
+        },
+        {
+            title: 'all_tests',
+            secondary_title: 'tests_lc',
+            url: 'tests',
+            count: data.tests,
+            icon: <AssignmentOutlined htmlColor={"#fff"}/>,
+            secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
+        },
+        {
+            title: 'all_passed_tests',
+            secondary_title: 'passed_tests_lc',
+            url: 'test-result',
+            count: data.passedTests,
+            icon: <ChromeReaderModeOutlined htmlColor={"#fff"}/>,
+            secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
+        }
+    ]
+}
+
 function ErrorMessage(error,addToast) {
     let errorCode = error.code
     let errorMessage = error.message
@@ -40,6 +69,7 @@ const initActivity = {
     applicants: 0,
     tests: 0,
     passedTests: 0,
+    badge: 0,
 }
 
 const Dashboard = () => {
@@ -48,15 +78,18 @@ const Dashboard = () => {
     const {language} = useSelector(state => state.language)
     const [siteActivity, setSiteActivity] = useState(initActivity)
     const [chart, setChart] = useState([])
+    let lang = language === 'EN' ? lang_en : lang_am
 
     useEffect(function () {
         getUpdateChartData().then(data => {
             let activity = data || {}
+            console.log('activity',activity)
             if(Object.keys(activity).length !== 0){
                 setSiteActivity({
                     applicants: activity.applicants,
                     tests: activity.tests,
                     passedTests: activity.passedTests,
+                    badge: activity.badge,
                 })
                 const applicantsTemp = activity.applicantData.map(temp => {
                     return {...temp, x: new Date(temp.x)}
@@ -81,34 +114,7 @@ const Dashboard = () => {
         })
     },[])
 
-    let lang = language === 'EN' ? lang_en : lang_am
-
-    const main_links_data = [
-        {
-            title: 'all_applicants',
-            secondary_title: 'applicants_lc',
-            url: 'applicants',
-            count: siteActivity.applicants,
-            icon: <PeopleAltOutlined htmlColor={"#fff"}/>,
-            secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
-        },
-        {
-            title: 'all_tests',
-            secondary_title: 'tests_lc',
-            url: 'tests',
-            count: siteActivity.tests,
-            icon: <AssignmentOutlined htmlColor={"#fff"}/>,
-            secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
-        },
-        {
-            title: 'all_passed_tests',
-            secondary_title: 'passed_tests_lc',
-            url: 'test-result',
-            count: siteActivity.passedTests,
-            icon: <ChromeReaderModeOutlined htmlColor={"#fff"}/>,
-            secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
-        }
-    ]
+    const main_links_data = mainLinks(siteActivity)
 
     const main_links = main_links_data.map((data,index)=>{
         let count = data.count !== 0 ?

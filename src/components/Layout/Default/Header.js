@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {connect, useSelector} from "react-redux"
 import add_update_user_data from "../../../store/actions/userAction"
-import {NavLink, Redirect, useParams} from 'react-router-dom'
+import {NavLink, Redirect, useParams, useRouteMatch} from 'react-router-dom'
 import Languages from '../../Languages/Languages'
 import useStyles from './styles'
 import MenuIcon from '@material-ui/icons/Menu'
@@ -46,7 +46,9 @@ function Header(props) {
     const {user} = useSelector(state => state)
     const { addToast } = useToasts()
     const [redirectTo, setRedirectTo] = useState(false)
+    const [toSignIn, setToSignIn] = useState(false)
     let { id } = useParams()
+    let match = useRouteMatch()
 
     useEffect(() => {
         if((user.userId && user.isLogged && !user.firstName) || (id !== undefined && user.userId === "")){
@@ -68,6 +70,14 @@ function Header(props) {
                 ErrorMessage(error,addToast)
             }
         }
+
+        if(!user.isLogged && match.path === "/test"){
+            addToast(lang.warning_sign_in, {
+                appearance: 'warning',
+                autoDismiss: true,
+            })
+            setToSignIn(true)
+        }
     },[ ])
     let lang = language === 'EN' ? lang_en_main : lang_am_main
 
@@ -78,6 +88,7 @@ function Header(props) {
         }).catch(function(error) {
             ErrorMessage(error,addToast)
         })
+        localStorage.clear()
         setTimeout(function () {
             setRedirectTo(true)
         },500)
@@ -88,6 +99,10 @@ function Header(props) {
     // after sign out, redirecting the user to the Test page
     if (redirectTo === true) {
         return <Redirect to={`/`}/>
+    }
+
+    if (toSignIn === true) {
+        return <Redirect to="/sign-in"/>
     }
 
     return (
@@ -105,8 +120,8 @@ function Header(props) {
                         <NavLink to="/about-us" color="inherit" className={classes.links}>{lang.about_us}</NavLink>
                         <NavLink to="/contact-us" color="inherit" className={classes.links}>{lang.contact_us}</NavLink>
 
-                        <NavLink to="/create-test" color="inherit" className={classes.links}>{lang.create_test}</NavLink>
-                        <NavLink to="/tests" color="inherit" className={classes.links}>{lang.tests}</NavLink>
+                        {/*<NavLink to="/create-test" color="inherit" className={classes.links}>{lang.create_test}</NavLink>*/}
+                        <NavLink to="/test" color="inherit" className={classes.links}>{lang.test}</NavLink>
                     </Typography>
                     { user.isLogged && user.firstName ?
                         <div className={"user-title"}>
