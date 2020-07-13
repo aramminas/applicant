@@ -78,7 +78,11 @@ function Header(props) {
             })
             setToSignIn(true)
         }
-    },[ ])
+
+        if(match.path === "/" && redirectTo === true){
+            setRedirectTo(false)
+        }
+    },[redirectTo])
     let lang = language === 'EN' ? lang_en_main : lang_am_main
 
     const signOut = (e) => {
