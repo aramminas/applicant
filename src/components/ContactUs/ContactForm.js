@@ -40,11 +40,11 @@ const ContactForm = () => {
 
     return (
         <div className={`contact-us-form-container ${classesBg.join(" ")}`}>
-            <div className={'contact-form-body'}
-                 onMouseEnter={() => setBackground("hover")}
-                 onMouseLeave={() => setBackground("leave")}
-            >
-                <div className={`${classes.root} contact-form-container`}>
+            <div className={'contact-form-body'}>
+                <div className={`${classes.root} contact-form-container`}
+                     onMouseEnter={() => setBackground("hover")}
+                     onMouseLeave={() => setBackground("leave")}
+                >
                     <Grid container justify="center" className={"contact-form-header"}>
                         <Grid item xs={12}>
                             <h2 style={language === "AM" ? style : null}>{lang.contact_us}</h2>

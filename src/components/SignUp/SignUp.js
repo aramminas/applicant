@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {connect,useSelector} from 'react-redux'
-import {Redirect} from 'react-router-dom'
+import {Redirect, useParams} from 'react-router-dom'
 import add_update_user_data from '../../store/actions/userAction'
 import {
     Avatar,
@@ -110,6 +110,7 @@ function SignUp(props) {
     const [user, setUser] = useState(initUser)
     const [redirectTo, setRedirectTo] = useState(false)
     const [selectedDate, setSelectedDate] = useState(new Date())
+    let { testId } = useParams()
 
     //clear memory after un mounting a component
     useEffect((typing) => {
@@ -125,7 +126,7 @@ function SignUp(props) {
             value = event.target.value
         }else if(type === "birthday"){
             value = new Date(event).getFullYear()
-            setSelectedDate(selectedDate => event)
+            setSelectedDate(event)
         }else {
             value = event
         }
@@ -257,8 +258,13 @@ function SignUp(props) {
                         setUser(user => {
                             return {...user,...userData}
                         })
+                        userData.testId = testId ? testId.trim() : ""
                         // adding user data in the store
                         props.addUpdateUser(userData)
+                        if(testId && testId !== ""){
+                            localStorage.setItem('testId', testId.trim())
+                            localStorage.setItem('userId', userData.userId)
+                        }
                         // update chart data
                         getUpdateChartData("applicant", "add")
 

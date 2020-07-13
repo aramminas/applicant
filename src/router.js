@@ -16,6 +16,7 @@ const NotFound = lazy(() => import("./components/NotFound/NotFound404"))
 const AdminLogin = lazy(() => import("./components/Admin/AdminLogin"))
 const CreateTest = lazy(() => import("./components/Admin/CreateTest/CreateTest"))
 const TestResults = lazy(() => import("./components/Admin/TestResults/TestResults"))
+const TestResult = lazy(() => import("./components/Admin/TestResults/TestResult"))
 const AdminTests = lazy(() => import("./components/Admin/AdminTests/AdminTests"))
 const Dashboard = lazy(() => import("./components/Admin/Dashboard/Dashboard"))
 const Applicants = lazy(() => import("./components/Admin/Applicants/Applicants"))
@@ -36,11 +37,13 @@ const routes = (
             <Route path="/contact-us" component={ContactUs}/>
             <Route path="/sign-in" exact={true} component={SignIn}/>
             <Route path="/sign-in/:testId" component={SignIn}/>
-            <Route path="/sign-up" component={SignUp}/>
+            <Route path="/sign-up" exact={true} component={SignUp}/>
+            <Route path="/sign-up/:testId" component={SignUp}/>
             {/* admin routes */}
             <Route path="/admin" component={AdminLogin}/>
             <Route path="/create-test" component={CreateTest}/>
             <Route path="/test-results" component={TestResults}/>
+            <Route path="/test-result/:id" component={TestResult}/>
             <Route path="/admin-tests" component={AdminTests}/>
             <Route path="/dashboard" component={Dashboard}/>
             <Route path="/applicants" component={Applicants}/>

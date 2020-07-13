@@ -180,7 +180,7 @@ const QuestionContent = (props) => {
                 { data.imageName !== "" && data.imageUrl ?
                     <Grid item sm={12}>
                         <figure className={"test-question-answer-image"}>
-                            <img src={data.imageUrl} alt="question image"/>
+                            <img src={data.imageUrl} alt="question"/>
                         </figure>
                     </Grid> : null
                 }

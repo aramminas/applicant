@@ -95,7 +95,7 @@ function SignIn(props) {
                 if (data && data.user && data.user.uid) {
                     let userData = {
                         userId: data.user.uid,
-                        testId: testId ? testId : '',
+                        testId: testId ? testId.trim() : '',
                         isLogged: true
                     }
                     // adding user data in the state
@@ -236,7 +236,7 @@ function SignIn(props) {
                     </Button>
                     <Grid container justify="flex-end">
                         <Grid item>
-                            <NavLink to="/sign-up" variant="body2">
+                            <NavLink to={`/sign-up${testId ? `/${testId}` : ""}`} variant="body2">
                                 {lang_m.no_account}
                             </NavLink>
                         </Grid>

@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import AppBar from '@material-ui/core/AppBar'
 import Grid from '@material-ui/core/Grid'
@@ -73,6 +73,13 @@ function Header(props) {
     const [count,setCount] = useState(0)
     const [redirectTo, setRedirectTo] = useState(false)
     const { addToast } = useToasts()
+
+    useEffect(function () {
+        if(admin.badge > 0){
+            setCount(admin.badge)
+        }
+    },[admin.badge])
+
     const signOut = (e) => {
         e.preventDefault()
         Firebase.doSignOut().then(function() {

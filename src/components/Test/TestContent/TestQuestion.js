@@ -70,13 +70,12 @@ const TestQuestion = (props) => {
     const [applicantData, setApplicantData] = useState({...initApplicantData})
     const [changeAnimation, setChangeAnimation] = useState(true)
     const [open, setOpen] = useState(false)
+    const [forceStop, setForceStop] = useState(false)
     const {lang, question, saveTestResult} = props
-    let interval
 
     useEffect(function () {
-        if(Object.keys(question).length > 0){
+        if(Object.keys(question).length > 0 && !forceStop){
             if(question.parameters && question.parameters.testDuration){
-                interval = startTimer(question.parameters.testDuration)
                 const firstQuestion = question.tests[applicantData.currentQuestionNumber]
                 setApplicantData({
                     ...applicantData,
@@ -86,17 +85,25 @@ const TestQuestion = (props) => {
                     currentQuestionType: firstQuestion.type,
                     totalQuestionCount: question.tests.length,
                 })
+                startTimer(question.parameters.testDuration)
             }
         }
-        return () => clearInterval(interval)
-    },[])
+        // when the test time expired
+        if(forceStop){
+            stopTest()
+        }
+        return () => clearInterval(window.intervalT)
+    },[forceStop])
 
     const startTimer = (data, display= '') => {
-        let timer = data * 60 * 60, minutes, seconds, hours
-        return setInterval(function () {
-            hours = parseInt((timer / (60 * 60 * 60)) % 24)
-            minutes = parseInt(((timer / (60 * 60)) % 60), 10)
-            seconds = parseInt(timer % 60, 10)
+        let timer = data * 60 * 1000, now, distance, minutes, seconds, hours
+        let countDownDate = new Date().getTime() + timer
+        window.intervalT = setInterval(() => {
+            now = new Date().getTime()
+            distance = countDownDate - now
+            hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
+            minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60))
+            seconds = Math.floor((distance % (1000 * 60)) / 1000)
 
             hours = hours < 10 ? "0" + hours : hours
             minutes = minutes < 10 ? "0" + minutes : minutes
@@ -104,17 +111,14 @@ const TestQuestion = (props) => {
 
             // when the time is up
             if(Number(hours) === 0 && Number(minutes) === 0 && Number(seconds) === 0){
-                stopTest()
-                clearInterval(interval)
+                setForceStop(true)
+                clearInterval(window.intervalT)
             }
 
             display = hours + ":" + minutes + ":" + seconds
 
-            if (--timer < 0) {
-                timer = data
-            }
-            return setDuration(display)
-        }, 1000)
+            setDuration(display)
+        }, 1000);
     }
 
     const handleClickOpen = () => {
@@ -127,6 +131,7 @@ const TestQuestion = (props) => {
 
     const handleFinishTest = () => {
         handleClose()
+        const collectAnswers = [...applicantData.answers]
         applicantData.putAside.map(item => {
             let writeAnswer = {
                 id: item.id,
@@ -144,20 +149,25 @@ const TestQuestion = (props) => {
                 writeAnswer.answerType =  "options"
             }else if(item.optionsOrText){
                 writeAnswer.answerType = "text"
+                writeAnswer.estimated = false
             }
-            applicantData.answers.push(writeAnswer)
+            collectAnswers.push(writeAnswer)
             return false
         })
-        applicantData.putAside = []
-        setApplicantData({...applicantData,
-            answers: [...applicantData.answers],
-            currentQuestion: {},
-            currentQuestionId: 0,
-            currentQuestionType: "",
-            currentQuestionNumber: 0,
-            putAside: [...applicantData.putAside],
+        const clearPutAside = []
+        setApplicantData(() => {
+            const data = {...applicantData,
+                answers: [...collectAnswers],
+                currentQuestion: {},
+                currentQuestionId: 0,
+                currentQuestionType: "",
+                currentQuestionNumber: 0,
+                finishTime: duration,
+                putAside: [...clearPutAside],
+            }
+            saveTestResult(data)
+            return data
         })
-        saveTestResult(applicantData)
     }
 
     const putAside = () => {
@@ -265,6 +275,7 @@ const TestQuestion = (props) => {
                 writeAnswer = {
                     id,
                     answered: true,
+                    estimated: false,
                     type: applicantData.currentQuestionType,
                     answerText: data.text,
                     answerQuestion: applicantData.currentQuestion.question,

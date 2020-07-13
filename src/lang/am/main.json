@@ -80,7 +80,7 @@
   ],
 
   "_comment_1": " *** Contact Us Page ***",
-  "full_name" : "Full Name",
+  "full_name" : "Full name",
   "email" : "Email",
   "message" : "Message",
   "enter_name" : "Enter full name",
@@ -317,5 +317,28 @@
   "add_edit_quiz_question" : "Add / Edit quiz question",
   "add_edit_logical_question" : "Add / Edit logical question",
   "add_edit_image": "Add / Edit image",
-  "add_edit_code": "Add / Edit code"
+  "add_edit_code": "Add / Edit code",
+
+  "_comment_admin_test_result": " *** Admin Test Results ***",
+  "scored_points": "Scored points",
+  "manual_evaluation": "Manual evaluation",
+  "finish_time": "Finish time",
+  "exam_date": "Exam date",
+  "unknown_technology": "Unknown technology",
+  "filters": "Filters",
+  "none": "None",
+  "nothing_found": "Nothing was found based on this data!",
+  "delete_test_result_title": "Delete test result",
+  "delete_test_result_desc": "Do you really want to delete this test result?",
+  "error_delete_test_result_empty_id": "The element to delete is not known!",
+  "success_delete_test_result": "The test result was successfully deleted.",
+  "test_result": "Test result",
+  "unknown_identifier": "Unknown identifier!",
+  "test_data": "Test data",
+  "spent_time": "Time spent",
+  "past_test": "Past test",
+  "answers": "Answers",
+  "score_ange": "Score should be in the range",
+  "estimate": "estimate",
+  "success_score_added": "Score successfully added!"
 }

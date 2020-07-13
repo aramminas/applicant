@@ -65,7 +65,7 @@ const data = {
             {id: 7, value: 135, name: "2 hour 15 minutes"},
             {id: 8, value: 150, name: "2 hour 30 minutes"},
         ],
-        // TODO: this data is temporary, need to get it from the database
+        //  chart data example
         chart: [
             [
                 {x: new Date(2019, 5,1), y: 20},

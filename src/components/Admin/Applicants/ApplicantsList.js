@@ -24,7 +24,6 @@ import {
     Switch
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-import FilterListIcon from '@material-ui/icons/FilterList'
 import StorageIcon from '@material-ui/icons/Storage'
 import {ReportProblemOutlined,CheckCircleOutlineOutlined,RadioButtonUncheckedOutlined} from '@material-ui/icons'
 import {Animated} from "react-animated-css"
@@ -168,14 +167,8 @@ const ApplicantListToolbar = (props) => {
                     </IconButton>
                     <ReactTooltip />
                 </>
-            ) : (
-                <>
-                    <IconButton aria-label="filter list" data-tip={lang.filter_list}>
-                        <FilterListIcon />
-                    </IconButton>
-                    <ReactTooltip />
-                </>
-            )}
+                ) : null
+            }
         </Toolbar>
     )
 }

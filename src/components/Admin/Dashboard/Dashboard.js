@@ -5,7 +5,8 @@ import Paper from '@material-ui/core/Paper'
 import Grid from '@material-ui/core/Grid'
 import {PeopleAltOutlined, DoneAllSharp, AssignmentOutlined, ChromeReaderModeOutlined, SyncProblem} from '@material-ui/icons'
 import Chart from './Chart'
-import {useSelector} from "react-redux"
+import {connect,useSelector} from 'react-redux'
+import set_admin_data from "../../../store/actions/setAdminAction"
 import {NavLink} from 'react-router-dom'
 import {useToasts} from 'react-toast-notifications'
 import getUpdateChartData from '../../../helpers/getUpdateChartData'
@@ -72,7 +73,7 @@ const initActivity = {
     badge: 0,
 }
 
-const Dashboard = () => {
+const Dashboard = (props) => {
     const classes = useStyles()
     const {addToast} = useToasts()
     const {language} = useSelector(state => state.language)
@@ -83,7 +84,6 @@ const Dashboard = () => {
     useEffect(function () {
         getUpdateChartData().then(data => {
             let activity = data || {}
-            console.log('activity',activity)
             if(Object.keys(activity).length !== 0){
                 setSiteActivity({
                     applicants: activity.applicants,
@@ -100,7 +100,9 @@ const Dashboard = () => {
                 const passedTestsTemp = activity.passedTestsData.map(temp => {
                     return {...temp, x: new Date(temp.x)}
                 })
-
+                if(activity.badge > 0){
+                    props.adminData({badge: activity.badge})
+                }
                 setChart([applicantsTemp, testsTemp, passedTestsTemp])
             }
         }).catch(error => {
@@ -170,4 +172,16 @@ const Dashboard = () => {
     )
 }
 
-export default Dashboard
+const mapStateToProps = state => {
+    return {
+        ...state
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        adminData: (data) => {dispatch(set_admin_data(data))},
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(Dashboard)

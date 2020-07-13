@@ -51,6 +51,22 @@ const getTestDataById = (id) => {
     })
 }
 
+/* Tests Data By Id */ /* (public) */
+const getTestResultById = (id) => {
+    return new Promise(function(resolve, reject) {
+        Firebase.database.ref(`/tests-results/${id}`).once('value').then(function(snapshot) {
+            let testsResultData = snapshot.val() || {}
+            if(Object.keys(testsResultData).length !== 0 && testsResultData.constructor === Object){
+                resolve(testsResultData)
+            }else if(Object.keys(testsResultData).length === 0){
+                reject({message: 'Database error. Objects `Test Result` not found!'})
+            }
+        }).catch(error => {
+            reject({message: `Database error. 'Tests Result' data! ${error.message}`})
+        })
+    })
+}
+
 /* Remove Test By Id */ /* (public) */
 const removeTest = (id) => {
     return new Promise(function(resolve, reject) {
@@ -58,6 +74,17 @@ const removeTest = (id) => {
             resolve({result: true})
         }).catch(error => {
             reject({message: `Database error. 'Tests' data! ${error.message}`})
+        })
+    })
+}
+
+/* Remove Test By Id */ /* (public) */
+const removeTestResult = (id) => {
+    return new Promise(function(resolve, reject) {
+        Firebase.database.ref(`/tests-results`).child(id).remove().then(function() {
+            resolve({result: true})
+        }).catch(error => {
+            reject({message: `Database error. 'Test Results' data! ${error.message}`})
         })
     })
 }
@@ -75,6 +102,7 @@ const deleteTestImages = (id) => {
                     if (item.imageName !== "") {
                         numberOfImages++
                         deleteImage(item.imageName)
+                            // eslint-disable-next-line no-loop-func
                             .then(() => ready++)
                             .catch(error => {
                                 reject(error)
@@ -158,12 +186,12 @@ const updateData = (table, id, data) => {
     return new Promise(function(resolve, reject) {
         Firebase.database.ref(table).child(id).update(data,function (error) {
             if(error){
-                reject({message: `Database error. 'Technology' data! ${error.message}`})
+                reject({message: `Database error. '${table}' data! ${error.message}`})
             }else {
                 resolve({message: true})
             }
         }).catch(error => {
-            reject({message: `Database error. 'Technology' data! ${error.message}`})
+            reject({message: `Database error. '${table}' data! ${error.message}`})
         })
     })
 }
@@ -444,12 +472,34 @@ const addNewData = (table, id, data) => {
             ...data
         },function(error) {
             if (error) {
-                reject({message: `Database error. 'Test question Add' data! ${error.message}`})
+                reject({message: `Database error. '${table} Add' data! ${error.message}`})
             } else {
-                resolve({message: true})
+                userTestPassed(data.userId).then(data => {
+                    if(data.message){
+                        resolve({message: true})
+                    }
+                }).catch(error => {
+                    reject({message: `Database error. '${table} Add' data! ${error.message}`})
+                })
             }
         }).catch(error=>{
-            reject({message: `Database error. 'Test question Add' data! ${error.message}`})
+            reject({message: `Database error. '${table} Add' data! ${error.message}`})
+        })
+    })
+}
+
+/* User Test Passed */  /* (static) */
+const userTestPassed = (id) => {
+    return new Promise(function(resolve, reject) {
+        Firebase.database.ref(`users/${id}/pastTests`).set(true,
+            function(error) {
+                if (error) {
+                    reject({message: `Database error. 'Users Test Passed' data! ${error.message}`})
+                } else {
+                    resolve({message: true})
+                }
+        }).catch(error=>{
+            reject({message: `Database error. 'Users Test Passed' data! ${error.message}`})
         })
     })
 }
@@ -462,10 +512,36 @@ const getAllTestsResults = () => {
             if(Object.keys(results).length !== 0 && results.constructor === Object){
                 resolve(results)
             }else if(Object.keys(results).length === 0){
-                reject({message: 'Database error. Objects `Test results` not found!'})
+                reject({message: 'Database error. Objects `Test results` not found!', results: 0})
             }
         }).catch(error=>{
             reject({message: `Database error. 'Test test results data! ${error.message}`})
+        })
+    })
+}
+
+/* Reset To Zero Badge  */ /* (public) */
+const resetToZeroBadge = () => {
+    Firebase.database.ref(`chart/badge`).set( 0, function (error) {
+        if(error){
+            console.log(error)
+        }
+    })
+}
+
+/* Add User Test Score  */ /* (public) */
+const addUserTestScore = (id, answerId, score, answers, estimated, totalScore, mainData) => {
+    return new Promise(function(resolve, reject) {
+        const updateData = {...mainData,answers: [...answers], score: totalScore, needManualEvaluation: false}
+        Firebase.database.ref(`tests-results/${id}`).set({...updateData},
+            function(error) {
+                if (error) {
+                    reject({message: `Database error. 'Test Add Score' data! ${error.message}`})
+                } else {
+                    resolve({message: true})
+                }
+            }).catch(error=>{
+            reject({message: `Database error. 'Test Add Score' data! ${error.message}`})
         })
     })
 }
@@ -480,6 +556,10 @@ const FirebaseFunctions = {
     addEditQuestion, // add/edit question by id in  firebase db,
     addNewData, // add new data in firebase db
     getAllTestsResults, // get all tests results from firebase db
+    removeTestResult, // remove test result by id from firebase db
+    getTestResultById, // get test result by id from firebase db
+    resetToZeroBadge, // reset to zero badge from firebase db
+    addUserTestScore, // add user test score from firebase db
 }
 
 export default FirebaseFunctions

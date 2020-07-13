@@ -283,6 +283,64 @@
   font-size: 17px;
   color: #5e5e5e
 }
+.applicants-filters {
+
+  & .filter-title{
+    text-align: left;
+    color: #232f3e;
+  }
+
+  & .past-test-section {
+    height: 100%;
+    & .past-test-switch {
+      width: 80%;
+      position: relative;
+      border-radius: 8px;
+      border: 1px solid #c4c4c4;
+      height: 56px;
+      margin: 16px auto 0 auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & label {
+        margin: 0;
+      }
+    }
+  }
+
+  & .reset-date {
+    float: right;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.admin-applicants-filter-icon{
+  float: right;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.rotate {
+    transform: rotate(180deg);
+    & svg {
+      color: #737983;
+    }
+  }
+}
+
+.admin-applicants {
+  & .nothing-found {
+
+    & span, & svg {
+      color: #232f3e;
+    }
+  }
+}
+
 
 // Admin Tests
 .admin-tests-empty-data {
@@ -318,4 +376,225 @@
       }
     }
   }
+}
+
+// Admin Test Results View
+.test-results {
+  & .admin-test-result-filter-icon {
+    float: right;
+
+    &:focus {
+      outline: none;
+    }
+
+    &.rotate {
+      transform: rotate(180deg);
+      & svg {
+        color: #1a6d8b;
+      }
+    }
+  }
+
+  & .admin-test-results-table {
+    & table thead tr th {
+      font-weight: 600;
+    }
+  }
+
+  & .admin-test-results-table-icon {
+    margin: 0;
+
+    & img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  & .reset-date {
+    float: right;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  & .led {
+    height: 30px;
+    width: 30px;
+    margin: 0 auto;
+    border-radius: 50%;
+  }
+
+  & .led-yellow {
+    color: yellow;
+    background-color: #FF0;
+    box-shadow: rgba(0, 0, 0, 0.1) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 12px;
+    animation: blinkYellow 1.5s infinite;
+  }
+
+  & .led-grey {
+    color: grey;
+    border: 2px solid grey;
+  }
+}
+
+@keyframes blinkYellow {
+  from { background-color: #FF0; }
+  50% { background-color: #AA0; box-shadow: rgba(0, 0, 0, 0.1) 0 -1px 7px 1px, inset #808002 0 -1px 9px, #FF0 0 2px 0; }
+  to { background-color: #FF0; }
+}
+
+.test-results-filters, .applicants-filters {
+  border: 1px solid #80808030;
+  background-color: white;
+  min-height: 150px;
+  height: auto;
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  padding: 15px;
+  box-shadow: 0 2px 1px -1px rgba(0,0,0,0.2), 0 1px 1px 0 rgba(0,0,0,0.14), 0 1px 3px 0 rgba(0,0,0,0.12);
+
+  & h5 {
+    color: #232f3e;
+    font-weight: 600;
+
+    & svg {
+      font-size: 28px;
+      margin-bottom: 5px;
+    }
+  }
+
+  & hr {
+    margin-top: 0;
+  }
+
+  & .test-filter-content {
+    & > div > div {
+      border-top: 4px solid #1a6d8b;
+      border-bottom: 4px solid #1a6d8b;
+    }
+  }
+
+  & .applicants-filter-content {
+    & > div > div {
+      border-top: 4px solid #232f3ea3;
+      border-bottom: 4px solid #232f3ea3;
+    }
+  }
+
+  & .test-filter-title {
+    text-align: left;
+    color: #232f3e;
+  }
+}
+
+
+.nothing-found {
+
+  & span, & svg {
+    color: #1a6d8b;
+  }
+
+  & .nothing-found-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 400px;
+    & span {
+      font-size: 22px;
+      margin-left: 10px;
+    }
+    & svg {
+      font-size: 33px;
+    }
+  }
+}
+
+/* Admin Test Result Single */
+
+.test-result-single {
+  & .admin-test-results-user-name {
+    float: right;
+    font-size: 18px;
+    margin-top: 9px;
+
+    & svg {
+      margin-bottom: 3px;
+    }
+  }
+}
+
+.test-result-state {
+  & .test-result-data-title {
+    color: #3f526a;
+
+    &.first-section {
+      height: 100%;
+    }
+
+    & > span, & .test-result-title {
+      font-size: 17px;
+      font-weight: 600;
+    }
+
+    & svg {
+      margin-right: 4px;
+      margin-top: -4px;
+    }
+  }
+
+  & figure {
+    & img {
+      max-width: 150px;
+      max-height: 150px;
+    }
+  }
+
+  & ul {
+    margin: 0;
+    padding: 0;
+
+    & li {
+      list-style: none;
+      padding: 5px 25%;
+      text-align: justify;
+      font-size: 15px;
+
+      & span:nth-child(1) {
+        font-weight: 600;
+      }
+
+      & span:nth-child(2) {
+        float: right;
+      }
+    }
+  }
+  & .test-result-total {
+    float: right;
+    margin-right: 20px;
+  }
+
+  & .answer-score {
+    & input {
+      text-align: center;
+      color: #3f526a;
+    }
+  }
+
+  & .add-score {
+    width: 100%;
+    height: 100%;
+
+    & svg {
+      color: rgb(63, 82, 106);
+    }
+  }
+}
+
+.test-state-loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }

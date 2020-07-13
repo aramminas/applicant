@@ -5,7 +5,8 @@ const initState = {
     isLogged: false,
     status: false,
     role: 1,
-    navId: 1
+    navId: 1,
+    badge: 0,
 }
 
 const setAdminReducer = (state= initState,{type,payload}) => {

@@ -10,6 +10,7 @@ import getUpdateChartData from '../../helpers/getUpdateChartData'
 import {useToasts} from "react-toast-notifications"
 import makeId from "../../helpers/makeId"
 import TestIsFinished from "./TestContent/TestIsFinished"
+import formatDate from 'intl-dateformat'
 
 import './Test.scss'
 import lang_en from "../../lang/en/main.json"
@@ -49,6 +50,7 @@ const Test = () => {
     const [unknownTest, setUnknownTest] = useState(true)
     const [question, setQuestion] = useState({})
     const [finishedTest, setFinishedTest] = useState(false)
+    const [checking, setChecking] = useState(false)
     const [loader, setLoader] = useState(false)
     let lang = language === 'EN' ? lang_en : lang_am
 
@@ -58,15 +60,16 @@ const Test = () => {
             if(!LSTestId || LSTestId === ""){
                 setUnknownTest(false)
             }else{
-                getQuestion(LSTestId)
+                getQuestion(LSTestId.trim())
             }
         }else{
-            getQuestion(user.testId)
+            getQuestion(user.testId.trim())
         }
     }, [])
 
     const getQuestion = (id) => {
         if(id && id !== ""){
+            setLoader(true)
             FirebaseFunctions.getTestDataById(id).then(data => {
                 if(Object.keys(data).length > 0){
                     setQuestion({...data})
@@ -76,6 +79,7 @@ const Test = () => {
             })
             // check whether this user has passed this test or not
             FirebaseFunctions.getAllTestsResults().then(result => {
+                setLoader(false)
                 if(Object.keys(result).length > 0){
                     Object.keys(result).map(res => {
                         let userId = user.userId
@@ -85,10 +89,13 @@ const Test = () => {
                         if(result[res] && result[res].testId === id && result[res].userId === userId){
                             setFinishedTest(true)
                         }
+                        setChecking(true)
                         return true
                     })
                 }
             }).catch(error => {
+                error.results === 0 && setChecking(true)
+                setLoader(false)
                 ErrorMessage(error,addToast)
             })
         }
@@ -96,9 +103,14 @@ const Test = () => {
 
     const saveTestResult = (data) => {
         setLoader(true)
+        const dateAt = new Date()
         const applicantTestResult = {
             id: makeId(28),
             finishTime: data.finishTime,
+            examDate: formatDate(dateAt, 'MM/DD/YYYY'),
+            fullName: `${user.firstName}, ${user.lastName}`,
+            email: user.email,
+            parameters: {...question.parameters},
             answers: [...data.answers],
         }
 
@@ -142,24 +154,28 @@ const Test = () => {
 
     return (
         <div className={`${classes.root} user-test default-content-height`}>
-            { !finishedTest ?
-                <Grid container spacing={3} className={classes.container} direction="row" justify="space-evenly"
-                      alignItems="center">
-                    { unknownTest ?
-                        <Grid item xs={12}>
-                            <TestContent lang={lang} question={question} saveTestResult={saveTestResult}/>
-                        </Grid> :
-                        <Grid item xs={6}>
-                            <EmptyTest lang={lang}/>
-                        </Grid>
-                    }
-                </Grid> :
-                <Grid container spacing={3} className={classes.container} direction="row" justify="space-evenly"
-                      alignItems="center">
-                    <Grid item xs={12}>
-                        <TestIsFinished lang={lang} />
+            { checking ?
+                !finishedTest ?
+                    <Grid container spacing={3} className={classes.container} direction="row" justify="space-evenly"
+                        alignItems="center">
+                        { unknownTest ?
+                            <Grid item xs={12}>
+                                <TestContent lang={lang} question={question} saveTestResult={saveTestResult}/>
+                            </Grid> :
+                            <Grid item xs={6}>
+                                <EmptyTest lang={lang}/>
+                            </Grid>
+                        }
                     </Grid>
-                </Grid>
+                    :
+                    <Grid container spacing={3} className={classes.container} direction="row" justify="space-evenly"
+                        alignItems="center">
+                        <Grid item xs={12}>
+                            <TestIsFinished lang={lang} />
+                        </Grid>
+                    </Grid>
+                :
+                null
             }
             { loader ?
                 <div className={"test-loader-content"}>
