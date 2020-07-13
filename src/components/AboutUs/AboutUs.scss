@@ -39,6 +39,7 @@
                "Droid Sans", "Helvetica Neue", sans-serif;
   position: relative;
   color: #fff;
+  overflow: hidden;
 
   & .about-main-image img {
     border: 0;
@@ -86,6 +87,7 @@
   margin-top: -4rem;
   padding-top: 4rem;
   background-color: #fff;
+  overflow: hidden;
   & .about-advice-title{
     & h1{
       color: #2351a7;

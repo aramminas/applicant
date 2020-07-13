@@ -296,6 +296,7 @@
   "delete_test_answer": "Do you really want to delete this test?",
   "test_deleted": "Test successfully deleted!",
   "get_link": "Get link",
+  "test_link": "Test link",
   "copy_test_link": "Copy the link to the test:",
 
   "_comment_admin_edit_view": " *** Admin Edit / View Page  ***",

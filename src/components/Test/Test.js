@@ -59,6 +59,7 @@ const Test = () => {
             const LSTestId = localStorage.getItem('testId')
             if(!LSTestId || LSTestId === ""){
                 setUnknownTest(false)
+                setChecking(true)
             }else{
                 getQuestion(LSTestId.trim())
             }

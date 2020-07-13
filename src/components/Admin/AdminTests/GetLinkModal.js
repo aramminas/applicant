@@ -28,8 +28,8 @@ export default function GetLinkModal(props) {
                 <DialogContentText id="get-link-dialog-description">
                     {lang.copy_test_link}
                 </DialogContentText>
-                <TextField label="Outlined" fullWidth variant="outlined"
-                    defaultValue={`${location}/sign-in/${id}`}
+                <TextField label={lang.test_link} fullWidth variant="outlined" readOnly
+                    value={`${location}/sign-in/${id}`}
                 />
             </DialogContent>
             <DialogActions className={classes.btn}>

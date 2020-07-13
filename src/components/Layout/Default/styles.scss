@@ -1,7 +1,8 @@
 @import "../../../scss/varieables";
-.nav-link-effect {
+p.nav-link-effect {
   display: flex;
   list-style-type: none;
+  margin: auto;
 
   & a {
     position: relative;
