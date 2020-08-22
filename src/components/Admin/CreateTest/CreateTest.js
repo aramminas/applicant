@@ -254,7 +254,7 @@ const CreateTest = () => {
         }
         const quizCount = testData.quizzes.length
         const LogicalCount = testData.logicalTests.length
-        const numberOfTests = quizCount + LogicalCount
+        const promisesArray = []
         // step 1 - add parameters
         finalData.parameters = {...testData.parameters}
         // step 2 - add quiz type test
@@ -277,7 +277,7 @@ const CreateTest = () => {
                 if(value.imageData.file){
                     value.imageData.name = `${Date.now()}_${value.imageData.name}`
                     finalQuizData.imageName = value.imageData.name
-                    loadImage(value.imageData)
+                    let promise = loadImage(value.imageData)
                         .then(url => {
                             if(url !== ""){
                                 finalQuizData.imageUrl = url
@@ -293,6 +293,7 @@ const CreateTest = () => {
                             }
                             console.error(error)
                         })
+                    promisesArray.push(promise)
                 }else{
                     finalData.tests.push(finalQuizData)
                 }
@@ -318,7 +319,7 @@ const CreateTest = () => {
                 if(value.imageData.file){
                     value.imageData.name = `${Date.now()}_${value.imageData.name}`
                     finalLogicalData.imageName = value.imageData.name
-                    loadImage(value.imageData)
+                    let promise = loadImage(value.imageData)
                         .then(url => {
                             if(url !== ""){
                                 finalLogicalData.imageUrl = url
@@ -335,6 +336,7 @@ const CreateTest = () => {
                                 console.error(error)
                             }
                         })
+                    promisesArray.push(promise)
                 }else{
                     finalData.tests.push(finalLogicalData)
                 }
@@ -342,16 +344,9 @@ const CreateTest = () => {
             })
         }
 
-        // checking how many tests were added to the final array
-        let checkingTestsCount = () => {
-            let finalArray = finalData.tests.length
-            if(finalArray === numberOfTests){
-                clearInterval(interval)
-                addTest(finalData)
-            }
-        }
-
-        let interval = setInterval(checkingTestsCount, 1000)
+        Promise.all(promisesArray).then(() => {
+            addTest(finalData)
+        })
     }
 
     const loadImage = fileData => {

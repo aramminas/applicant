@@ -46,7 +46,7 @@ function updateData(type, data, action){
     }else if(type === "passed-test"){
         data.passedTests += 1
         data.badge += 1
-        data.pasedTestData = incrementData(data.testData)
+        data.passedTestsData = incrementData(data.passedTestsData)
     }
 
     update(data)

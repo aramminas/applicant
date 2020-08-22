@@ -127,7 +127,6 @@ export default function AddModal(props) {
             reader.readAsDataURL(file)
             reader.onloadend = (e) => {
                 setFileData(fileData=>{
-                    // return {...fileData,selectedFile: reader.result, name: file.name, file}
                     return {...fileData,selectedFile: reader.result, name: `${Date.now()}_${file.name}`, file}
                 })
             }

@@ -5,6 +5,7 @@ import NeonButton from './NeonButton/NeonButton'
 import NeonLoader from './NeonLoader/NeonLoader'
 import RadioButtons3D from './RadioButtons3D/RadioButtons3D'
 import Title3D from './Title3D/Title3D'
+import Letters from './Letters/Letters'
 import {EmojiObjectsOutlined} from '@material-ui/icons'
 
 import lang_en from '../../lang/en/main.json'
@@ -53,6 +54,15 @@ const CssEffects = () => {
                         <h5>Title 3D</h5>
                         <div className={"admin-effects-black-bg"}>
                             <Title3D />
+                        </div>
+                    </div>
+                </div>
+                <hr/>
+                <div className={"admin-effects-section"}>
+                    <div className={"admin-effects-content full-width m-0 letters-main"}>
+                        <h5>Letters</h5>
+                        <div className={"admin-effects-black-bg"}>
+                            <Letters />
                         </div>
                     </div>
                 </div>
