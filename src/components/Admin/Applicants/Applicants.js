@@ -24,6 +24,7 @@ const Applicants = () => {
     const [isFilters, setIsFilters] = useState(initFilters)
     const [pinResults, setPinResults] = useState({})
     const [emptyResult, setEmptyResult] = useState(false)
+    const [emptyData, setEmptyData] = useState(false)
     let lang = language === 'EN' ? lang_en : lang_am
     const [users, setUsers] = useState({})
 
@@ -39,6 +40,8 @@ const Applicants = () => {
                 setPinResults(usersData)
             }else if(usersData === null){
                 setUsers({})
+                setEmptyResult(true)
+                setEmptyData(true)
             }
         })
     }
@@ -110,7 +113,7 @@ const Applicants = () => {
                 }
                 { !emptyResult ?
                     <ApplicantsList users={users} lang={lang} getUserData={getUserData}/> :
-                    <NothingFound lang={lang}/>
+                    <NothingFound lang={lang} emptyData={emptyData}/>
                 }
             </div>
         </Main>

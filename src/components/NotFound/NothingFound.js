@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NothingFound = (props) => {
     const classes = useStyles()
-    const {lang} = props
+    const {lang, emptyData} = props
 
     return (
         <div className={'nothing-found'}>
@@ -25,7 +25,7 @@ const NothingFound = (props) => {
                     <Grid item xs={12}>
                         <Paper className={`${classes.paper} nothing-found-content`}>
                             <DeleteSweepTwoTone />
-                            <span>{lang.nothing_found}</span>
+                            <span>{emptyData ? lang.applicants_empty_data : lang.nothing_found}</span>
                         </Paper>
                     </Grid>
                 </Grid>

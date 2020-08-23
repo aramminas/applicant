@@ -176,7 +176,7 @@
   "loading": "Loading, please wait..",
   "error_empty_fields": "Please fill in all the empty fields!",
   "empty_fields_desc": "Fill in all the empty fields then click the Finish button.",
-  "empty_database_data": "Failed to get data from database date!",
+  "empty_database_data": "Failed to get data from database!",
   "database_failed": "Database failed!",
   "minute": "minute",
   "beginner": "Beginner",
@@ -184,6 +184,8 @@
   "middle": "Middle",
   "senior": "Senior",
   "master": "Master",
+  "applicants_empty_data": "The list of applicants is empty!",
+  "empty_list": "The list is empty!",
 
   "_comment_admin_chart": " *** Admin Chart ***",
   "test_name": "Test",

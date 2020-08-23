@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import Main from "../Main"
 import {connect, useSelector} from "react-redux"
-import {ChromeReaderModeTwoTone, FilterList} from '@material-ui/icons'
+import {ChromeReaderModeTwoTone, DeleteSweepTwoTone, FilterList} from '@material-ui/icons'
 import FirebaseFunctions from "../../../helpers/FirebaseFunctions"
 import {useToasts} from "react-toast-notifications"
 import {Animated} from "react-animated-css"
@@ -28,6 +28,7 @@ const TestResults = (props) => {
     const [technology, setTechnology] = useState({})
     const [isFilters, setIsFilters] = useState(initFilters)
     const [emptyResult, setEmptyResult] = useState(false)
+    const [emptyData, setEmptyData] = useState(false)
     let lang = language === 'EN' ? lang_en : lang_am
 
     useEffect(() => {
@@ -49,6 +50,7 @@ const TestResults = (props) => {
                 appearance: 'error',
                 autoDismiss: true,
             })
+            setEmptyData(true)
         })
     }
 
@@ -162,8 +164,16 @@ const TestResults = (props) => {
                     :
                     <div className={"admin-tests-empty-data"}>
                         <figure className={"admin-activity-loader"}>
-                            <img src="/images/gifs/load.gif" alt="loader"/>
-                            <span>{lang.data_loading}. . .</span>
+                            { emptyData ?
+                                <span className={"empty-list"}>
+                                    <DeleteSweepTwoTone htmlColor={"#232f3e"} fontSize={"large"}/>
+                                    {lang.empty_list}
+                                </span> :
+                                <>
+                                    <img src="/images/gifs/load.gif" alt="loader"/>
+                                    <span>{`${lang.data_loading} . . .`}</span>
+                                </>
+                            }
                         </figure>
                     </div>
                 }

@@ -362,6 +362,11 @@
   & .admin-empty-database-data{
     margin: 45% 0;
   }
+  & .empty-list {
+    & svg {
+      margin-right: 6px;
+    }
+  }
 }
 
 // Admin Edit View

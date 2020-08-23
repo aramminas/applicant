@@ -39,7 +39,7 @@ const mainLinks = (data) => {
         {
             title: 'all_tests',
             secondary_title: 'tests_lc',
-            url: 'tests',
+            url: 'admin-tests',
             count: data.tests,
             icon: <AssignmentOutlined htmlColor={"#fff"}/>,
             secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
@@ -47,7 +47,7 @@ const mainLinks = (data) => {
         {
             title: 'all_passed_tests',
             secondary_title: 'passed_tests_lc',
-            url: 'test-result',
+            url: 'test-results',
             count: data.passedTests,
             icon: <ChromeReaderModeOutlined htmlColor={"#fff"}/>,
             secondary_icon: <DoneAllSharp htmlColor={"lime"} fontWeight={600}/>
