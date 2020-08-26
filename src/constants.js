@@ -53,7 +53,7 @@ const data = {
             {id: 2, name: 'junior'},
             {id: 3, name: 'middle'},
             {id: 4, name: 'senior'},
-            {id: 5, name: 'master'},
+            {id: 5, name: 'expert'},
         ],
         times: [
             {id: 1, value: 30, name: "30 minutes"},
@@ -103,7 +103,7 @@ const data = {
             level_2 : 'junior',
             level_3 : 'middle',
             level_4 : 'senior',
-            level_5 : 'master',
+            level_5 : 'expert',
         },
         times: {
             time_30: '30 minutes',
